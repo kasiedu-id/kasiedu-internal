@@ -19,7 +19,7 @@ function DeleteBrandModal({ open, onCancel, brandName, brandId, onAccept }) {
           open ? "" : "hidden"
         } z-40 inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full`}
       >
-        <div className="relative top-20 mx-auto p-5 border w-3/4 shadow-lg rounded-md bg-white">
+        <div className="relative top-20 mx-auto p-5 border w-3/4 shadow-lg max-w-[550px] rounded-md bg-white">
           <div className="mt-3">
             <h3 className="text-base text-center leading-6 font-medium text-gray-900">
               Delete Brand

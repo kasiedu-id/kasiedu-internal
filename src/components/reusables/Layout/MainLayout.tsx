@@ -1,6 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import BottomNav from "./BottomNav";
 import { useEffect } from "react";
+import Sidebar from "./Sidebar";
 
 function MainLayout() {
   const navigate = useNavigate();
@@ -13,11 +14,10 @@ function MainLayout() {
   }, [location]);
 
   return (
-    <div className="max-w-[550px] mx-auto">
-      <div>
-        <Outlet />
+    <div>
+      <div className="h-screen overflow-hidden">
+        <Sidebar />
       </div>
-      <BottomNav />
     </div>
   );
 }

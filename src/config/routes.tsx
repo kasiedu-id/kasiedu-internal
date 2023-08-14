@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { Loadable } from "../components/reusables/Loading";
 import { Navigate } from "react-router-dom";
+import InternalAccountPage from "../modules/master/account/internal";
 
 // Layout
 const BlankLayout = Loadable(lazy(() => import('../components/reusables/Layout/BlankLayout')));
@@ -21,6 +22,11 @@ const BrandDetail = Loadable(lazy(() => import('../modules/master/internal/brand
 const CategoryList = Loadable(lazy(() => import('../modules/master/internal/category')));
 
 
+
+// Account
+const CustomerAccountPage = Loadable(lazy(() => import('../modules/master/account/customer')));
+
+
 const appRoutes = [
     {
         path: 'auths',
@@ -32,6 +38,14 @@ const appRoutes = [
     {
         path: '',
         element: <MainLayout />,
+    },
+    {
+        path: 'accounts',
+        element: <MainLayout />,
+        children: [
+            { path: 'customer', element: <CustomerAccountPage /> },
+            { path: 'internal', element: <InternalAccountPage /> },
+        ],
     },
     {
         path: 'vocations',
@@ -49,7 +63,7 @@ const appRoutes = [
         ]
     },
     {
-        path: 'masters',
+        path: 'settings',
         element: <MainLayout />,
         children: [
             {

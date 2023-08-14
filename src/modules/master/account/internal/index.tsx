@@ -2,17 +2,14 @@ import { useEffect, useState } from "react";
 import TextButton from "../../../../components/reusables/Button/TextButton";
 import { InputSingleField } from "../../../../components/reusables/Field/InputField";
 import moment from "moment";
-import UploadCsvFile from "../../../../components/reusables/Modal/UploadCsvFile";
 import { toast } from "react-toastify";
 import { HttpPost } from "../../../../config/api";
 
-function CustomerAccountPage() {
+function InternalAccountPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
     const [page, setPage] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
-    const [openCsvUpload, setOpenCsvUpload] = useState(false);
 
     const [tableData, setTableData] = useState([]);
 
@@ -20,13 +17,12 @@ function CustomerAccountPage() {
         page = 0,
         name,
         email,
-        phone,
     }) {
         try {
-            let users = await HttpPost(`internal/users?rt=user&limit=20&page=${page}`, {
+            let users = await HttpPost(`internal/users?rt=internal&limit=20&page=${page}`, {
                 name,
                 email,
-                phone,
+                phone: ""
             }, null);
 
             setTableData(users.rows);
@@ -47,8 +43,8 @@ function CustomerAccountPage() {
             key: 'email'
         },
         {
-            title: 'Phone',
-            key: 'phone'
+            title: 'Role',
+            key: 'role'
         },
         {
             title: 'Created At',
@@ -61,23 +57,11 @@ function CustomerAccountPage() {
     ];
 
     useEffect(() => {
-        getUsers({ page, name, email, phone });
+        getUsers({ page, name, email });
     }, [])
 
     return (
         <div>
-            <UploadCsvFile open={openCsvUpload} onCancel={() => setOpenCsvUpload(false)} onAccept={() => {
-                getUsers({ page, name, email, phone });
-                setOpenCsvUpload(false);
-            }} />
-            <div className="flex justify-end gap-5 my-5 px-4">
-                <div className="w-[100px]">
-                    <TextButton title="Export" onClick={() => null} disable={false} />
-                </div>
-                <div className="w-[100px]">
-                    <TextButton title="Import" onClick={() => setOpenCsvUpload(true)} disable={false} />
-                </div>
-            </div>
             <div className="flex justify-between gap-10 mb-4 px-4">
                 <div className="grid grid-cols-4 gap-2">
                     <InputSingleField
@@ -92,18 +76,12 @@ function CustomerAccountPage() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder={"Email"}
                     />
-                    <InputSingleField
-                        required={false}
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder={"Phone Number"}
-                    />
                 </div>
                 <div className="pt-2">
-                    <TextButton title="Search" onClick={() => getUsers({ page: 0, name, email, phone })} disable={false} />
+                    <TextButton title="Search" onClick={() => getUsers({ page, name, email })} disable={false} />
                 </div>
             </div>
-            <div className="px-4 max-h-[60vh] overflow-y-auto overflow-x-hidden">
+            <div className="px-4 max-h-[70vh] overflow-y-auto overflow-x-hidden">
                 <table className="border-collapse border">
                     <thead className="text-white">
                         <tr>
@@ -123,7 +101,7 @@ function CustomerAccountPage() {
                                     <tr>
                                         <td className="break-all px-2 border">{data?.account?.information.name}</td>
                                         <td className="break-all px-2 border">{data?.account?.email || '-'}</td>
-                                        <td className="break-all px-2 border">{data?.account?.phone}</td>
+                                        <td className="break-all px-2 border capitalize text-center">{data?.role?.name || '-'}</td>
                                         <td className="break-all px-2 border text-center">{moment(data?.createdAt).utc(true).format('DD MMMM YYYY HH:mm')}</td>
                                         <td className="flex flex-row gap-3 flex-wrap justify-center p-2">
                                             <div className="w-[100px]">
@@ -141,18 +119,18 @@ function CustomerAccountPage() {
             </div>
             <div className="flex flex-rows justify-between px-4 mt-5">
                 {
-                    page > 0 ? <p className="cursor-pointer font-semibold" onClick={() => getUsers({ page: page - 1, name, email, phone })}>Previous</p> : <div></div>
+                    page > 0 ? <p className="cursor-pointer font-semibold" onClick={() => getUsers({ page: page - 1, name, email })}>Previous</p> : <div></div>
                 }
                 {
                     totalCount > 0 ? <p>Page {page + 1} of {Math.ceil(totalCount / 20)}</p> : <div></div>
                 }
                 {
-                    page + 1 <= totalCount / 20 ? <p className="cursor-pointer font-semibold" onClick={() => getUsers({ page: page + 1, name, email, phone })}>Next</p> : <div></div>
+                    page + 1 <= totalCount / 20 ? <p className="cursor-pointer font-semibold" onClick={() => getUsers({ page: page + 1, name, email })}>Next</p> : <div></div>
                 }
-
+                
             </div>
         </div>
     );
 }
 
-export default CustomerAccountPage;
+export default InternalAccountPage;
