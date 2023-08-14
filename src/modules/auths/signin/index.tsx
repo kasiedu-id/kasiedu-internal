@@ -23,9 +23,10 @@ function SignInPage() {
     setLoading(true);
 
     try {
-      let res = await HttpPost('internal/auth/login', {
+      let res = await HttpPost('auths/login', {
         email,
-        password
+        password,
+        roleType: 'internal'
       }, null);
 
       sessionStorage.setItem("accessToken", res.accessToken);

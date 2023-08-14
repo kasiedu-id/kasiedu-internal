@@ -8,7 +8,7 @@ const Loader = ({
     role="status"
     className="flex items-center space-x-2 justify-center"
   >
-    <svg className={`h-6 w-6 animate-spin stroke-${color}`} viewBox="0 0 256 256">
+    <svg className={`h-6 w-6 animate-spin stroke-white`} viewBox="0 0 256 256">
       <line
         x1="128"
         y1="32"

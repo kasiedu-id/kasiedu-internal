@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { HttpPost } from "../../../../config/api";
+import { HttpGet, HttpPost } from "../../../../config/api";
 import BackLayout from "../../../../components/reusables/Layout/BackLayout";
 import { InputSingleField } from "../../../../components/reusables/Field/InputField";
 import TextButton from "../../../../components/reusables/Button/TextButton";
@@ -10,8 +10,11 @@ import { BiTrash, BiEdit } from "react-icons/bi";
 import DeleteCategoryModal from "../../../../components/reusables/Modal/DeleteCategory";
 
 function CategoryList() {
+  const limit = 10;
   const [category, setCategory] = useState([]);
   const [name, setName] = useState("");
+  const [page, setPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [categoryId, setCategoryId] = useState(0);
   const [sectionModal, setSectionModal] = useState("");
   const [categoryName, setCategoryName] = useState("");
@@ -19,16 +22,22 @@ function CategoryList() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   // Function
-  async function getCategory() {
+  async function getCategory({
+    page,
+    name
+  }) {
     try {
       let res = await HttpPost("categories", {
-        limit: 20,
-        start: 0,
-        method: 'all',
+        limit: limit,
+        start: page,
+        method: 'partial',
         name
       }, null);
 
-      setCategory(res);
+      console.log(res);
+      setCategory(res.rows);
+      setTotalCount(res.count);
+      setPage(page)
     } catch (error) {
       toast(error.message);
     }
@@ -44,23 +53,30 @@ function CategoryList() {
   }
 
   useEffect(() => {
-    getCategory();
+    getCategory({
+      page,
+      name
+    });
   }, []);
 
   return (
     <div>
-      <BackLayout navigation={-1} />
+      {/* <BackLayout navigation={-1} /> */}
       <div className="p-4">
-        <AddFloatingBtn
-          onClick={() =>
-            changeModalSetting({
-              open: true,
-              section: "create",
-              categoryId: null,
-              categoryName: "",
-            })
-          }
-        />
+        <div className="max-w-[100px] ml-auto">
+          <TextButton
+            title="Add"
+            disable={false}
+            onClick={() =>
+              changeModalSetting({
+                open: true,
+                section: "create",
+                categoryId: null,
+                categoryName: "",
+              })
+            }
+          />
+        </div>
         <CreateUpdateCategoryModal
           open={modalCreateUpdateOpen}
           categoryId={categoryId}
@@ -82,7 +98,10 @@ function CategoryList() {
               categoryName: "",
             });
 
-            getCategory();
+            getCategory({
+              page: 0,
+              name
+            });
           }}
         />
         <DeleteCategoryModal
@@ -105,18 +124,26 @@ function CategoryList() {
               categoryName: "",
             });
 
-            getCategory();
+            getCategory({
+              page: 0,
+              name
+            });
           }}
         />
-        <div className="flex gap-2 mb-4">
-          <InputSingleField
-            required={false}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder={"Category Name"}
-          />
+        <div className="flex justify-between items-center gap-10 mb-4">
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            <InputSingleField
+              required={false}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={"Category Name"}
+            />
+          </div>
           <div className="pt-2">
-            <TextButton title="Search" onClick={() => null} disable={false} />
+            <TextButton title="Search" onClick={() => getCategory({
+              page: 0,
+              name
+            })} disable={false} />
           </div>
         </div>
         {category.map((data) => {
@@ -160,6 +187,24 @@ function CategoryList() {
             </div>
           );
         })}
+
+        <div className="flex flex-rows justify-between px-4 mt-5">
+          {
+            page > 0 ? <p className="cursor-pointer font-semibold" onClick={() => getCategory({
+              page: page - 1,
+              name
+            })}>Previous</p> : <div></div>
+          }
+          {
+            totalCount > 0 ? <p>Page {page + 1} of {Math.ceil(totalCount / limit)}</p> : <div></div>
+          }
+          {
+            page + 1 <= totalCount / limit ? <p className="cursor-pointer font-semibold" onClick={() => getCategory({
+              page: page + 1,
+              name
+            })}>Next</p> : <div></div>
+          }
+        </div>
       </div>
     </div>
   );
