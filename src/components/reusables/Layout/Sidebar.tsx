@@ -42,11 +42,7 @@ function Sidebar() {
         },
         {
             title: "Vocation",
-<<<<<<< HEAD
-            href: "/vocation",
-=======
             href: "/vocations",
->>>>>>> 23dd32b27522e83ebd5421b65962c86aa9de508c
             id: 3,
             collapsible: true,
             icon: <SiHtmlacademy size={30} className='mr-3' />,
@@ -76,6 +72,11 @@ function Sidebar() {
                     icon: <MdOutlineList size={30} className='mr-3' />,
                 },
                 {
+                    title: "Sponsor",
+                    href: "/sponsor",
+                    icon: <MdOutlineList size={30} className='mr-3' />,
+                },
+                {
                     title: "Project",
                     href: "/project",
                     icon: <BiDonateHeart size={30} className='mr-3' />,
@@ -91,20 +92,12 @@ function Sidebar() {
             children: [
                 {
                     title: "Brand",
-<<<<<<< HEAD
-                    href: "/brand",
-=======
                     href: "/brands",
->>>>>>> 23dd32b27522e83ebd5421b65962c86aa9de508c
                     icon: <MdOutlineList size={30} className='mr-3' />,
                 },
                 {
                     title: "Category",
-<<<<<<< HEAD
-                    href: "/category",
-=======
                     href: "/categories",
->>>>>>> 23dd32b27522e83ebd5421b65962c86aa9de508c
                     icon: <MdOutlineList size={30} className='mr-3' />,
                 },
             ],

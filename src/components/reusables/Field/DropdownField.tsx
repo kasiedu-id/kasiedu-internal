@@ -13,7 +13,7 @@ export const DropdownField = ({
   return (
     <div className="relative">
       <label
-        className={`block tracking-wide text-${colorLabel} text-xs font-bold mb-2`}
+        className={`block tracking-wide text-${colorLabel} text-sm font-semibold mb-2`}
         htmlFor={`input-${label.replace(/ /g, "-")}`}
       >
         {label}
@@ -26,6 +26,7 @@ export const DropdownField = ({
         id={`input-${label.replace(/ /g, "-")}`}
         defaultValue={value}
         onChange={onChange}
+        value={value}
       >
         <option className="capitalize text-gray-700 text-xs" disabled selected value={""}>
           {placeholder}

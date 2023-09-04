@@ -4,12 +4,16 @@ import { InputSingleField } from "../../../../components/reusables/Field/InputFi
 import moment from "moment";
 import { toast } from "react-toastify";
 import { HttpPost } from "../../../../config/api";
+import UserCreateUpdateModal from "../../../../components/reusables/Modal/UserCreateUpdate";
 
 function InternalAccountPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [page, setPage] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
+    const [section, setSection] = useState("");
+    const [userId, setUserId] = useState("");
+    const [openAdd, setOpenAdd] = useState(false);
 
     const [tableData, setTableData] = useState([]);
 
@@ -62,6 +66,26 @@ function InternalAccountPage() {
 
     return (
         <div>
+            <UserCreateUpdateModal
+                open={openAdd}
+                onClick={() => {
+                    setOpenAdd(false);
+                    getUsers({ page, name, email });
+                }}
+                section={section}
+                id={userId}
+            />
+            <div className="flex justify-end gap-5 my-5 px-4">
+                <div className="max-w-[150px]">
+                    <TextButton
+                        title="Add User"
+                        disable={false}
+                        onClick={() =>
+                            setOpenAdd(true)
+                        }
+                    />
+                </div>
+            </div>
             <div className="flex justify-between gap-10 mb-4 px-4">
                 <div className="grid grid-cols-4 gap-2">
                     <InputSingleField
@@ -106,6 +130,13 @@ function InternalAccountPage() {
                                         <td className="flex flex-row gap-3 flex-wrap justify-center p-2">
                                             <div className="w-[100px]">
                                                 <TextButton onClick={null} title="Detail" disable={false} />
+                                            </div>
+                                            <div className="w-[100px]">
+                                                <TextButton onClick={() => {
+                                                    setSection("update");
+                                                    setUserId(data?.account?.id);
+                                                    setOpenAdd(true);
+                                                }} title="Edit" disable={false} />
                                             </div>
                                         </td>
                                     </tr>

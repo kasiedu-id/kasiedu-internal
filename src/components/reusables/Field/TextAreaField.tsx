@@ -11,7 +11,7 @@ export const TextAreaField = ({
       <label
         className={`block capitalize tracking-wide text-${
           textColor ?? "white"
-        } text-xs font-bold mb-2`}
+        } text-sm font-semibold mb-2`}
         htmlFor={`input-${label.replace(/ /g, "-")}`}
       >
         {label}

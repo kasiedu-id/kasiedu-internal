@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { HttpPost } from "../../../../config/api";
 import UserCreateUpdateModal from "../../../../components/reusables/Modal/UserCreateUpdate";
 
-function CustomerAccountPage() {
+function VocationAccountPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -27,11 +27,13 @@ function CustomerAccountPage() {
         phone,
     }) {
         try {
-            let users = await HttpPost(`internal/users?rt=user&limit=20&page=${page}`, {
+            let users = await HttpPost(`internal/users?rt=vocation&limit=20&page=${page}`, {
                 name,
                 email,
                 phone,
             }, null);
+
+            console.log(users);
 
             setTableData(users.rows);
             setTotalCount(users.count);
@@ -79,12 +81,8 @@ function CustomerAccountPage() {
                 section={section}
                 id={userId}
             />
-            <UploadCsvFile open={openCsvUpload} onCancel={() => setOpenCsvUpload(false)} onAccept={() => {
-                getUsers({ page, name, email, phone });
-                setOpenCsvUpload(false);
-            }} />
             <div className="flex justify-end gap-5 my-5 px-4">
-                <div className="max-w-[150px] px-4">
+                <div className="max-w-[150px]">
                     <TextButton
                         title="Add User"
                         disable={false}
@@ -92,12 +90,6 @@ function CustomerAccountPage() {
                             setOpenAdd(true)
                         }
                     />
-                </div>
-                <div className="w-[100px]">
-                    <TextButton title="Export" onClick={() => null} disable={false} />
-                </div>
-                <div className="w-[100px]">
-                    <TextButton title="Import" onClick={() => setOpenCsvUpload(true)} disable={false} />
                 </div>
             </div>
             <div className="flex justify-between gap-10 mb-4 px-4">
@@ -184,4 +176,4 @@ function CustomerAccountPage() {
     );
 }
 
-export default CustomerAccountPage;
+export default VocationAccountPage;

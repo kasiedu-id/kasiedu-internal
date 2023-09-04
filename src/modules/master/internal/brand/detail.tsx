@@ -35,7 +35,7 @@ function BrandDetail() {
 
   return (
     <div>
-      <BackLayout navigation={-1} />
+      {/* <BackLayout navigation={-1} /> */}
       <BrandCreateUpdateModal
         open={modalCreateUpdateOpen}
         id={brandId}

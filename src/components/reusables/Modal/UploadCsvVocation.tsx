@@ -4,7 +4,7 @@ import TextButton from "../Button/TextButton";
 import { toast } from "react-toastify";
 import { HttpPost } from "../../../config/api";
 
-function UploadCsvFile({
+function UploadVocationCsvFile({
     open,
     onCancel,
     onAccept,
@@ -20,10 +20,7 @@ function UploadCsvFile({
                         name: data[0],
                         email: data[1],
                         phone: data[2],
-                        occupation: data[3],
-                        interest: data[4],
-                        goal: data[5],
-                        biodata: data[6],
+                        interest: data[3],
                     }
             });
 
@@ -97,4 +94,4 @@ function UploadCsvFile({
     );
 }
 
-export default UploadCsvFile;
+export default UploadVocationCsvFile;

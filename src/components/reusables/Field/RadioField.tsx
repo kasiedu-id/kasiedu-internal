@@ -14,13 +14,13 @@ export const RadioField = ({
         <div className="w-full">
             {
                 label ? <label
-                    className={`block tracking-wide text-${textColor ?? "white"} text-xs font-bold mb-2`}
+                    className={`block tracking-wide text-${textColor ?? "white"} text-sm font-semibold mb-2`}
                     htmlFor={`input-${label?.replace(/ /g, "-")}`}
                 >
                     {label}
                 </label> : null
             }
-            <div className={`${flex ? "flex justify-center gap-5" : "block"}`}>
+            <div className={`${flex ? "flex gap-5" : "block"}`}>
                 {
                     collectionList.map((data) => {
                         return (

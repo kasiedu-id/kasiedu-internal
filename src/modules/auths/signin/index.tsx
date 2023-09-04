@@ -41,7 +41,7 @@ function SignInPage() {
 
   return (
     <div className="bg-gradient-to-tl from-[#ffcd56] to-[#07638d] p-[50px] h-[100vh] flex items-center justify-center">
-      <div className="border bg-white rounded pb-8 px-3 w-full">
+      <div className="border bg-white rounded pb-8 px-3 w-full max-w-[550px]">
         <img
           src={KasiEduLogo}
           alt={"Logo Kasi Edu"}

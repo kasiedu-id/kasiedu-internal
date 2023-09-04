@@ -1,6 +1,6 @@
 import moment from "moment";
 
-function ClassCard({
+function ProjectCard({
   categories,
   title,
   openRegis,
@@ -13,11 +13,7 @@ function ClassCard({
   isPrivate,
   maxStudent,
   editMode,
-  editCategoryClick,
   listStudentClick,
-  addSponsorClick,
-  editRequirementClick,
-  editCurriculumClick,
   editClassClick,
   detailClick,
   deleteClick,
@@ -121,38 +117,11 @@ function ClassCard({
               </button>
             )}
             <button
-              onClick={addSponsorClick}
-              className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center">
-              {/* <GroupsOutlinedIcon sx={{ marginRight: "10px" }} /> */}
-              <span>Add Sponsor</span>
-            </button>
-            <button
               onClick={editClassClick}
               className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
             >
               {/* <GroupsOutlinedIcon sx={{ marginRight: "10px" }} /> */}
-              <span>Edit Class</span>
-            </button>
-            <button
-              onClick={editRequirementClick}
-              className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
-            >
-              {/* <GroupsOutlinedIcon sx={{ marginRight: "10px" }} /> */}
-              <span>Edit Requirement</span>
-            </button>
-            <button
-              onClick={editCurriculumClick}
-              className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
-            >
-              {/* <InfoIcon sx={{ marginRight: "5px" }} />  */}
-              <span>Edit Curriculum</span>
-            </button>
-            <button
-              onClick={editCategoryClick}
-              className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
-            >
-              {/* <DeleteOutlinedIcon sx={{ marginRight: "5px" }} />  */}
-              <span>Edit Category</span>
+              <span>Edit</span>
             </button>
           </div> : null
         }
@@ -161,4 +130,4 @@ function ClassCard({
   );
 }
 
-export default ClassCard;
+export default ProjectCard;

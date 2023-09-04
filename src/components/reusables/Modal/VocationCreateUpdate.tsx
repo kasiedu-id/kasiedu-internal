@@ -150,7 +150,7 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
             className={`fixed ${open ? "" : "hidden"
                 } z-40 inset-0 p-5 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full`}
         >
-            <div className="relative mx-auto p-5 border w-[90%] shadow-lg rounded-md bg-white">
+            <div className="relative mx-auto p-5 border w-[90%] shadow-lg max-w-[550px] rounded-md bg-white">
                 <div className="mt-3">
                     <h3 className="text-2xl text-center leading-6 font-medium text-gray-900">
                         Upload Vocation

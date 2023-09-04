@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { HttpPost } from "../../../../config/api";
-import { InputSingleField } from "../../../../components/reusables/Field/InputField";
-import TextButton from "../../../../components/reusables/Button/TextButton";
+import { HttpPost } from "../../../config/api";
+import { InputSingleField } from "../../../components/reusables/Field/InputField";
+import TextButton from "../../../components/reusables/Button/TextButton";
 import { useParams } from "react-router-dom";
-import UploadVocationCsvFile from "../../../../components/reusables/Modal/UploadCsvVocation";
-import ClassCreateUpdateModal from "../../../../components/reusables/Modal/ClassCreateUpdate";
-import ClassCard from "../../../../components/reusables/Card/ClassCard";
-import CategoryClassUpdateModal from "../../../../components/reusables/Modal/Class/UpdateCategory";
-import RequirementUpdateModal from "../../../../components/reusables/Modal/Class/UpdateRequirement";
-import CurriculumUpdateModal from "../../../../components/reusables/Modal/Class/UpdateCurriculum";
-import ClassDetailModal from "../../../../components/reusables/Modal/ClassDetail";
-import AddStudentModal from "../../../../components/reusables/Modal/Class/AddStudent";
-import AddSponsorModal from "../../../../components/reusables/Modal/Class/AddSponsor";
+import UploadVocationCsvFile from "../../../components/reusables/Modal/UploadCsvVocation";
+import ClassCreateUpdateModal from "../../../components/reusables/Modal/ClassCreateUpdate";
+import ClassCard from "../../../components/reusables/Card/ClassCard";
+import CategoryClassUpdateModal from "../../../components/reusables/Modal/Class/UpdateCategory";
+import RequirementUpdateModal from "../../../components/reusables/Modal/Class/UpdateRequirement";
+import CurriculumUpdateModal from "../../../components/reusables/Modal/Class/UpdateCurriculum";
+import ClassDetailModal from "../../../components/reusables/Modal/ClassDetail";
+import AddStudentModal from "../../../components/reusables/Modal/Class/AddStudent";
+import AddSponsorModal from "../../../components/reusables/Modal/Class/AddSponsor";
+import Select from "react-select";
 
-function VocationClassList() {
+function ClassList() {
     const [classes, setClasses] = useState([]);
     const [name, setName] = useState("");
+    const [vocation, setVocation] = useState(null);
     const [page, setPage] = useState(0);
     const limit = 10;
     const [totalCount, setTotalCount] = useState(0);
@@ -32,16 +34,17 @@ function VocationClassList() {
     const [className, setClassName] = useState("");
     const param = useParams();
 
+    const [vocations, setVocations] = useState([]);
     // Function
     async function getClasses({
         page
     }) {
         try {
-            let res = await HttpPost(`classes/vocation/${param.id}`, {
+            let res = await HttpPost(`classes/`, {
                 limit: limit,
                 start: page,
-                method: 'partial',
-                name
+                name,
+                vocationId: vocation ? vocation?.value : ""
             }, null);
 
             setClasses(res.rows);
@@ -52,7 +55,32 @@ function VocationClassList() {
         }
     }
 
+    async function fetchVocation() {
+        try {
+            let res = await HttpPost(`vocations/`, {
+                limit: 20,
+                start: 0,
+                method: 'all',
+                name: '',
+            }, null);
+
+            setVocations(res.map(data => {
+                return {
+                    value: data.id,
+                    label: data.name.toUpperCase()
+                }
+            }));
+        } catch (error) {
+            toast(error?.message);
+        }
+    }
+
+    function handleSelectVocation(data) {
+        setVocation(data);
+    }
+
     useEffect(() => {
+        fetchVocation();
         getClasses({
             page: 0
         });
@@ -114,8 +142,8 @@ function VocationClassList() {
                         <TextButton
                             title="Add"
                             disable={false}
-                            onClick={() =>{
-                                setClassId(null)
+                            onClick={() => {
+                                setClassId("")
                                 setModalCreateUpdateOpen(true)
                             }}
                         />
@@ -124,6 +152,17 @@ function VocationClassList() {
                 <div className="flex justify-between items-center gap-10 mb-4">
                     <div className="grid grid-cols-2 gap-2 mb-4">
                         <InputSingleField required={false} value={name} onChange={(e) => setName(e.target.value)} placeholder={"Class Name"} />
+                        <div className="pt-2">
+                            <Select
+                                options={vocations}
+                                placeholder="Select Vocation"
+                                value={vocation}
+                                onChange={handleSelectVocation}
+                                isSearchable={true}
+                                isMulti={false}
+                                className="outline-none"
+                            />
+                        </div>
                     </div>
                     <div className="pt-2">
                         <TextButton
@@ -206,4 +245,4 @@ function VocationClassList() {
     );
 }
 
-export default VocationClassList;
+export default ClassList;

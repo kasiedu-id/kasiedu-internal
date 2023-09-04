@@ -1,85 +1,79 @@
 import { useEffect, useState } from "react";
-import { MdFileUpload } from "react-icons/md";
-import { settings } from "../../../config/theme/constants";
+import { AiOutlineFileImage } from "react-icons/ai";
+import { toast } from "react-toastify";
 import { InputSingleField } from "../Field/InputField";
 import { TextAreaField } from "../Field/TextAreaField";
 import { HttpGet, HttpPost, HttpPut } from "../../../config/api";
-import { toast } from "react-toastify";
+import { settings } from "../../../config/theme/constants";
 
-function BrandCreateUpdateModal({ open, onClick, id, section }) {
+function UploadEvent({ open, onClick, vocationId, id, section }) {
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [url, setUrl] = useState("");
+  const [eventDate, setEventDate] = useState("");
 
   async function submit() {
     try {
-      const payload = new FormData();
+        const payload = new FormData();
 
-      payload.append("brand", image);
-      payload.append("name", name);
-      payload.append("description", description);
-      payload.append("url", url);
+        payload.append('gallery-vocation', image);
+        payload.append('name', name);
+        payload.append('description', description);
+        payload.append('date', eventDate);
+        payload.append('vocationId', vocationId);
 
-      if (section !== "update") {
-        await HttpPost(`internal/brands/`, payload, null);
-        toast("Success create a new brands");
-      } else {
-        await HttpPut(
-          `internal/brands/${id}`,
-          payload,
-          null
-        );
-        toast("Success update a brands");
-      }
+        if(section === 'create'){
+            await HttpPost('internal/galleries', payload, null)
+        } else if(section === 'update'){
+            await HttpPut(`internal/galleries/${id}`, payload, null)
+        }
 
-      onClick();
+        onClick()
     } catch (error) {
-      toast(error?.message);
+        toast(error?.message);
     }
   }
 
-  async function fetchDetail() {
+  async function fetchDetail(){
     try {
-      let res = await HttpGet(`brands/${id}`, null);
+        let res = await HttpGet(`galleries/${id}`, null);
 
-      let brand = res;
+        console.log(res);
 
-      setImage(brand?.logo ? brand : null);
-      setName(brand?.name);
-      setDescription(brand?.description);
-      setUrl(brand?.url);
+        setImage(res);
+        setEventDate(res.date);
+        setName(res.name);
+        setDescription(res.description);
     } catch (error) {
-      toast(error?.message);
+        toast(error?.message);
     }
   }
 
-  function reset() {
+  function reset(){
     setImage(null);
     setName("");
-    setUrl("");
     setDescription("");
+    setEventDate("");
   }
 
   useEffect(() => {
-    if (section === "create") reset();
-    else if (id) fetchDetail();
+    section === 'update' ? fetchDetail() : reset();
   }, [open]);
 
   return (
     <div
       className={`fixed ${
         open ? "" : "hidden"
-      } z-40 inset-0 p-5 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full`}
+      } z-40 inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full`}
     >
-      <div className="relative mx-auto p-5 border w-[90%] max-w-[550px] shadow-lg rounded-md bg-white">
+      <div className="relative top-20 mx-auto p-5 border w-1/2 shadow-lg max-w-[550px] rounded-md bg-white">
         <div className="mt-3">
           <h3 className="text-2xl text-center leading-6 font-medium text-gray-900">
-            Upload Brand
+            Upload Event
           </h3>
-          <div className="mt-2 px-4 py-3">
+          <div className="mt-2 px-7 py-3">
             <p className="text-sm text-gray-500 text-center">
-              Please upload brand information below:
+              Please upload your event below:
             </p>
           </div>
           <div className="mt-4 text-black">
@@ -87,14 +81,10 @@ function BrandCreateUpdateModal({ open, onClick, id, section }) {
               {image ? (
                 <label
                   className="flex justify-center items-center h-[100%]"
-                  htmlFor={`file-${"image"}`}
+                  htmlFor={`file-event-photo`}
                 >
                   <img
-                    src={
-                      image?.logo
-                        ? `${settings.baseUrl}${image?.logo.replace("public/", "")}`
-                        : URL.createObjectURL(image)
-                    }
+                    src={image?.image ? `${settings.baseUrl}${image?.image?.replace('public/', '')}` : URL.createObjectURL(image)}
                     style={{ width: "100%", height: "100%" }}
                     alt=""
                   />
@@ -102,52 +92,53 @@ function BrandCreateUpdateModal({ open, onClick, id, section }) {
               ) : (
                 <label
                   className="flex justify-center items-center h-[100%]"
-                  htmlFor={`file-${"image".replace(/ /g, "-")}`}
+                  htmlFor={`file-event-photo`}
                 >
-                  <MdFileUpload style={{ marginRight: "10px" }} />
-                  Image
+                  <AiOutlineFileImage className="mr-[10px]" />
+                  Photo
                 </label>
               )}
               <input
                 type="file"
+                accept=".png,.jpg,.pdf"
                 hidden
-                id={"file-image"}
+                id={`file-event-photo`}
                 onChange={(e) => setImage(e.target.files[0])}
               />
             </div>
             <div className="mb-2">
               <InputSingleField
-                required={false}
-                placeholder={"Top One"}
+                placeholder={"Webinar"}
+                required={true}
+                label={"Nama Acara"}
+                value={name}
                 type={"text"}
                 textColor={"black"}
-                label={"Name"}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e: any) => setName(e.target.value)}
               />
             </div>
             <div className="mb-2">
-              <TextAreaField
-                label={"Description"}
+                <TextAreaField
+                label={"Deskripsi"}
                 value={description}
+                onChange={(e: any) => setDescription(e.target.value)}
                 textColor={"black"}
-                onChange={(e) => setDescription(e.target.value)}
-              />
+                />
             </div>
             <div className="mb-2">
               <InputSingleField
-                required={false}
-                placeholder={"https://google.com"}
+                placeholder={"21 Juni 2020"}
+                required={true}
+                label={"Tanggal Acara"}
+                value={eventDate}
                 type={"text"}
                 textColor={"black"}
-                label={"Url"}
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
+                onChange={(e: any) => setEventDate(e.target.value)}
               />
             </div>
           </div>
           <div
-            className="items-center mt-3 pt-3 text-center"
+            className="items-center mt-3 py-3 text-center"
             onClick={() => submit()}
           >
             <div
@@ -157,12 +148,9 @@ function BrandCreateUpdateModal({ open, onClick, id, section }) {
               <p>Submit</p>
             </div>
           </div>
-          <div
-            className="items-center py-3 text-center"
-            onClick={() => onClick()}
-          >
+          <div className="items-center mt-3 py-3 text-center" onClick={onClick}>
             <div
-              id={`section`}
+              id="ok-btn"
               className={`cursor-pointer px-4 py-2 bg-[transparent] text-black text-base font-medium rounded-md w-full shadow-sm hover:bg-[transparent] focus:outline-none focus:ring-2 focus:ring-[transparent]`}
             >
               <p>Close</p>
@@ -174,4 +162,4 @@ function BrandCreateUpdateModal({ open, onClick, id, section }) {
   );
 }
 
-export default BrandCreateUpdateModal;
+export default UploadEvent;
