@@ -50,8 +50,6 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                     message: 'Choose Vocation'
                 });
 
-                console.log(vocation, category);
-
                 await HttpPost(`internal/classes`, {
                     name,
                     description,
@@ -113,23 +111,27 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
         try {
             let res = await HttpGet(`classes/${id}`, null);
 
+            console.log(res);
+
             setName(res.name);
             setCertificate(res.certificate);
             setKasieduCertificate(res.certificate);
             setClassType(res.classType);
             setIsPrivate(res.isPrivate);
-            setPrice(res.price);
+            setPrice(res?.price);
             setMaxPerson(res.maxPerson);
             setOpenRegis(res.openRegis ? moment.unix(res.openRegis).utc().format('YYYY-MM-DD') : "");
             setCloseRegis(res.closeRegis ? moment.unix(res.closeRegis).format('YYYY-MM-DD') : "");
             setStartClass(res.classStart ? moment.unix(res.classStart).format('YYYY-MM-DD') : "");
-            setDuration(res.duration);
-            setDurationType(res.durationType);
+            setDuration(res?.duration);
+            setDurationType(res?.durationType);
             setCompleteAddress(res.completeAddress);
-            setProvince(res.location.codeProvince);
-            setCity(res.location.id);
+            setProvince(res?.location?.codeProvince);
+            setCity(res?.location?.id);
             setDescription(res.description);
-            fetchCity({ provinceId: res.location.codeProvince })
+            if(res.location){
+                fetchCity({ provinceId: res?.location?.codeProvince })
+            }
             setPageLimit(1);
             setPage(0);
         } catch (error) {
