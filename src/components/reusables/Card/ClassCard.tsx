@@ -30,11 +30,11 @@ function ClassCard({
             <div className="flex justify-between">
               <div>
                 <p className="font-bold text-xl">{title}</p>
-                <div className="mt-2 flex">
+                <div className="mt-2 flex flex-wrap gap-3">
                   {categories.map((data: any) => {
                     return (
                       <div
-                        className="rounded-full p-2 bg-gray-400 mr-1 capitalize"
+                        className="rounded-full p-2 bg-gray-400 capitalize"
                         key={data.id}
                       >
                         <p className="italic text-white text-center">{data?.category.name}</p>

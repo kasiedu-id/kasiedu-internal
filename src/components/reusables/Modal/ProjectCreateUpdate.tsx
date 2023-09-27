@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Select from "react-select";
 import TextButton from "../Button/TextButton";
 import { DropdownField } from "../Field/DropdownField";
+import moment from "moment";
 
 function ProjectCreateUpdateModal({ open, onClick, id }) {
     const [name, setName] = useState("");
@@ -30,8 +31,8 @@ function ProjectCreateUpdateModal({ open, onClick, id }) {
                     accountId: accounts,
                     classId: vocationClass?.value,
                     sponsorId: sponsor,
-                    startDate: projectStart,
-                    closeDate: projectClose,
+                    startDate: projectStart ? moment(projectStart).valueOf() / 1000 : null,
+                    closeDate: projectClose ? moment(projectClose).valueOf() / 1000 : null,
                     title: name,
                     description: description,
                 }, null);

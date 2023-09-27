@@ -7,6 +7,7 @@ import { DropdownField } from "../Field/DropdownField";
 import Select from "react-select";
 import TextButton from "../Button/TextButton";
 import moment from "moment";
+import LoadingModal from "../Loading/Loading";
 
 function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
     const [page, setPage] = useState(0);
@@ -71,8 +72,8 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                     completeAddress,
                     addressId: city
                 }, null);
-                reset();
                 toast("Success create a new class");
+                reset();
             } else {
                 await HttpPut(
                     `internal/classes/${id}`,
@@ -761,7 +762,7 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                         </div>
                                         <div>
                                             <p className="font-semibold">Class Location</p>
-                                            <p className="text-sm">{location === 'same' ? 'Same as vocation' : 'Different'}</p>
+                                            <p className="text-sm">{location ? location === 'same' ? 'Same as vocation' : 'Different' : 'Online'}</p>
                                         </div>
                                         <div>
                                             <p className="font-semibold">Max Student</p>
@@ -856,6 +857,8 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                     </div>
                 </div>
             </div>
+
+            <LoadingModal open={loading} />
         </div>
     );
 }

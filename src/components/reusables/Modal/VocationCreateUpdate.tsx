@@ -6,28 +6,30 @@ import { toast } from "react-toastify";
 import { DropdownField } from "../Field/DropdownField";
 import { RadioField } from "../Field/RadioField";
 import Select from "react-select";
+import LoadingModal from "../Loading/Loading";
 
 function VocationCreateUpdateModal({ open, onClick, id, section }) {
-    const [emailVocation, setEmailVocation] = useState("");
+    // const [emailVocation, setEmailVocation] = useState("");
     const [vocationName, seVocationName] = useState("");
     const [vocationType, setVocationType] = useState("");
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
     const [description, setDescription] = useState("");
     const [completeAddress, setCompleteAddress] = useState("");
-    const [phoneFirst, setPhoneFirst] = useState("");
-    const [phoneSecond, setPhoneSecond] = useState("");
+    // const [phoneFirst, setPhoneFirst] = useState("");
+    // const [phoneSecond, setPhoneSecond] = useState("");
     const [cpName, setCpName] = useState("");
-    const [cpEmail, setCpEmail] = useState("");
+    // const [cpEmail, setCpEmail] = useState("");
     const [cpPhone, setCpPhone] = useState("");
     const [category, setCategory] = useState([]);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [nameAccount, setNameAccount] = useState("");
+    // const [nameAccount, setNameAccount] = useState("");
 
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
     const types = [
         {
             value: 'individual',
@@ -46,25 +48,27 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
 
     async function submit() {
         try {
+            setLoading(true);
+
             if (section !== "update") {
                 await HttpPost(`internal/vocations/`, {
                     addressId: city,
                     vocationName: vocationName,
                     vocationType: vocationType,
                     description: description,
-                    emailVocation: emailVocation,
-                    phoneFirst: phoneFirst,
-                    phoneSecond: phoneSecond,
+                    emailVocation: email,
+                    phoneFirst: null,
+                    phoneSecond: null,
                     completeAddress: completeAddress,
-                    cpName: cpEmail,
-                    cpEmail: cpEmail,
+                    cpName: cpName,
+                    cpEmail: email,
                     cpPhone: cpPhone,
                     category: category.map((data) => data.value),
                     email: email,
                     password: password,
-                    name: nameAccount
+                    name: vocationName
                 }, null);
-                toast("Success create a new brands");
+                toast("Success create a vocation");
             } else {
                 await HttpPut(
                     `internal/brands/${id}`,
@@ -74,8 +78,10 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                 toast("Success update a brands");
             }
 
+            setLoading(false);
             onClick();
         } catch (error) {
+            setLoading(false);
             toast(error?.message);
         }
     }
@@ -211,14 +217,14 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                                 className="outline-none"
                             />
                         </div>
-                        <div className="mb-3">
+                        {/* <div className="mb-3">
                             <InputSingleField
                                 label={"Email"}
                                 value={emailVocation}
                                 textColor={"black"}
                                 onChange={(e) => setEmailVocation(e.target.value)}
                             />
-                        </div>
+                        </div> 
                         <div className="mb-3">
                             <InputSingleField
                                 label={"Phone 1"}
@@ -234,7 +240,7 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                                 textColor={"black"}
                                 onChange={(e) => setPhoneSecond(e.target.value)}
                             />
-                        </div>
+                        </div> */}
                         <div className="mb-3">
                             <TextAreaField
                                 label={"Complete Address"}
@@ -273,7 +279,7 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                             </div>
                         </div>
                         <div className="mb-3 pt-5">
-                            <p className="font-bold text-lg">Contact Person</p>
+                            <p className="font-bold text-lg">Contact Person (PIC)</p>
                         </div>
                         <div className="mb-3">
                             <InputSingleField
@@ -283,14 +289,14 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                                 onChange={(e) => setCpName(e.target.value)}
                             />
                         </div>
-                        <div className="mb-3">
+                        {/* <div className="mb-3">
                             <InputSingleField
                                 label={"Email"}
                                 value={cpEmail}
                                 textColor={"black"}
                                 onChange={(e) => setCpEmail(e.target.value)}
                             />
-                        </div>
+                        </div> */}
                         <div className="mb-3">
                             <InputSingleField
                                 label={"Phone"}
@@ -299,17 +305,17 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                                 onChange={(e) => setCpPhone(e.target.value)}
                             />
                         </div>
-                        <div className="mb-3 pt-5">
+                        {/* <div className="mb-3 pt-5">
                             <p className="font-bold text-lg">Account</p>
-                        </div>
-                        <div className="mb-3">
+                        </div> */}
+                        {/* <div className="mb-3">
                             <InputSingleField
                                 label={"Name"}
                                 value={nameAccount}
                                 textColor={"black"}
                                 onChange={(e) => setNameAccount(e.target.value)}
                             />
-                        </div>
+                        </div> */}
                         <div className="mb-3">
                             <InputSingleField
                                 label={"Email"}
@@ -351,6 +357,8 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                     </div>
                 </div>
             </div>
+
+            <LoadingModal open={loading} />
         </div>
     );
 }

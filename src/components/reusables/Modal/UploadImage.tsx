@@ -37,6 +37,8 @@ function UploadImageModal({ open, onClick, vocationId, fileId, type }) {
 
         await HttpPost(`internal/vocations/upload-document/${vocationId}`, payload, null);
 
+        toast('Success upload image')
+
         onClick()
     } catch (error) {
       toast(error?.message);

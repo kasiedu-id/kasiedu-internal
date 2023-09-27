@@ -102,20 +102,17 @@ function VocationList() {
         </div>
         <div className="grid grid-cols-2 gap-5">
           {vocations.map((data) => {
-            let profile = null;
-            data.documents.forEach((data) => {
-              if (data?.document_type === "photo-profile") profile = data;
-            });
-
             return (
               <div key={data?.id} className="min-h-[150px] bg-[#07638d] rounded-lg text-white py-3 px-5 mb-5" onClick={() => navigate(`/vocations/${data.id}`)}>
                 <div className="flex items-center">
+                  <div className="min-w-[20%]">
                   {
-                    profile ? <PhotoAvatar name={profile?.image} middle={false} /> : <NameAvatar name={data.name} middle={false} />
+                    data?.photoProfile ? <PhotoAvatar name={data?.photoProfile} middle={false} /> : <NameAvatar name={data.name} middle={false} />
                   }
+                  </div>
                   <div>
                     <p className="font-black text-sm">{data.name}</p>
-                    <div className="flex gap-2 mt-3">
+                    <div className="flex flex-wrap gap-2 mt-3">
                       {data?.category?.map((category) => {
                         return (
                           <div className="rounded-full py-1 px-3 bg-slate-400">
