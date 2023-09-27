@@ -64,7 +64,7 @@ function ProjectList() {
         page
     }) {
         try {
-            let res = await HttpPost(`internal/projects/get?page=${page}&limit=${limit}`, {
+            let res = await HttpPost(`internal/projects/get?page=${page + 1}&limit=${limit}`, {
                 name,
                 title,
                 classId,
@@ -251,11 +251,11 @@ function ProjectList() {
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
                                                 <p className="font-bold">Project Start</p>
-                                                <p>{moment(data.startDate).format("DD MMMM YYYY")}</p>
+                                                <p>{moment.unix(data.startDate).format("DD MMMM YYYY")}</p>
                                             </div>
                                             <div>
                                                 <p className="font-bold">Project End</p>
-                                                <p>{moment(data.closeDate).format("DD MMMM YYYY")}</p>
+                                                <p>{moment.unix(data.closeDate).format("DD MMMM YYYY")}</p>
                                             </div>
                                         </div>
                                         <div className="mt-4 flex justify-between items-center">

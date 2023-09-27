@@ -10,7 +10,7 @@ function PhotoAvatar({ name, middle }: PhotoAvatarProps) {
     <div
       style={{
         backgroundImage: `url(${settings.baseUrl}${name.replace('public/', "")})`,
-        backgroundSize: 'cover',
+        backgroundSize: 'contain',
         marginInline: middle ? "auto" : "none"
       }}
       className={`flex relative w-20 h-20 justify-center items-center text-xl rounded-full mr-4 text-white bg-black`}

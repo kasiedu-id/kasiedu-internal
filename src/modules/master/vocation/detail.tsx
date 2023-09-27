@@ -16,7 +16,6 @@ function DetailVocation() {
   const [vocation, setVocation] = useState(null);
   const [ktp, setKtp] = useState(null);
   const [legal, setLegal] = useState(null);
-  const [photoProfile, setPhotoProfile] = useState(null);
   const [certificate, setCertificate] = useState(null);
   const [categories, setCategories] = useState([]);
   const [events, setEvents] = useState([]);
@@ -39,7 +38,6 @@ function DetailVocation() {
         else if (data.documentType === "legal-document") setLegal(data);
         else if (data.documentType === "certificate-design")
           setCertificate(data);
-        else if (data.documentType === "photo-profile") setPhotoProfile(data);
       }
 
       let resEvents = await HttpPost('galleries/', {
@@ -59,7 +57,7 @@ function DetailVocation() {
       setVocationClass(resClasses.rows);
       setEvents(resEvents.rows);
       setVocation(res);
-      setCategories(res.category);
+      setCategories(res.categories);
     } catch (error) {
       toast(error?.message);
     }
@@ -85,12 +83,12 @@ function DetailVocation() {
       <div className="p-4">
         <div onClick={() => {
           setOpenUploadImageModal(true);
-          setFile(photoProfile ? photoProfile?.id : "");
+          setFile("");
           setType("Photo Profil")
         }}>
-          {photoProfile ? (
+          {vocation?.photoProfile ? (
             <img
-              src={`${settings.baseUrl}${photoProfile?.image.replace('public/', "")}`}
+              src={`${settings.baseUrl}${vocation?.photoProfile?.replace('public/', "")}`}
               className="h-[90px] w-[90px] rounded-full object-fill mx-auto"
               alt={`Profile ${vocation?.name}`}
             />
@@ -101,7 +99,7 @@ function DetailVocation() {
             <h4 className="text-center font-bold mt-3">{vocation?.name}</h4>
           </div>
           <div className="flex justify-center items-center gap-2 mt-2">
-            {categories.map((category) => {
+            {categories?.map((category) => {
               return (
                 <div className="rounded-full py-1 px-3 bg-slate-400">
                   <p className="capitalize text-xs text-white">
@@ -298,7 +296,7 @@ function DetailVocation() {
           </div>
           <div className="flex flex-row justify-center gap-3">
             {
-              vocatioClass.length > 0 ? vocatioClass.map((data) => {
+              vocatioClass.length > 0 ? vocatioClass?.map((data) => {
                 return (
                   <ClassCard
                     key={data.id}
@@ -334,7 +332,7 @@ function DetailVocation() {
           {
             events.length > 0 ? <div className="grid grid-cols-5 gap-3">
               {
-                events.map((data) => {
+                events?.map((data) => {
                   return (
                     <ActivityCard
                       key={data.id}
