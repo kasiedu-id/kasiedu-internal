@@ -20,6 +20,7 @@ function DetailVocation() {
   const [categories, setCategories] = useState([]);
   const [events, setEvents] = useState([]);
   const [vocatioClass, setVocationClass] = useState([]);
+  const [socialMedia, setSocialMedia] = useState([]);
   const [openVerificationModal, setOpenVerificationModal] = useState(false);
   const [openUploadImageModal, setOpenUploadImageModal] = useState(false);
   const [file, setFile] = useState("");
@@ -54,10 +55,25 @@ function DetailVocation() {
         name: '',
       }, null);
 
+      let resSocialMedia = await HttpGet(`socials/${param.id}`, null);
+
       setVocationClass(resClasses.rows);
       setEvents(resEvents.rows);
+      setSocialMedia(resSocialMedia);
       setVocation(res);
       setCategories(res.categories);
+    } catch (error) {
+      toast(error?.message);
+    }
+  }
+
+  async function resetPassword({email}){
+    try {
+      await HttpPost('internal/auth/reset-password', {
+        email
+      }, null);
+  
+      toast('Success reset password!')
     } catch (error) {
       toast(error?.message);
     }
@@ -241,13 +257,27 @@ function DetailVocation() {
           <div className="grid grid-cols-2">
             <div>
               <p className="font-bold my-2">Phone 1</p>
-              <p>{vocation?.phoneFirst}</p>
+              <p>{vocation?.phoneFirst ? vocation?.phoneFirst : "N/A"}</p>
             </div>
             <div>
               <p className="font-bold my-2">Phone 2</p>
               <p>{vocation?.phoneSecond ? vocation?.phoneSecond : "N/A"}</p>
             </div>
           </div>
+        </div>
+        <div className="border border-gray-300 my-2" />
+        <div>
+          <p className="capitalize font-bold">Social Media</p>
+          {
+            socialMedia?.map((data: any) => {
+              return (
+                <div className="mt-1 mb-2 flex gap-3 items-center">
+                  <p className="font-bold my-2 capitalize">{data?.type}</p>
+                  <a href={ !data?.url.match(/^https?:\/\//i) ? `https://${data?.url}` : data?.url} target="_blank" rel="noreferrer" className="text-center border-b-2 border-blue-600 text-blue-600">View</a>
+                </div>
+              )
+            })
+          }
         </div>
         <div className="border border-gray-300 my-2" />
         <div>
@@ -278,7 +308,9 @@ function DetailVocation() {
                     <p>{data?.account?.email}</p>
                   </div>
                   <div className="max-w-[150px]">
-                    <TextButton title="Reset Password" onClick={() => null} disable={false} />
+                    <TextButton title="Reset Password" onClick={() => resetPassword({
+                      email: data?.account?.email
+                    })} disable={false} />
                   </div>
                 </div>
               )

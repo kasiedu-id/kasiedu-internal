@@ -24,6 +24,8 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
     const [category, setCategory] = useState([]);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [socialMedia, setSocialMedia] = useState("");
+    const [socialType, setSocialType] = useState("");
     // const [nameAccount, setNameAccount] = useState("");
 
     const [provinces, setProvinces] = useState([]);
@@ -65,6 +67,8 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                     cpPhone: cpPhone,
                     category: category.map((data) => data.value),
                     email: email,
+                    socialMedia,
+                    socialType,
                     password: password,
                     name: vocationName
                 }, null);
@@ -278,12 +282,9 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                                 />
                             </div>
                         </div>
-                        <div className="mb-3 pt-5">
-                            <p className="font-bold text-lg">Contact Person (PIC)</p>
-                        </div>
                         <div className="mb-3">
                             <InputSingleField
-                                label={"Name"}
+                                label={"Name PIC"}
                                 value={cpName}
                                 textColor={"black"}
                                 onChange={(e) => setCpName(e.target.value)}
@@ -299,7 +300,7 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                         </div> */}
                         <div className="mb-3">
                             <InputSingleField
-                                label={"Phone"}
+                                label={"Phone PIC"}
                                 value={cpPhone}
                                 textColor={"black"}
                                 onChange={(e) => setCpPhone(e.target.value)}
@@ -316,6 +317,43 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                                 onChange={(e) => setNameAccount(e.target.value)}
                             />
                         </div> */}
+                        <div className="mb-3">
+                            <InputSingleField
+                                label={"Website / Social Media"}
+                                value={socialMedia}
+                                textColor={"black"}
+                                onChange={(e) => setSocialMedia(e.target.value)}
+                            />
+                        </div>
+                        <DropdownField
+                            required={false}
+                            label={"Social Media Type"}
+                            value={socialType}
+                            collectionList={[
+                                {
+                                    label: 'Website',
+                                    value: 'website',
+                                },
+                                {
+                                    label: 'Instagram',
+                                    value: 'instagram',
+                                },
+                                {
+                                    label: 'Tiktok',
+                                    value: 'tiktok',
+                                },
+                                {
+                                    label: 'Facebook',
+                                    value: 'facebook',
+                                },
+                            ]}
+                            valueField={"value"}
+                            labelField={"label"}
+                            placeholder={"Social Media Type"}
+                            onChange={(e) => {
+                                setSocialType(e.target.value);
+                            }}
+                        />
                         <div className="mb-3">
                             <InputSingleField
                                 label={"Email"}
