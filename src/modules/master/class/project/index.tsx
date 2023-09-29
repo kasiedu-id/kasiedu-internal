@@ -71,11 +71,13 @@ function ProjectList() {
                 accountId: ""
             }, null);
 
+            console.log(res);
             const result = res.rows.map((data) => {
                 let gatheredMoney = 0;
 
                 for (let payment of data.payments) {
-                    gatheredMoney += payment.amount
+                    if(payment.status === 'paid')
+                    gatheredMoney += Number(payment.amount)
                 }
 
                 return {
