@@ -111,9 +111,9 @@ function VocationList() {
                   }
                   </div>
                   <div>
-                    <p className="font-black text-sm">{data.name}</p>
+                    <p className="font-black text-sm">{data.name} {data?.customerCode ? '/' : ''}{data?.customerCode}</p>
                     <div className="flex flex-wrap gap-2 mt-3">
-                      {data?.category?.map((category) => {
+                      {data?.categories?.map((category) => {
                         return (
                           <div className="rounded-full py-1 px-3 bg-slate-400">
                             <p className="capitalize text-xs">{category?.category?.name}</p>
