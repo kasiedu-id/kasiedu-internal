@@ -135,7 +135,7 @@ function VocationClassList() {
                         />
                     </div>
                 </div>
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-5 overflow-auto max-h-[65vh]">
                     {
                         classes.map((data) => {
                             return (

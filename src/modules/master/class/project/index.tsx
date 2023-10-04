@@ -70,8 +70,7 @@ function ProjectList() {
                 classId,
                 accountId: ""
             }, null);
-
-            console.log(res);
+            
             const result = res.rows.map((data) => {
                 let gatheredMoney = 0;
 
@@ -227,7 +226,7 @@ function ProjectList() {
                         />
                     </div>
                 </div>
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col overflow-auto max-h-[65vh] gap-5">
                     {
                         projects.map((data) => {
                             return (

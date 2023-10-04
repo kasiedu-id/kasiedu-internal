@@ -100,7 +100,7 @@ function VocationList() {
             />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-2 gap-5 overflow-auto max-h-[65vh]">
           {vocations.map((data) => {
             return (
               <div key={data?.id} className="min-h-[150px] bg-[#07638d] rounded-lg text-white py-3 px-5 mb-5" onClick={() => navigate(`/vocations/${data.id}`)}>
