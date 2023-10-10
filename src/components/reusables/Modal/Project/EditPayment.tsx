@@ -30,7 +30,7 @@ function ProjectPaymentEdit({ open, onClick, id }) {
                 accountClassId: null,
                 method: null,
                 status: 'pending',
-                amount,
+                amount: Number(amount) + 4440,
                 type: null,
                 callback: null,
                 name,
@@ -90,8 +90,6 @@ function ProjectPaymentEdit({ open, onClick, id }) {
             const res = await getProjectDetail({
                 projectId: id
             });
-
-            console.log(res);
 
             setPaymentId('');
             setDeletePermanentOpen(false);
