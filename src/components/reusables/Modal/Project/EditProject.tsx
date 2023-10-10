@@ -14,6 +14,7 @@ function EditProjectModal({
     onAccept,
 }) {
     const [name, setName] = useState("");
+    const [synopsis, setSynopsis] = useState("");
     const [description, setDescription] = useState("");
     const [active, setActive] = useState("");
     const [isExtend, setIsExtend] = useState("");
@@ -24,6 +25,7 @@ function EditProjectModal({
         try {
             await HttpPut(`internal/projects/${projectId}`, {
                 title: name,
+                synopsis,
                 description,
                 isActive: active,
                 extend: isExtend,
@@ -45,8 +47,9 @@ function EditProjectModal({
             setActive(res.isActive);
             setName(res.title);
             setDescription(res.description);
-            // setProjectStart(moment.unix(res.startDate).format());
-            // setProjectClose(moment.unix(res.closeDate).format());
+            setSynopsis(res.synopsis);
+            setProjectStart(res.startDate ? moment.unix(res.startDate).format('YYYY-MM-DD') : '');
+            setProjectClose(res.closeDate ? moment.unix(res.closeDate).format('YYYY-MM-DD') : '');
         } catch (error) {
             toast(error.message)
         }
@@ -88,6 +91,14 @@ function EditProjectModal({
                                 label={"Title"}
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <TextAreaField
+                                label={"Synopsis"}
+                                value={synopsis}
+                                textColor={"black"}
+                                onChange={(e) => setSynopsis(e.target.value)}
                             />
                         </div>
                         <div className="mb-3">

@@ -10,6 +10,7 @@ import moment from "moment";
 
 function ProjectCreateUpdateModal({ open, onClick, id }) {
     const [name, setName] = useState("");
+    const [synopsis, setSynopsis] = useState("");
     const [description, setDescription] = useState("");
     const [projectStart, setProjectStart] = useState("");
     const [projectClose, setProjectClose] = useState("");
@@ -34,6 +35,7 @@ function ProjectCreateUpdateModal({ open, onClick, id }) {
                     startDate: projectStart ? moment(projectStart).valueOf() / 1000 : null,
                     closeDate: projectClose ? moment(projectClose).valueOf() / 1000 : null,
                     title: name,
+                    synopsis,
                     description: description,
                 }, null);
 
@@ -103,7 +105,7 @@ function ProjectCreateUpdateModal({ open, onClick, id }) {
             setAccountList(res.rows.map(data => {
                 return {
                     value: data.account.id,
-                    label: data.account.information.name.toUpperCase()
+                    label: data.account.information?.name.toUpperCase()
                 }
             }));
         } catch (error) {
@@ -113,6 +115,7 @@ function ProjectCreateUpdateModal({ open, onClick, id }) {
 
     function reset() {
         setName("");
+        setSynopsis("");
         setDescription("");
         setProjectStart("");
         setProjectClose("");
@@ -206,6 +209,14 @@ function ProjectCreateUpdateModal({ open, onClick, id }) {
                                     label={"Title"}
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <TextAreaField
+                                    label={"Synopsis"}
+                                    value={synopsis}
+                                    textColor={"black"}
+                                    onChange={(e) => setSynopsis(e.target.value)}
                                 />
                             </div>
                             <div className="mb-3">

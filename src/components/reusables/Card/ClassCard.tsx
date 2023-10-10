@@ -30,7 +30,7 @@ function ClassCard({
             <div className="flex justify-between">
               <div>
                 <p className="font-bold text-xl">{title}</p>
-                <div className="mt-2 flex flex-wrap gap-3">
+                <div className="mt-2 flex flex-wrap gap-3 max-w-[250px] max-h-[150px] overflow-hidden">
                   {categories.map((data: any) => {
                     return (
                       <div

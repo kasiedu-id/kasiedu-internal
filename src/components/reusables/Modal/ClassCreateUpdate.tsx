@@ -118,7 +118,7 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
             setCertificate(res.certificate);
             setKasieduCertificate(res.certificate);
             setClassType(res.classType);
-            setIsPrivate(res.isPrivate);
+            setIsPrivate(String(res.isPrivate));
             setPrice(res?.price);
             setMaxPerson(res.maxPerson);
             setOpenRegis(res.openRegis ? moment.unix(res.openRegis).utc().format('YYYY-MM-DD') : "");
@@ -386,7 +386,10 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                         labelField={"name"}
                                         value={isPrivate}
                                         placeholder="Class Private"
-                                        onChange={(e) => setIsPrivate(e.target.value)}
+                                        onChange={(e) => {
+                                            console.log(e.target.value, typeof e.target.value)
+                                            setIsPrivate(e.target.value)
+                                        }}
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -706,7 +709,7 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                         <div className="flex items-center gap-5 max-w-[300px]">
                                             <p className="font-semibold">{name}</p>
                                             <div className="border rounded-full p-2">
-                                                <p className="text-sm">{isPrivate ? "Private" : "Public"}</p>
+                                                <p className="text-sm">{isPrivate === 'true' ? "Private" : "Public"}</p>
                                             </div>
                                         </div>
                                         <div>
@@ -758,7 +761,7 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                         </div>
                                         <div>
                                             <p className="font-semibold">Class Private</p>
-                                            <p className="text-sm">{isPrivate ? 'Private' : 'Public'}</p>
+                                            <p className="text-sm">{isPrivate === 'true' ? 'Private' : 'Public'}</p>
                                         </div>
                                         <div>
                                             <p className="font-semibold">Class Location</p>

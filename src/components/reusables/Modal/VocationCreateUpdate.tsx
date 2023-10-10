@@ -7,6 +7,7 @@ import { DropdownField } from "../Field/DropdownField";
 import { RadioField } from "../Field/RadioField";
 import Select from "react-select";
 import LoadingModal from "../Loading/Loading";
+import { getCityByProvince, getProvince } from "../../../config/api/services";
 
 function VocationCreateUpdateModal({ open, onClick, id, section }) {
     // const [emailVocation, setEmailVocation] = useState("");
@@ -101,7 +102,7 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
 
     async function fetchProvince() {
         try {
-            let res = await HttpGet(`regions/province`, null);
+            let res = await getProvince();
 
             setProvinces(res);
         } catch (error) {
@@ -111,7 +112,7 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
 
     async function fetchCity({ provinceId }) {
         try {
-            let res = await HttpGet(`regions/city-by-province/${provinceId}`, null);
+            let res = await getCityByProvince({provinceCode: provinceId});
 
             setCities(res);
         } catch (error) {
