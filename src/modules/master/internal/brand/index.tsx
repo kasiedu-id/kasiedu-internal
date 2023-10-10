@@ -138,7 +138,7 @@ function BrandList() {
                 )}
                 <div className="w-3/4" onClick={() => navigate(`/settings/brands/${data.id}`)}>
                   <p className="font-black text-sm">{data.name}</p>
-                  <p>{truncate(data?.description ?? "")}</p>
+                  <p>{truncate(data?.description ?? "", 100)}</p>
                 </div>
                 <div>
                   <BiTrash

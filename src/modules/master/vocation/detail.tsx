@@ -11,6 +11,9 @@ import VerificationModal from "../../../components/reusables/Modal/VerificationM
 import ClassCard from "../../../components/reusables/Card/ClassCard";
 import ActivityCard from "../../../components/reusables/Card/ActivityCard";
 import UploadImageModal from "../../../components/reusables/Modal/UploadImage";
+import Button from "../../../components/reusables/Button/Button";
+import VocationUpdateModal from "../../../components/reusables/Modal/Vocation/UpdateModal";
+import DeleteVocationModal from "../../../components/reusables/Modal/Vocation/DeleteVocation";
 
 function DetailVocation() {
   const [vocation, setVocation] = useState(null);
@@ -23,6 +26,8 @@ function DetailVocation() {
   const [socialMedia, setSocialMedia] = useState([]);
   const [openVerificationModal, setOpenVerificationModal] = useState(false);
   const [openUploadImageModal, setOpenUploadImageModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [file, setFile] = useState("");
   const [type, setType] = useState("");
   const param = useParams();
@@ -67,12 +72,12 @@ function DetailVocation() {
     }
   }
 
-  async function resetPassword({email}){
+  async function resetPassword({ email }) {
     try {
       await HttpPost('internal/auth/reset-password', {
         email
       }, null);
-  
+
       toast('Success reset password!')
     } catch (error) {
       toast(error?.message);
@@ -203,13 +208,33 @@ function DetailVocation() {
             )}
           </div>
         </div>
-        <div className="mt-10 max-w-[250px] mx-auto">
-          <TextButton
-            title={`${vocation?.verified ? "Redo Verification" : "Verification"
-              }`}
-            onClick={() => setOpenVerificationModal(!openVerificationModal)}
-            disable={false}
-          />
+        <div className="flex justify-center items-center gap-5">
+          <div className="mt-5">
+            <TextButton
+              title={`${vocation?.verified ? "Redo Verification" : "Verification"
+                }`}
+              onClick={() => setOpenVerificationModal(!openVerificationModal)}
+              disable={false}
+            />
+          </div>
+          <div className="mt-5">
+            <Button
+              title={"Edit"}
+              onClick={() => setUpdateModal(!updateModal)}
+              disable={false}
+              bgColor="bg-green-600"
+              styles="text-black"
+            />
+          </div>
+          <div className="mt-5">
+            <Button
+              title={"Delete Permanent"}
+              onClick={() => setDeleteModal(!deleteModal)}
+              disable={false}
+              bgColor="bg-red-600"
+              styles="text-white"
+            />
+          </div>
         </div>
         <VerificationModal
           vocationName={vocation?.name}
@@ -221,6 +246,24 @@ function DetailVocation() {
             getVocationDetail()
           }}
           onCancel={() => setOpenVerificationModal(false)}
+        />
+        <VocationUpdateModal
+          open={updateModal}
+          onClick={() => {
+            setUpdateModal(false)
+            getVocationDetail();
+          }}
+          id={param?.id}
+        />
+        <DeleteVocationModal
+          name={vocation?.name}
+          vocationId={param?.id}
+          open={deleteModal}
+          onAccept={() => {
+            setDeleteModal(false)
+            window.location.href = '/vocations/list'
+          }}
+          onCancel={() => setDeleteModal(false)}
         />
         <div className="grid grid-cols-2 my-5">
           <div>
@@ -273,7 +316,7 @@ function DetailVocation() {
               return (
                 <div className="mt-1 mb-2 flex gap-3 items-center">
                   <p className="font-bold my-2 capitalize">{data?.type}</p>
-                  <a href={ !data?.url.match(/^https?:\/\//i) ? `https://${data?.url}` : data?.url} target="_blank" rel="noreferrer" className="text-center border-b-2 border-blue-600 text-blue-600">View</a>
+                  <a href={!data?.url.match(/^https?:\/\//i) ? `https://${data?.url}` : data?.url} target="_blank" rel="noreferrer" className="text-center border-b-2 border-blue-600 text-blue-600">View</a>
                 </div>
               )
             })

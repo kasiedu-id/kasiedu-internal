@@ -47,7 +47,7 @@ function AddParticipantModal({ open, onClick, id }) {
             setData(res.rows.map(data => {
                 return {
                     value: data.account.id,
-                    label: data.account.information.name.toUpperCase()
+                    label: data.account.information?.name.toUpperCase()
                 }
             }));
         } catch (error) {

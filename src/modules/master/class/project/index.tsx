@@ -12,6 +12,10 @@ import AddParticipantModal from "../../../../components/reusables/Modal/Project/
 import ExtendProjectModal from "../../../../components/reusables/Modal/Project/ExtendProject";
 import ActivationProjectModal from "../../../../components/reusables/Modal/Project/ActivateOrDeactivate";
 import EditProjectModal from "../../../../components/reusables/Modal/Project/EditProject";
+import ProjectGalleryEdit from "../../../../components/reusables/Modal/Project/EditGallery";
+import ProjectPaymentEdit from "../../../../components/reusables/Modal/Project/EditPayment";
+import { thousandSeparator } from "../../../../utils/ThousandSeparator";
+import truncate from "../../../../utils/function";
 
 function ProjectList() {
     const [classes, setClasses] = useState([]);
@@ -28,6 +32,8 @@ function ProjectList() {
     const [modalActivationOpen, setModalActivationOpen] = useState(false);
     const [modalEditeOpen, setModalEditeOpen] = useState(false);
     const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
+    const [modalEditGalleryOpen, setModalEditGalleryOpen] = useState(false);
+    const [modalPaymentOpen, setModalPaymentOpen] = useState(false);
     const [modalProjectId, setModalProjectId] = useState("");
     const [modalProjectName, setModalProjectName] = useState("");
     const param = useParams();
@@ -183,6 +189,23 @@ function ProjectList() {
                 id={modalProjectId}
                 projectName={modalProjectName}
             />
+            <ProjectGalleryEdit
+                open={modalEditGalleryOpen}
+                onClick={() => {
+                    setModalEditGalleryOpen(false);
+                    setModalProjectId("");
+                    setModalProjectName("");
+                }}
+                id={modalProjectId}
+            />
+            <ProjectPaymentEdit
+                open={modalPaymentOpen}
+                onClick={() => {
+                    setModalPaymentOpen(false);
+                    setModalProjectId("");
+                }}
+                id={modalProjectId}
+            />
             {/* <BackLayout navigation={"/vocations"} /> */}
             <div className="p-4">
                 <div className="flex gap-5 ml-auto justify-end">
@@ -233,12 +256,12 @@ function ProjectList() {
                                 <div className="grid grid-cols-2 gap-5 rounded bg-[#07638d] text-white py-3 px-5 mb-5">
                                     <div>
                                         <div className="flex gap-5 mb-3">
-                                            <p className="text-2xl font-bold">{data.title}</p>
-                                            <div className="border rounded-full px-3 py-1 text-center">
+                                            <p className="text-2xl font-bold min-w-[350px] max-w-[350px] wrap">{data.title}</p>
+                                            <div className="border h-full rounded-full px-3 py-1 text-center">
                                                 <p className="text-sm capitalize">{data.isActive ? "On going" : "Non Active"}</p>
                                             </div>
                                         </div>
-                                        <p>{data.description}</p>
+                                        <p>{truncate(data.description, 150)}</p>
                                         <div className="grid grid-cols-2 gap-4 my-5">
                                             <div className="my-5">
                                                 <p className="font-bold">Sponsor</p>
@@ -252,17 +275,17 @@ function ProjectList() {
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
                                                 <p className="font-bold">Project Start</p>
-                                                <p>{moment.unix(data.startDate).format("DD MMMM YYYY")}</p>
+                                                <p>{data.startDate ? moment.unix(data.startDate).format("DD MMMM YYYY") : '-'}</p>
                                             </div>
                                             <div>
                                                 <p className="font-bold">Project End</p>
-                                                <p>{moment.unix(data.closeDate).format("DD MMMM YYYY")}</p>
+                                                <p>{data.closeDate ? moment.unix(data.closeDate).format("DD MMMM YYYY") : '-'}</p>
                                             </div>
                                         </div>
                                         <div className="mt-4 flex justify-between items-center">
                                             <div>
                                                 <p className="font-bold">Pengumpulan Dana</p>
-                                                <p>Rp. {data.gatheredMoney} / Rp.{data.totalAmount}</p>
+                                                <p>Rp. {thousandSeparator(String(data.gatheredMoney))} / Rp.{thousandSeparator(String(data.totalAmount))}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -302,7 +325,7 @@ function ProjectList() {
                                             }}
                                             className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
                                         >
-                                            <span>Edit Class</span>
+                                            <span>Edit Project</span>
                                         </button>
                                         <button
                                             onClick={() => {
@@ -324,8 +347,25 @@ function ProjectList() {
                                         >
                                             <span>Activation</span>
                                         </button>
-                                        <div className="h-[46px]"></div>
-                                        <div className="h-[46px]"></div>
+                                        <button
+                                            onClick={() => {
+                                                setModalProjectId(data.id);
+                                                setModalProjectName(data.title)
+                                                setModalEditGalleryOpen(true);
+                                            }}
+                                            className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                        >
+                                            <span>Edit Gallery</span>
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setModalProjectId(data.id);
+                                                setModalPaymentOpen(true);
+                                            }}
+                                            className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                        >
+                                            <span>Payment List</span>
+                                        </button>
                                     </div>
                                 </div>
                             )
