@@ -76,13 +76,15 @@ function ProjectList() {
                 classId,
                 accountId: ""
             }, null);
-            
+
+            console.log(res.rows);
+
             const result = res.rows.map((data) => {
                 let gatheredMoney = 0;
 
                 for (let payment of data.payments) {
-                    if(payment.status === 'paid')
-                    gatheredMoney += Number(payment.amount)
+                    if (payment.status === 'paid')
+                        gatheredMoney += Number(payment.amount)
                 }
 
                 return {
@@ -94,6 +96,20 @@ function ProjectList() {
             setProjects(result);
             setTotalCount(res.count);
             setPage(page)
+        } catch (error) {
+            toast(error.message);
+        }
+    }
+
+    async function recoveryProject({
+        id
+    }) {
+        try {
+            await HttpPost(`internal/projects/recovery/${id}`, {}, null);
+
+            await getProjects({page: 0});
+
+            toast('Success recovery');
         } catch (error) {
             toast(error.message);
         }
@@ -289,84 +305,94 @@ function ProjectList() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4 h-full">
-                                        <button
+                                    {
+                                        data?.deletedAt ? <button
                                             onClick={() => {
-                                                setModalAddParticipantOpen(true);
-                                                setModalProjectId(data.id)
+                                                recoveryProject({id: data.id})
                                             }}
                                             className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
                                         >
-                                            <span>Lihat Peserta</span>
-                                        </button>
-                                        <button
-                                            onClick={null}
-                                            className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
-                                        >
-                                            <span>View Detail</span>
-                                        </button>
-                                        {data.payments > 0 ? null : (
+                                            <span>Recovery</span>
+                                        </button> : <div className="grid grid-cols-2 gap-4 h-full">
                                             <button
                                                 onClick={() => {
-                                                    setModalDeleteOpen(true);
+                                                    setModalAddParticipantOpen(true);
+                                                    setModalProjectId(data.id)
+                                                }}
+                                                className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                            >
+                                                <span>Lihat Peserta</span>
+                                            </button>
+                                            <button
+                                                onClick={null}
+                                                className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                            >
+                                                <span>View Detail</span>
+                                            </button>
+                                            {data.payments > 0 ? null : (
+                                                <button
+                                                    onClick={() => {
+                                                        setModalDeleteOpen(true);
+                                                        setModalProjectId(data.id);
+                                                        setModalProjectName(data.title)
+                                                    }}
+                                                    className="text-white bg-red-500 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                                >
+                                                    <span>Hapus</span>
+                                                </button>
+                                            )}
+                                            <button
+                                                onClick={() => {
                                                     setModalProjectId(data.id);
                                                     setModalProjectName(data.title)
+                                                    setModalEditeOpen(true);
                                                 }}
-                                                className="text-white bg-red-500 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                                className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
                                             >
-                                                <span>Hapus</span>
+                                                <span>Edit Project</span>
                                             </button>
-                                        )}
-                                        <button
-                                            onClick={() => {
-                                                setModalProjectId(data.id);
-                                                setModalProjectName(data.title)
-                                                setModalEditeOpen(true);
-                                            }}
-                                            className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
-                                        >
-                                            <span>Edit Project</span>
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                setModalProjectId(data.id);
-                                                setModalProjectName(data.title)
-                                                setModalExtendOpen(true);
-                                            }}
-                                            className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
-                                        >
-                                            <span>Extend Project</span>
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                setModalProjectId(data.id);
-                                                setModalProjectName(data.title)
-                                                setModalActivationOpen(true);
-                                            }}
-                                            className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
-                                        >
-                                            <span>Activation</span>
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                setModalProjectId(data.id);
-                                                setModalProjectName(data.title)
-                                                setModalEditGalleryOpen(true);
-                                            }}
-                                            className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
-                                        >
-                                            <span>Edit Gallery</span>
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                setModalProjectId(data.id);
-                                                setModalPaymentOpen(true);
-                                            }}
-                                            className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
-                                        >
-                                            <span>Payment List</span>
-                                        </button>
-                                    </div>
+                                            <button
+                                                onClick={() => {
+                                                    setModalProjectId(data.id);
+                                                    setModalProjectName(data.title)
+                                                    setModalExtendOpen(true);
+                                                }}
+                                                className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                            >
+                                                <span>Extend Project</span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setModalProjectId(data.id);
+                                                    setModalProjectName(data.title)
+                                                    setModalActivationOpen(true);
+                                                }}
+                                                className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                            >
+                                                <span>Activation</span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setModalProjectId(data.id);
+                                                    setModalProjectName(data.title)
+                                                    setModalEditGalleryOpen(true);
+                                                }}
+                                                className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                            >
+                                                <span>Edit Gallery</span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setModalProjectId(data.id);
+                                                    setModalPaymentOpen(true);
+                                                }}
+                                                className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+                                            >
+                                                <span>Payment List</span>
+                                            </button>
+                                        </div>
+                                    }
+
                                 </div>
                             )
                         })
