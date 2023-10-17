@@ -102,6 +102,13 @@ function Sidebar() {
                 },
             ],
         },
+        {
+            title: "logout",
+            href: "/",
+            id: 5,
+            collapsible: false,
+            icon: <MdOutlineSettings size={30} className='mr-3' />,
+        },
     ]
 
     return (
