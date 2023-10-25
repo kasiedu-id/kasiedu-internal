@@ -4,6 +4,7 @@ import { HttpGet, HttpPost, HttpPut } from "../../../config/api";
 import { toast } from "react-toastify";
 import { DropdownField } from "../Field/DropdownField";
 import Select from "react-select";
+import LoadingModal from "../Loading/Loading";
 
 function UserCreateUpdateModal({ open, onClick, id, section }) {
     const [email, setEmail] = useState("");
@@ -13,12 +14,15 @@ function UserCreateUpdateModal({ open, onClick, id, section }) {
     const [interest, setInterest] = useState(null);
     const [gender, setGender] = useState("");
     const [role, setRole] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [interests, setInterests] = useState([]);
     const [vocations, setVocations] = useState([]);
 
     async function submit() {
         try {
+            setLoading(true);
+
             if (section !== "update") {
                 if (role === 'vocation') {
                     if (!vocation) throw ({
@@ -51,8 +55,10 @@ function UserCreateUpdateModal({ open, onClick, id, section }) {
                 toast("Success update a user");
             }
 
+            setLoading(false);
             onClick();
         } catch (error) {
+            setLoading(false);
             toast(error?.message);
         }
     }
@@ -298,6 +304,8 @@ function UserCreateUpdateModal({ open, onClick, id, section }) {
                     </div>
                 </div>
             </div>
+
+            <LoadingModal open={loading} />
         </div>
     );
 }
