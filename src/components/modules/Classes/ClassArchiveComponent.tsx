@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { HttpPost } from "../../../config/api";
 import { InputSingleField } from "../../../components/reusables/Field/InputField";
 import TextButton from "../../../components/reusables/Button/TextButton";
 import { useNavigate } from "react-router-dom";
 import ClassCard from "../../../components/reusables/Card/ClassCard";
 import ClassDetailModal from "../../reusables/Modal/Class/ClassDetail";
-import Select from "react-select";
+// import Select from "react-select";
 import { getArchiveClasses } from "../../../config/api/services/classes";
 import { useQuery } from "../../../utils/query";
 import RecoveryClassModal from "../../reusables/Modal/Class/ClassRecovery";
@@ -15,7 +14,7 @@ function ClassArchiveComponent() {
     const [classes, setClasses] = useState([]);
     const [name, setName] = useState("");
     const [code, setCode] = useState("");
-    const [vocation, setVocation] = useState(null);
+    // const [vocation, setVocation] = useState(null);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
     const [totalCount, setTotalCount] = useState(0);
@@ -28,7 +27,7 @@ function ClassArchiveComponent() {
     const [classId, setClassId] = useState("");
     const [className, setClassName] = useState("");
 
-    const [vocations, setVocations] = useState([]);
+    // const [vocations, setVocations] = useState([]);
     // Function
     async function fetchClass() {
         try {
@@ -49,39 +48,39 @@ function ClassArchiveComponent() {
             setLimit(query?.get('limit') || 10)
             setName(query?.get('name') || '')
             setCode(query?.get('code') || '')
-            setVocation(query?.get('vocationId') || '')
+            // setVocation(query?.get('vocationId') || '')
         } catch (error) {
             toast(error.message);
         }
     }
 
-    async function fetchVocation() {
-        try {
-            let res = await HttpPost(`vocations/`, {
-                limit: 20,
-                start: 0,
-                method: 'all',
-                name: '',
-            }, null);
+    // async function fetchVocation() {
+    //     try {
+    //         let res = await HttpPost(`vocations/`, {
+    //             limit: 20,
+    //             start: 0,
+    //             method: 'all',
+    //             name: '',
+    //         }, null);
 
-            setVocations(res.map(data => {
-                return {
-                    value: data.id,
-                    label: data.name.toUpperCase()
-                }
-            }));
-        } catch (error) {
-            toast(error?.message);
-        }
-    }
+    //         setVocations(res.map(data => {
+    //             return {
+    //                 value: data.id,
+    //                 label: data.name.toUpperCase()
+    //             }
+    //         }));
+    //     } catch (error) {
+    //         toast(error?.message);
+    //     }
+    // }
 
-    function handleSelectVocation(data) {
-        setVocation(data);
-    }
+    // function handleSelectVocation(data) {
+    //     setVocation(data);
+    // }
 
-    useEffect(() => {
-        fetchVocation();
-    }, []);
+    // useEffect(() => {
+    //     fetchVocation();
+    // }, []);
 
     useEffect(() => {
         fetchClass();
@@ -107,26 +106,20 @@ function ClassArchiveComponent() {
                 }}
             />
             <div className="p-4">
-                <div className="flex justify-between items-center gap-10 mb-4">
+            <div className="flex justify-between items-center gap-10 mb-4">
                     <div className="grid lg:grid-cols-3 gap-2 mb-4">
                         <InputSingleField required={false} value={name} onChange={(e) => setName(e.target.value)} placeholder={"Class Name"} />
                         <InputSingleField required={false} value={code} onChange={(e) => setCode(e.target.value)} placeholder={"Class Code"} />
-                        <div className="pt-2">
-                            <Select
-                                options={vocations}
-                                placeholder="Select Vocation"
-                                value={vocation}
-                                onChange={handleSelectVocation}
-                                isSearchable={true}
-                                isMulti={false}
-                                className="outline-none"
-                            />
-                        </div>
                     </div>
-                    <div className="pt-2">
+                    <div className="flex gap-3 pt-2">
                         <TextButton
                             title="Search"
-                            onClick={() => navigate(`/classes/archive?page=1&limit=${query?.get('limit') || 20}&name=${name}&code=${code}&vocationId=${vocation?.value}`)}
+                            onClick={() => navigate(`/classes/archive?page=1&limit=${query?.get('limit') || 20}&name=${name}&code=${code}`)}
+                            disable={false}
+                        />
+                        <TextButton
+                            title="Reset"
+                            onClick={() => navigate(`/classes/archive?page=1&limit=${query?.get('limit') || 20}&name=&code=`)}
                             disable={false}
                         />
                     </div>

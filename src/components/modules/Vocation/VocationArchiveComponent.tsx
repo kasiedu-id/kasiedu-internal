@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import VocationCreateUpdateModal from "../../../components/reusables/Modal/VocationCreateUpdate";
 import UploadVocationCsvFile from "../../../components/reusables/Modal/UploadCsvVocation";
 import { useQuery } from "../../../utils/query";
-import { getVocations } from "../../../config/api/services/vocation";
+import { getVocationsArchive } from "../../../config/api/services/vocation";
 import VocationCard from "../../reusables/Card/VocationCard";
 
 export default function VocationArchiveComponent() {
@@ -24,7 +24,7 @@ export default function VocationArchiveComponent() {
     // Function
     async function fetchVocation() {
         try {
-            let res = await getVocations({
+            let res = await getVocationsArchive({
                 page: Number(query?.get('page') || 1),
                 limit: Number(query?.get('limit') || 10),
                 name: query?.get('name') || '',

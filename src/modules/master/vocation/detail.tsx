@@ -14,6 +14,7 @@ import UploadImageModal from "../../../components/reusables/Modal/UploadImage";
 import Button from "../../../components/reusables/Button/Button";
 import VocationUpdateModal from "../../../components/reusables/Modal/Vocation/UpdateModal";
 import DeleteVocationModal from "../../../components/reusables/Modal/Vocation/DeleteVocation";
+import PhotoAvatar from "../../../components/reusables/Avatar/PhotoAvatar";
 
 function DetailVocation() {
   const [vocation, setVocation] = useState(null);
@@ -108,11 +109,7 @@ function DetailVocation() {
           setType("Photo Profil")
         }}>
           {vocation?.photoProfile ? (
-            <img
-              src={`${settings.baseUrl}${vocation?.photoProfile?.replace('public/', "")}`}
-              className="h-[90px] w-[90px] rounded-full object-fill mx-auto"
-              alt={`Profile ${vocation?.name}`}
-            />
+            <PhotoAvatar name={vocation?.photoProfile} middle={true} />
           ) : (
             <NameAvatar name={vocation?.name ?? ""} middle={true} />
           )}

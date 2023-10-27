@@ -9,11 +9,11 @@ const MainLayout = Loadable(lazy(() => import('../components/layout/MainLayout')
 const Login = Loadable(lazy(() => import('../modules/auths/signin')));
 
 // Vocation
-const VocationHomeDashboard = Loadable(lazy(() => import('../modules/master/vocation/home')));
 const VocationList = Loadable(lazy(() => import('../modules/master/vocation')));
 const DetailVocation = Loadable(lazy(() => import('../modules/master/vocation/detail')));
 const VocationClassList = Loadable(lazy(() => import('../modules/master/vocation/class')));
 const VocationEventGallery = Loadable(lazy(() => import('../modules/master/vocation/event')));
+const VocationArchive = Loadable(lazy(() => import('../modules/master/vocation/archive')));
 
 // Master
 const InternalDashboard = Loadable(lazy(() => import('../modules/master/internal')));
@@ -24,7 +24,8 @@ const CategoryList = Loadable(lazy(() => import('../modules/master/internal/cate
 // Class
 const ClassList = Loadable(lazy(() => import('../modules/master/class')));
 const ClassArchive = Loadable(lazy(() => import('../modules/master/class/archive')));
-const ProjectList = Loadable(lazy(() => import('../modules/master/class/project')));
+const ProjectList = Loadable(lazy(() => import('../modules/master/project')));
+const ProjectArchive = Loadable(lazy(() => import('../modules/master/project/archive')));
 
 
 // Account
@@ -50,8 +51,8 @@ const appRoutes = [
         path: 'accounts',
         element: <MainLayout />,
         children: [
-            { path: 'customer', element: <CustomerAccountPage /> },
-            { path: 'internal', element: <InternalAccountPage /> },
+            { path: 'user', element: <CustomerAccountPage /> },
+            { path: 'admin', element: <InternalAccountPage /> },
             { path: 'vocation', element: <VocationAccountPage /> },
         ],
     },
@@ -62,6 +63,10 @@ const appRoutes = [
             {
                 path: '',
                 element: <VocationList />
+            },
+            {
+                path: 'archive',
+                element: <VocationArchive />
             },
             {
                 path: 'event/:id',
@@ -104,6 +109,24 @@ const appRoutes = [
                 path: '', 
                 element: <ProjectList />
             },
+            {
+                path: 'archive', 
+                element: <ProjectArchive />
+            },
+        ]
+    },
+    {
+        path: 'brands',
+        element: <MainLayout />,
+        children: [
+            {
+                path: '', 
+                element: <BrandList />
+            },
+            {
+                path: ':id', 
+                element: <BrandDetail />
+            },
         ]
     },
     {
@@ -114,13 +137,7 @@ const appRoutes = [
                 path: '', element: <InternalDashboard />
             },
             {
-                path: 'brands', element: <BrandList />,
-            },
-            {
-                path: 'brands/:id', element: <BrandDetail />,
-            },
-            {
-                path: 'categories', element: <CategoryList />
+                path: 'category', element: <CategoryList />
             },
         ]
     },

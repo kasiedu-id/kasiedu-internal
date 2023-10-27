@@ -10,6 +10,16 @@ export async function getVocations({ page, limit, name, code, categories, provin
     }
 }
 
+export async function getVocationsArchive({ page, limit, name, code, categories, province, city }: { page: number, limit: number, name: string, code: string, categories: string, province: string, city: string }) {
+    try {
+        let res = await HttpGet(`internal/vocations/archive?limit=${limit}&page=${page}&code=${code}&name=${name}&category=${categories}&province=${province}&city=${city}`, null);
+
+        return res;
+    } catch (error) {
+        throw (error);
+    }
+}
+
 export async function getVocationDetail({ vocationId }) {
     try {
         let res = await HttpGet(`vocations/${vocationId}`, null);
