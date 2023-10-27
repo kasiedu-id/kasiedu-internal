@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import LoadingModal from "./Loading";
 
 const Loader = ({
   color
@@ -88,7 +89,7 @@ const Loader = ({
 
 const Loadable = (Component: any) => (props: any) =>
   (
-    <Suspense fallback={<Loader color={"gray-500"} />}>
+    <Suspense fallback={<LoadingModal open={true} />}>
       <Component {...props} />
     </Suspense>
   );

@@ -1,5 +1,3 @@
-import { Loader } from "../Loading";
-
 interface TextButtonProps {
   title: string | null;
   onClick: any;
@@ -10,14 +8,9 @@ function TextButton({ title, onClick, disable }: TextButtonProps) {
   return (
     <button
       onClick={disable ? null : onClick}
-      disabled={disable}
-      className={`bg-[#07638d] min-w-[100px] w-full min-h-[28px] lg:w-full font-bold p-2 rounded text-center text-white`}
+      className={`w-full text-center cursor-pointer rounded-lg border border-primary bg-primary py-2 px-4 text-white transition hover:bg-opacity-90`}
     >
-      {disable ? (
-        <Loader color={"white"} />
-      ) : (
-        <p className="text-[12px]">{title}</p>
-      )}
+        <p className="text-[14px] text-white">{title}</p>
     </button>
   );
 }

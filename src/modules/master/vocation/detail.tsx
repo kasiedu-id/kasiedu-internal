@@ -261,7 +261,7 @@ function DetailVocation() {
           open={deleteModal}
           onAccept={() => {
             setDeleteModal(false)
-            window.location.href = '/vocations/list'
+            window.location.href = '/vocations?page=1&limit=20'
           }}
           onCancel={() => setDeleteModal(false)}
         />

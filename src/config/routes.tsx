@@ -1,10 +1,9 @@
 import { lazy } from "react";
 import { Loadable } from "../components/reusables/Loading";
-import { Navigate } from "react-router-dom";
 
 // Layout
 const BlankLayout = Loadable(lazy(() => import('../components/reusables/Layout/BlankLayout')));
-const MainLayout = Loadable(lazy(() => import('../components/reusables/Layout/MainLayout')));
+const MainLayout = Loadable(lazy(() => import('../components/layout/MainLayout')));
 
 // Auths
 const Login = Loadable(lazy(() => import('../modules/auths/signin')));
@@ -24,6 +23,7 @@ const CategoryList = Loadable(lazy(() => import('../modules/master/internal/cate
 
 // Class
 const ClassList = Loadable(lazy(() => import('../modules/master/class')));
+const ClassArchive = Loadable(lazy(() => import('../modules/master/class/archive')));
 const ProjectList = Loadable(lazy(() => import('../modules/master/class/project')));
 
 
@@ -61,15 +61,11 @@ const appRoutes = [
         children: [
             {
                 path: '',
-                element: <VocationHomeDashboard />
+                element: <VocationList />
             },
             {
                 path: 'event/:id',
                 element: <VocationEventGallery />
-            },
-            {
-                path: 'list',
-                element: <VocationList />
             },
             {
                 path: ':id',
@@ -91,15 +87,21 @@ const appRoutes = [
                 ]
             },
             {
-                path: 'list', 
+                path: '', 
                 element: <ClassList />
             },
-            // {
-            //     path: '', 
-            //     element: <VocationList />
-            // },
             {
-                path: 'project', 
+                path: 'archive', 
+                element: <ClassArchive />
+            },
+        ]
+    },
+    {
+        path: 'projects',
+        element: <MainLayout />,
+        children: [
+            {
+                path: '', 
                 element: <ProjectList />
             },
         ]

@@ -10,7 +10,7 @@ import ClassCard from "../../../../components/reusables/Card/ClassCard";
 import CategoryClassUpdateModal from "../../../../components/reusables/Modal/Class/UpdateCategory";
 import RequirementUpdateModal from "../../../../components/reusables/Modal/Class/UpdateRequirement";
 import CurriculumUpdateModal from "../../../../components/reusables/Modal/Class/UpdateCurriculum";
-import ClassDetailModal from "../../../../components/reusables/Modal/ClassDetail";
+import ClassDetailModal from "../../../../components/reusables/Modal/Class/ClassDetail";
 import AddStudentModal from "../../../../components/reusables/Modal/Class/AddStudent";
 import AddSponsorModal from "../../../../components/reusables/Modal/Class/AddSponsor";
 

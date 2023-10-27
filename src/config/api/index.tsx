@@ -3,7 +3,7 @@ import ErrorHandler from './error';
 
 const httpClient = Axios.create();
 
-let apiUrl = `${process.env.REACT_APP_BASE_URL}`;
+let apiUrl = `${process.env.REACT_APP_BASE_URL}api/`;
 
 const HttpPost = async (url: string, data: any, tempToken: string | null) => {
   const accessToken = sessionStorage.getItem('accessToken');
