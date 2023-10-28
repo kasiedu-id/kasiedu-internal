@@ -169,13 +169,13 @@ function ProjectArchiveComponent() {
             </div>
             <div className="flex flex-rows justify-between px-4 mt-5">
                 {
-                    page > 1 ? <p className="cursor-pointer font-semibold" onClick={() => navigate(`/projects/archive?page=${(Number(query?.get('page') || 2) - 1) || 1}&limit=${query?.get('limit') || 1}`)}>Previous</p> : <div></div>
+                    page > 1 ? <p className="cursor-pointer font-semibold" onClick={() => navigate(`/projects/archive?page=${(Number(query?.get('page') || 2) - 1) || 1}&limit=${query?.get('limit') || 20}&name=${name}&code=${code}`)}>Previous</p> : <div></div>
                 }
                 {
                     totalCount > 0 ? <p>Page {page} of {Math.ceil(totalCount / limit)}</p> : <div></div>
                 }
                 {
-                    page < totalCount / limit ? <p className="cursor-pointer font-semibold" onClick={() => navigate(`/projects/archive?page=${(Number(query?.get('page') || 1) + 1) || 1}&limit=${query?.get('limit') || 20}`)}>Next</p> : <div></div>
+                    page < totalCount / limit ? <p className="cursor-pointer font-semibold" onClick={() => navigate(`/projects/archive?page=${(Number(query?.get('page') || 1) + 1) || 1}&limit=${query?.get('limit') || 20}&name=${name}&code=${code}`)}>Next</p> : <div></div>
                 }
             </div>
         </div>
