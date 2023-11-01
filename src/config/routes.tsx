@@ -18,6 +18,7 @@ const VocationArchive = Loadable(lazy(() => import('../modules/master/vocation/a
 // Master
 const InternalDashboard = Loadable(lazy(() => import('../modules/master/internal')));
 const BrandList = Loadable(lazy(() => import('../modules/master/internal/brand')));
+const SponsorList = Loadable(lazy(() => import('../modules/master/sponsor')));
 const BrandDetail = Loadable(lazy(() => import('../modules/master/internal/brand/detail')));
 const CategoryList = Loadable(lazy(() => import('../modules/master/internal/category')));
 
@@ -98,6 +99,16 @@ const appRoutes = [
             {
                 path: 'archive', 
                 element: <ClassArchive />
+            },
+        ]
+    },
+    {
+        path: 'sponsors',
+        element: <MainLayout />,
+        children: [
+            {
+                path: '', 
+                element: <SponsorList />
             },
         ]
     },

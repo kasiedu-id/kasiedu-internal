@@ -24,6 +24,57 @@ export async function getProjectDetail({ projectId }) {
     }
 }
 
+export async function createProject({
+    accountId,
+    classId,
+    sponsorId,
+    startDate,
+    closeDate,
+    title,
+    synopsis,
+    description,
+}: any) {
+    try {
+        return HttpPost(`internal/projects/create`, {
+            accountId,
+            classId,
+            sponsorId,
+            startDate,
+            closeDate,
+            title,
+            synopsis,
+            description,
+        }, null);
+    } catch (error) {
+        throw (error);
+    }
+}
+
+export async function updateProject({
+    id,
+    classId,
+    sponsorId,
+    startDate,
+    closeDate,
+    title,
+    synopsis,
+    description,
+}: any) {
+    try {
+        return HttpPut(`internal/projects/${id}`, {
+            classId,
+            sponsorId,
+            startDate,
+            closeDate,
+            title,
+            synopsis,
+            description,
+        }, null);
+    } catch (error) {
+        throw (error);
+    }
+}
+
 export async function updateProjectGallery({ projectId, gallery }) {
     try {
         return HttpPut(`internal/projects/gallery/${projectId}`, {

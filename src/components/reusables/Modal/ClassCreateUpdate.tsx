@@ -315,8 +315,9 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                 <div className="mb-3">
                                     <TextAreaField
                                         label={"Description"}
+                                        labelWeight={""}
                                         value={description}
-                                        textColor={"black"}
+                                        labelColor={""}
                                         onChange={(e) => setDescription(e.target.value)}
                                     />
                                 </div>
@@ -441,9 +442,10 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                             location === 'different' ? <div>
                                                 <div className="mb-3">
                                                     <TextAreaField
+                                                        labelWeight={""}
                                                         label={"Complete Address"}
                                                         value={completeAddress}
-                                                        textColor={"black"}
+                                                        labelColor={""}
                                                         onChange={(e) => setCompleteAddress(e.target.value)}
                                                     />
                                                 </div>
@@ -561,6 +563,9 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                             }, {
                                                 name: "Day",
                                                 value: "day",
+                                            }, {
+                                                name: "Session",
+                                                value: "session",
                                             }]}
                                             keyField={"name"}
                                             valueField={"value"}

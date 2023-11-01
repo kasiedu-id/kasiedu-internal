@@ -1,15 +1,13 @@
 
 import PhotoAvatar from "../Avatar/PhotoAvatar";
 import NameAvatar from "../Avatar/NameAvatar";
-import { useNavigate } from "react-router-dom";
 
 function VocationCard({
-    data
+    data,
+    onClick
 }: any) {
-    const navigate = useNavigate();
-
     return (
-        <div className="min-h-[150px] bg-[#07638d] rounded-lg text-white py-3 px-5 mb-5" onClick={() => navigate(`/vocations/${data.id}`)}>
+        <div className="min-h-[150px] bg-[#07638d] rounded-lg text-white py-3 px-5 mb-5" onClick={onClick}>
             <div className="flex items-center">
                 <div className="min-w-[20%]">
                     {

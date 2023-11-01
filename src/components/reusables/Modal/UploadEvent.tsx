@@ -14,42 +14,42 @@ function UploadEvent({ open, onClick, vocationId, id, section }) {
 
   async function submit() {
     try {
-        const payload = new FormData();
+      const payload = new FormData();
 
-        payload.append('gallery-vocation', image);
-        payload.append('name', name);
-        payload.append('description', description);
-        payload.append('date', eventDate);
-        payload.append('vocationId', vocationId);
+      payload.append('gallery-vocation', image);
+      payload.append('name', name);
+      payload.append('description', description);
+      payload.append('date', eventDate);
+      payload.append('vocationId', vocationId);
 
-        if(section === 'create'){
-            await HttpPost('internal/galleries', payload, null)
-        } else if(section === 'update'){
-            await HttpPut(`internal/galleries/${id}`, payload, null)
-        }
+      if (section === 'create') {
+        await HttpPost('internal/galleries', payload, null)
+      } else if (section === 'update') {
+        await HttpPut(`internal/galleries/${id}`, payload, null)
+      }
 
-        onClick()
+      onClick()
     } catch (error) {
-        toast(error?.message);
+      toast(error?.message);
     }
   }
 
-  async function fetchDetail(){
+  async function fetchDetail() {
     try {
-        let res = await HttpGet(`galleries/${id}`, null);
+      let res = await HttpGet(`galleries/${id}`, null);
 
-        console.log(res);
+      console.log(res);
 
-        setImage(res);
-        setEventDate(res.date);
-        setName(res.name);
-        setDescription(res.description);
+      setImage(res);
+      setEventDate(res.date);
+      setName(res.name);
+      setDescription(res.description);
     } catch (error) {
-        toast(error?.message);
+      toast(error?.message);
     }
   }
 
-  function reset(){
+  function reset() {
     setImage(null);
     setName("");
     setDescription("");
@@ -62,9 +62,8 @@ function UploadEvent({ open, onClick, vocationId, id, section }) {
 
   return (
     <div
-      className={`fixed ${
-        open ? "" : "hidden"
-      } z-40 inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full`}
+      className={`fixed ${open ? "" : "hidden"
+        } z-40 inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full`}
     >
       <div className="relative top-20 mx-auto p-5 border w-1/2 shadow-lg max-w-[550px] rounded-md bg-white">
         <div className="mt-3">
@@ -118,12 +117,13 @@ function UploadEvent({ open, onClick, vocationId, id, section }) {
               />
             </div>
             <div className="mb-2">
-                <TextAreaField
+              <TextAreaField
+                labelWeight={""}
                 label={"Deskripsi"}
                 value={description}
                 onChange={(e: any) => setDescription(e.target.value)}
-                textColor={"black"}
-                />
+                labelColor={""}
+              />
             </div>
             <div className="mb-2">
               <InputSingleField

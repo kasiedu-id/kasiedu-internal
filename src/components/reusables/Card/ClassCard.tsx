@@ -34,7 +34,7 @@ function ClassCard({
         <div>
           <div className="mb-2">
             <div className="flex justify-between">
-              <div>
+              <div className="max-w-[60%]">
                 <p className="font-bold text-xl text-white">{title} / <span className="font-normal">{classCode}</span></p>
                 <div className="mt-2 flex flex-wrap gap-3 max-h-[50px] overflow-hidden">
                   {categories.length > 2 ? total.map((_, i) => {

@@ -8,6 +8,7 @@ import UploadVocationCsvFile from "../../../components/reusables/Modal/UploadCsv
 import { useQuery } from "../../../utils/query";
 import { getVocations } from "../../../config/api/services/vocation";
 import VocationCard from "../../reusables/Card/VocationCard";
+import VocationDetailModal from "../../reusables/Modal/Vocation/DetailVocationModal";
 
 export default function VocationMainComponent() {
     const [vocations, setVocations] = useState([]);
@@ -18,6 +19,12 @@ export default function VocationMainComponent() {
     const [totalCount, setTotalCount] = useState(0);
     const navigate = useNavigate();
     const query: any = useQuery();
+    const [modal, setModal] = useState({
+        isOpen: false,
+        id: '',
+        name: '',
+        method: 'detail'
+    });
     const [modalCreateUpdateOpen, setModalCreateUpdateOpen] = useState(false);
     const [openCsvUpload, setOpenCsvUpload] = useState(false);
 
@@ -46,13 +53,34 @@ export default function VocationMainComponent() {
         }
     }
 
+    function handleModal(data, method) {
+        if(method === 'reset'){
+            setModal({
+                isOpen: false,
+                id: '',
+                name: '',
+                method: 'detail'
+            });
+        } else if (method === 'detail') {
+            setModal({
+                isOpen: true,
+                id: data?.id,
+                name: data?.name,
+                method: 'detail'
+            })
+        }
+    }
+
     useEffect(() => {
         fetchVocation()
     }, [query]);
 
+    
     return (
         <div>
-            {/* <BackLayout navigation={"/vocations"} /> */}
+            {
+                (modal.isOpen && modal.id && modal.method === 'detail') ? <VocationDetailModal open={modal.isOpen} id={modal.id} onClick={() => handleModal(null, 'reset')} /> : null
+            }
             <UploadVocationCsvFile
                 open={openCsvUpload}
                 onCancel={() => setOpenCsvUpload(false)}
@@ -103,7 +131,7 @@ export default function VocationMainComponent() {
                 <div className="grid grid-cols-2 gap-5 overflow-auto max-h-[65vh]">
                     {vocations.map((data) => {
                         return (
-                            <VocationCard key={data?.id} data={data} />
+                            <VocationCard key={data?.id} data={data} onClick={() => handleModal(data, 'detail')} />
                         );
                     })}
                 </div>

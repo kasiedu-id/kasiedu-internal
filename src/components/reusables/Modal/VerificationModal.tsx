@@ -3,6 +3,9 @@ import { InputSingleField } from "../Field/InputField";
 import { DropdownField } from "../Field/DropdownField";
 import { HttpPut } from "../../../config/api";
 import { toast } from "react-toastify";
+import { IconField } from "../Field/IconField";
+import TextButton from "../Button/TextButton";
+import GeneralButton from "../Button/GeneralButton";
 
 function VerificationModal({
   open,
@@ -76,8 +79,7 @@ function VerificationModal({
           {section === "create" ?
             <div>
               <div className="my-2">
-                <InputSingleField
-                  required={false}
+                <IconField
                   placeholder={"Amount Commission"}
                   type={"text"}
                   textColor={null}
@@ -101,28 +103,8 @@ function VerificationModal({
             : null
           }
           <div className="grid grid-cols-2 gap-4">
-            <div
-              className="items-center mt-3 py-3 text-center"
-              onClick={() => verification()}
-            >
-              <div
-                id="ok-btn"
-                className={`cursor-pointer px-4 py-2 bg-[#07638d] text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-[#07638d] focus:outline-none focus:ring-2 focus:ring-[#07638d]`}
-              >
-                <p>Yes</p>
-              </div>
-            </div>
-            <div
-              className="items-center mt-3 py-3 text-center"
-              onClick={onCancel}
-            >
-              <div
-                id="ok-btn"
-                className={`cursor-pointer px-4 py-2 bg-[transparent] text-black text-base font-medium rounded-md w-full shadow-sm hover:bg-[transparent] focus:outline-none focus:ring-2 focus:ring-[transparent]`}
-              >
-                <p>Cancel</p>
-              </div>
-            </div>
+            <TextButton onClick={() => verification()} title="Yes" disable={false} />
+            <GeneralButton onClick={onCancel} title="Cancel" bgColor="bg-white" textColor={"text-black"} icon={null} disable={false} />
           </div>
         </div>
       </div>

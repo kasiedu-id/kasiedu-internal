@@ -53,7 +53,8 @@ function ClassMainComponent() {
                 code: query?.get('code') || '',
                 categories: '',
                 province: '',
-                city: ''
+                city: '',
+                date: '',
             });
 
             setClasses(res.rows);

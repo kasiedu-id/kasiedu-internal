@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { getProjects } from "../../../config/api/services/projects";
 import { useQuery } from "../../../utils/query";
-import ProjectCreateUpdateModal from "../../reusables/Modal/ProjectCreateUpdate";
+import ProjectCreateUpdateModal from "../../reusables/Modal/Project/ProjectCreateUpdate";
 import AddParticipantModal from "../../reusables/Modal/Project/AddParticipant";
 import ExtendProjectModal from "../../reusables/Modal/Project/ExtendProject";
 import ActivationProjectModal from "../../reusables/Modal/Project/ActivateOrDeactivate";
@@ -26,6 +26,12 @@ function ProjectMainComponent() {
     const [totalCount, setTotalCount] = useState(0);
     const navigate = useNavigate();
     const query: any = useQuery();
+    const [modal, setModal] = useState({
+        isOpen: false,
+        id: '',
+        name: '',
+        method: 'detail'
+    });
 
     const [modalCreateUpdateOpen, setModalCreateUpdateOpen] = useState(false);
     const [modalAddParticipantOpen, setModalAddParticipantOpen] = useState(false);
@@ -74,27 +80,63 @@ function ProjectMainComponent() {
         }
     }
 
+    function handleModal(data, method: string) {
+        if (method === 'Reset') {
+            setModal({
+                isOpen: false,
+                id: '',
+                name: '',
+                method: 'Detail'
+            });
+
+            fetchProject();
+        } else if (method === 'Create') {
+            setModal({
+                isOpen: true,
+                id: '',
+                name: '',
+                method: 'Create'
+            })
+        } else if (method === 'Update') {
+            setModal({
+                isOpen: true,
+                id: data?.id,
+                name: data?.name,
+                method: 'Update'
+            })
+        } else if (method === 'Close') {
+            setModal({
+                isOpen: false,
+                id: '',
+                name: '',
+                method: 'Detail'
+            })
+        } else {
+            setModal({
+                isOpen: true,
+                id: data?.id,
+                name: data?.name,
+                method
+            })
+        }
+    }
+
     useEffect(() => {
         fetchProject();
     }, [query]);
 
     return (
         <div>
-            <ProjectCreateUpdateModal
-                open={modalCreateUpdateOpen}
-                onClick={() => {
-                    navigate(`/projects?page=1&limit=${query?.get('limit') || 20}`);
-                    setModalCreateUpdateOpen(false)
-                }}
-                id={null}
-            />
+            {
+                ((modal.isOpen && modal.method === 'Create') || (modal.isOpen && modal.method === 'Update')) ? <ProjectCreateUpdateModal open={modal.isOpen} id={modal.id} onClose={() => handleModal(null, 'Close')} onAccept={() => handleModal(null, 'Reset')} /> : null
+            }
             <AddParticipantModal
                 open={modalAddParticipantOpen}
                 id={modalProjectId}
                 onClick={() => {
                     setModalProjectId("");
                     setModalAddParticipantOpen(false);
-                    navigate(`/projects?page=1&limit=${query?.get('limit') || 20}`);
+                    navigate(`/projects?page=1&limit=${query?.get('limit') || 20}&update-user=success`);
                 }}
             />
             <ExtendProjectModal
@@ -128,22 +170,6 @@ function ProjectMainComponent() {
                     navigate(`/projects?page=1&limit=${query?.get('limit') || 20}&activated=success`);
                 }}
                 id={modalProjectId}
-                projectName={modalProjectName}
-            />
-            <EditProjectModal
-                open={modalEditeOpen}
-                onAccept={() => {
-                    navigate(`/projects?page=1&limit=${query?.get('limit') || 20}&edit=success`);
-                    setModalEditeOpen(false);
-                    setModalProjectId("");
-                    setModalProjectName("");
-                }}
-                onCancel={() => {
-                    setModalEditeOpen(false);
-                    setModalProjectId("");
-                    setModalProjectName("");
-                }}
-                projectId={modalProjectId}
                 projectName={modalProjectName}
             />
             <DeleteProjectModal
@@ -186,9 +212,7 @@ function ProjectMainComponent() {
                         <TextButton
                             title="Add"
                             disable={false}
-                            onClick={() => {
-                                setModalCreateUpdateOpen(true)
-                            }}
+                            onClick={() => handleModal(null, 'Create')}
                         />
                     </div>
                 </div>
@@ -279,11 +303,7 @@ function ProjectMainComponent() {
                                             </button>
                                         )}
                                         <button
-                                            onClick={() => {
-                                                setModalProjectId(data.id);
-                                                setModalProjectName(data.title)
-                                                setModalEditeOpen(true);
-                                            }}
+                                            onClick={() => handleModal(data, 'Update')}
                                             className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
                                         >
                                             <span>Edit Project</span>

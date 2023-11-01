@@ -1,56 +1,56 @@
 export const DropdownField = ({
-  required,
   label,
   value,
+  type,
   valueField,
   labelField,
   keyField,
   placeholder,
   collectionList,
   onChange,
-  colorLabel = "black"
+  labelColor,
+  labelWeight,
 }: any) => {
+
   return (
-    <div className="relative">
-      <label
-        className={`block tracking-wide text-${colorLabel} text-sm font-semibold mb-2`}
-        htmlFor={`input-${label.replace(/ /g, "-")}`}
-      >
+    <div className="mb-4">
+      <label className={`mb-2.5 block ${labelWeight ?? 'font-medium'}  ${labelColor ?? 'text-black'} dark:text-white`}>
         {label}
       </label>
-      <select
-        required={required}
-        className={`capitalize block appearance-none w-full bg-gray-200 border border-gray-200 ${
-          value ? "text-gray-700" : "text-gray-400"
-        } py-2 px-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
-        id={`input-${label.replace(/ /g, "-")}`}
-        defaultValue={value}
-        onChange={onChange}
-        value={value}
-      >
-        <option className="capitalize text-gray-700 text-xs" disabled selected value={""}>
-          {placeholder}
-        </option>
-        {collectionList.map((data : any) => {
-          return (
-            <option
-              className="capitalize text-xs"
-              key={data[keyField]}
-              value={data[valueField]}
-            >
-              {data[labelField]}
-            </option>
-          );
-        })}
-      </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 mt-[25px] text-gray-700">
-        <svg
-          className="fill-current h-4 w-4"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
+      <div className="relative">
+        <select
+          className={`w-full capitalize rounded-lg border appearance-none border-stroke ${value ? "text-gray-700" : "text-gray-400"} bg-transparent py-4 pl-3 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
+          id={`input-${label.replace(/ /g, "-")}`}
+          defaultValue={value}
+          onChange={onChange}
+          value={value}
         >
-          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-        </svg>
+          <option className="capitalize text-xs" disabled selected value={""}>
+            {placeholder}
+          </option>
+          {collectionList.map((data: any) => {
+            return (
+              <option
+                className="capitalize text-xs"
+                key={data[keyField]}
+                value={data[valueField]}
+              >
+                {data[labelField]}
+              </option>
+            );
+          })}
+        </select>
+
+
+        <span className="absolute right-5 top-5">
+          <svg
+            className="fill-current h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+          </svg>
+        </span>
       </div>
     </div>
   );

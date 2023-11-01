@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { InputSingleField } from "../../Field/InputField";
 import { DropdownField } from "../../Field/DropdownField";
 import { addVocationSocmed, deleteVocationSocmed, getVocationSocmed } from "../../../../config/api/services";
 import { toast } from "react-toastify";
@@ -7,6 +6,7 @@ import TextButton from "../../Button/TextButton";
 import {BsTrash} from 'react-icons/bs'
 import BaseModal from "../BaseModal";
 import Button from "../../Button/Button";
+import { IconField } from "../../Field/IconField";
 
 function UpdateSocMed({ vocationId, tab }) {
     // Detail
@@ -74,10 +74,10 @@ function UpdateSocMed({ vocationId, tab }) {
         <div className={`py-5 max-h-[85vh] overflow-auto ${tab === "social media" ? "block" : "hidden"}`}>
             <div className="w-full mb-10">
                 <div className="mb-3">
-                    <InputSingleField
+                    <IconField
                         label={"Website / Social Media"}
                         value={url}
-                        textColor={"black"}
+                        labelColor={""}
                         onChange={(e) => setUrl(e.target.value)}
                     />
                 </div>

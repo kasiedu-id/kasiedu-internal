@@ -1,9 +1,9 @@
 import { HttpDelete, HttpGet, HttpPost } from "..";
 
 
-export async function getClasses({ vocationId, page, limit, name, code, categories, province, city }: { vocationId: string, page: number, limit: number, name: string, code: string, categories: string, province: string, city: string }) {
+export async function getClasses({ vocationId, page, limit, name, code, categories, province, city, date }: { vocationId: string, page: number, limit: number, name: string, code: string, categories: string, province: string, city: string, date: string }) {
     try {
-        let res = await HttpGet(`internal/classes?vocationId=${vocationId}&code=${code}&limit=${limit}&page=${page}&name=${name}&category=${categories}&province=${province}&city=${city}`, null);
+        let res = await HttpGet(`internal/classes?vocationId=${vocationId}&code=${code}&limit=${limit}&page=${page}&name=${name}&category=${categories}&province=${province}&city=${city}&date=${date}`, null);
 
         return res;
     } catch (error) {
