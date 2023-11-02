@@ -11,11 +11,13 @@ import GeneralButton from "../../Button/GeneralButton";
 import { getClasses } from "../../../../config/api/services/classes";
 import { getSponsors } from "../../../../config/api/services/sponsor";
 import { createProject, getProjectDetail, updateProject } from "../../../../config/api/services/projects";
+import LoadingModal from "../../Loading/Loading";
 
 function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
     const [name, setName] = useState("");
     const [synopsis, setSynopsis] = useState("");
     const [description, setDescription] = useState("");
+    const [linkYoutube, setLinkYoutube] = useState("");
     const [projectStart, setProjectStart] = useState("");
     const [projectClose, setProjectClose] = useState("");
     const [sponsor, setSponsor] = useState(null);
@@ -41,6 +43,7 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
                     closeDate: projectClose ? moment(projectClose).valueOf() / 1000 : null,
                     title: name,
                     synopsis,
+                    linkYoutube: linkYoutube,
                     description: description,
                 });
 
@@ -54,6 +57,7 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
                     closeDate: projectClose ? moment(projectClose).valueOf() / 1000 : null,
                     title: name,
                     synopsis,
+                    linkYoutube: linkYoutube,
                     description: description,
                 });
 
@@ -109,6 +113,7 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
             setSynopsis(res.synopsis);
             setProjectStart(res.startDate ? moment.unix(res.startDate).format('YYYY-MM-DD') : '');
             setProjectClose(res.closeDate ? moment.unix(res.closeDate).format('YYYY-MM-DD') : '');
+            setLinkYoutube(res.linkYoutube);
             setVocationClass({
                 value: res.class.id,
                 label: res.class.name
@@ -207,6 +212,7 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
     }, [id]);
 
     return (
+        <>
         <SidebarModal sidebarOpen={open} setSidebarOpen={onClose} label={id ? 'Update Project' : 'Create Project'}>
             <div className="mt-3">
                 <div className="mb-4 text-black">
@@ -265,6 +271,16 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
                                 value={description}
                                 labelColor={""}
                                 onChange={(e) => setDescription(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <TextAreaField
+                                labelWeight={""}
+                                label={"Link Youtube"}
+                                value={linkYoutube}
+                                labelColor={""}
+                                onChange={(e) => setLinkYoutube(e.target.value)}
+                                notes={"* Jika ada beberapa link, pisahkan dengan tanda ;"}
                             />
                         </div>
                         <div className="mb-3">
@@ -369,6 +385,9 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
                 />
             </div>
         </SidebarModal>
+
+        <LoadingModal open={loading} />
+        </>
     );
 }
 

@@ -30,6 +30,7 @@ export async function createProject({
     sponsorId,
     startDate,
     closeDate,
+    linkYoutube,
     title,
     synopsis,
     description,
@@ -42,6 +43,7 @@ export async function createProject({
             startDate,
             closeDate,
             title,
+            linkYoutube,
             synopsis,
             description,
         }, null);
@@ -57,6 +59,7 @@ export async function updateProject({
     startDate,
     closeDate,
     title,
+    linkYoutube,
     synopsis,
     description,
 }: any) {
@@ -67,6 +70,7 @@ export async function updateProject({
             startDate,
             closeDate,
             title,
+            linkYoutube,
             synopsis,
             description,
         }, null);

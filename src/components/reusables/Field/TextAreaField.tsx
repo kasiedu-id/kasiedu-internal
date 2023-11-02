@@ -5,8 +5,9 @@ export const TextAreaField = ({
   value,
   onChange,
   labelWeight,
-  labelColor
-}) => {
+  labelColor,
+  notes
+}: any) => {
   return (
     <div className="mb-4">
       <label className={`mb-2.5 block ${labelWeight ?? 'font-medium'}  ${labelColor ?? 'text-black'} dark:text-white`}>
@@ -20,6 +21,7 @@ export const TextAreaField = ({
         onChange={onChange}
         value={value}
       />
+      <p className="text-gray-500 text-xs">{notes}</p>
     </div>
   );
 };
