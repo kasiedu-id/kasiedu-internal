@@ -280,7 +280,8 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
                                 value={linkYoutube}
                                 labelColor={""}
                                 onChange={(e) => setLinkYoutube(e.target.value)}
-                                notes={"* Jika ada beberapa link, pisahkan dengan tanda ;"}
+                                placeholder={"https://www.youtube.com/watch?v=K5qKFEODRF8"}
+                                notes={"* Jika ada beberapa link, pisahkan dengan tanda ; dan copy url seperti https://www.youtube.com/watch?v=K5qKFEODRF8"}
                             />
                         </div>
                         <div className="mb-3">

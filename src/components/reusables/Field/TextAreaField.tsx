@@ -6,7 +6,8 @@ export const TextAreaField = ({
   onChange,
   labelWeight,
   labelColor,
-  notes
+  notes,
+  placeholder,
 }: any) => {
   return (
     <div className="mb-4">
@@ -20,6 +21,7 @@ export const TextAreaField = ({
         cols={50}
         onChange={onChange}
         value={value}
+        placeholder={placeholder}
       />
       <p className="text-gray-500 text-xs">{notes}</p>
     </div>
