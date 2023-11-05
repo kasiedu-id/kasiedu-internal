@@ -20,6 +20,7 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
     const [linkYoutube, setLinkYoutube] = useState("");
     const [projectStart, setProjectStart] = useState("");
     const [projectClose, setProjectClose] = useState("");
+    const [amountParticipant, setAmountParticipant] = useState(0);
     const [sponsor, setSponsor] = useState(null);
     const [account, setAccount] = useState(null);
     const [vocationClass, setVocationClass] = useState(null);
@@ -43,6 +44,7 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
                     closeDate: projectClose ? moment(projectClose).valueOf() / 1000 : null,
                     title: name,
                     synopsis,
+                    amountParticipant,
                     linkYoutube: linkYoutube,
                     description: description,
                 });
@@ -57,6 +59,7 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
                     closeDate: projectClose ? moment(projectClose).valueOf() / 1000 : null,
                     title: name,
                     synopsis,
+                    amountParticipant,
                     linkYoutube: linkYoutube,
                     description: description,
                 });
@@ -124,6 +127,7 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
                     label: res.sponsor.name
                 });
             }
+            setAmountParticipant(res.totalAmount / res.class.price);
         } catch (error) {
             toast(error.message)
         } finally {
@@ -302,6 +306,16 @@ function ProjectCreateUpdateModal({ open, onClose, onAccept, id }) {
                                 label={"Project Close"}
                                 value={projectClose}
                                 onChange={(e) => setProjectClose(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <IconField
+                                placeholder={"Amount of Participant"}
+                                type={"number"}
+                                labelColor={""}
+                                label={"Amount Participant"}
+                                value={amountParticipant}
+                                onChange={(e) => setAmountParticipant(e.target.value)}
                             />
                         </div>
                     </div>

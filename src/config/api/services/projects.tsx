@@ -34,6 +34,7 @@ export async function createProject({
     title,
     synopsis,
     description,
+    amountParticipant
 }: any) {
     try {
         return HttpPost(`internal/projects/create`, {
@@ -46,6 +47,7 @@ export async function createProject({
             linkYoutube,
             synopsis,
             description,
+            amountParticipant
         }, null);
     } catch (error) {
         throw (error);
@@ -62,6 +64,7 @@ export async function updateProject({
     linkYoutube,
     synopsis,
     description,
+    amountParticipant
 }: any) {
     try {
         return HttpPut(`internal/projects/${id}`, {
@@ -73,6 +76,7 @@ export async function updateProject({
             linkYoutube,
             synopsis,
             description,
+            amountParticipant
         }, null);
     } catch (error) {
         throw (error);
