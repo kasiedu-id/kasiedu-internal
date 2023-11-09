@@ -1,4 +1,5 @@
 import moment from "moment";
+import { thousandSeparator } from "../../../utils/ThousandSeparator";
 
 function ClassCard({
   categories,
@@ -21,23 +22,45 @@ function ClassCard({
   editClassClick,
   detailClick,
   deleteClick,
+  classCode,
+  deletedAt,
+  recoveryClick,
 }: any) {
+  let total = Array(3).fill(0);
+
   return (
     <div className="bg-[#07638d] p-4 text-white rounded-xl w-full">
-      <div className={`${editMode ? "grid grid-cols-2 gap-10" : ""} justify-between items-center`}>
+      <div className={`grid grid-cols-2 gap-10 justify-between items-center`}>
         <div>
           <div className="mb-2">
             <div className="flex justify-between">
-              <div>
-                <p className="font-bold text-xl">{title}</p>
-                <div className="mt-2 flex flex-wrap gap-3 max-w-[250px] max-h-[150px] overflow-hidden">
-                  {categories.map((data: any) => {
+              <div className="max-w-[60%]">
+                <p className="font-bold text-xl text-white">{title} / <span className="font-normal">{classCode}</span></p>
+                <div className="mt-2 flex flex-wrap gap-3 max-h-[50px] overflow-hidden">
+                  {categories.length > 2 ? total.map((_, i) => {
+                    if (i === 2) return (
+                      <div
+                        className="rounded-full py-1 px-3 bg-gray-400 capitalize"
+                        key={categories[i].id}
+                      >
+                        <p className="italic text-white text-center text-sm">+{categories.length - 2}</p>
+                      </div>
+                    )
                     return (
                       <div
-                        className="rounded-full p-2 bg-gray-400 capitalize"
+                        className="rounded-full py-1 px-3 bg-gray-400 capitalize"
+                        key={categories[i].id}
+                      >
+                        <p className="italic text-white text-center text-sm">{categories[i]?.category.name}</p>
+                      </div>
+                    )
+                  }) : categories.map((data: any) => {
+                    return (
+                      <div
+                        className="rounded-full py-1 px-2 bg-gray-400 capitalize"
                         key={data.id}
                       >
-                        <p className="italic text-white text-center">{data?.category.name}</p>
+                        <p className="italic text-white text-center text-sm">{data?.category.name}</p>
                       </div>
                     );
                   })}
@@ -45,10 +68,10 @@ function ClassCard({
               </div>
               <div className="">
                 <div className="border rounded-full p-2 text-center">
-                  <p className="text-sm">{isPrivate ? "Private" : "Public"}</p>
+                  <p className="text-sm text-white">{isPrivate ? "Private" : "Public"}</p>
                 </div>
                 <div className="mt-3">
-                  <p className="font-semibold text-white">Rp. {price}</p>
+                  <p className="font-semibold text-white">Rp. {thousandSeparator(String(price))}</p>
                 </div>
               </div>
             </div>
@@ -57,40 +80,40 @@ function ClassCard({
             {/* <div className="flex"> */}
             <div>
               <div>
-                <p className="font-bold">Registrasi Dimulai</p>
-                <p>{openRegis ? moment.unix(openRegis).format("DD-MM-YYYY") : "N/A"}</p>
+                <p className="font-bold text-white">Registrasi Dimulai</p>
+                <p className="text-white">{openRegis ? moment.unix(openRegis).format("DD-MM-YYYY") : "N/A"}</p>
               </div>
             </div>
             <div>
               <div>
-                <p className="font-bold">Registrasi Ditutup</p>
-                <p>{closeRegis ? moment.unix(closeRegis).format("DD-MM-YYYY") : "N/A"}</p>
+                <p className="font-bold text-white">Registrasi Ditutup</p>
+                <p className="text-white">{closeRegis ? moment.unix(closeRegis).format("DD-MM-YYYY") : "N/A"}</p>
               </div>
             </div>
             <div>
               <div>
-                <p className="font-bold">Kelas Dimulai</p>
-                <p>{startClass ? moment.unix(startClass).format("DD-MM-YYYY") : "N/A"}</p>
+                <p className="font-bold text-white">Kelas Dimulai</p>
+                <p className="text-white">{startClass ? moment.unix(startClass).format("DD-MM-YYYY") : "N/A"}</p>
               </div>
             </div>
           </div>
           <div className="flex mt-5 gap-10 justify-between">
             <div>
               <div className="mt-3">
-                <p className="font-bold">Total Peserta</p>
-                <p>{totalStudent} / {maxStudent}</p>
+                <p className="font-bold text-white">Total Peserta</p>
+                <p className="text-white">{totalStudent} / {maxStudent}</p>
               </div>
             </div>
             <div>
               <div className="mt-3">
-                <p className="font-bold">Durasi Belajar</p>
-                <p>{duration ?? "N/A"}</p>
+                <p className="font-bold text-white">Durasi Belajar</p>
+                <p className="text-white">{duration ?? "N/A"}</p>
               </div>
             </div>
             <div>
               <div className="mt-3">
-                <p className="font-bold">Crowd Project</p>
-                <p>{crowdfunding ?? "N/A"}</p>
+                <p className="font-bold text-white">Crowd Project</p>
+                <p className="text-white">{crowdfunding ?? "N/A"}</p>
               </div>
             </div>
           </div>
@@ -154,7 +177,22 @@ function ClassCard({
               {/* <DeleteOutlinedIcon sx={{ marginRight: "5px" }} />  */}
               <span>Edit Category</span>
             </button>
-          </div> : null
+          </div> : <div className="grid grid-cols-2 gap-1 justify-between items-center">
+            <button
+              onClick={detailClick}
+              className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+            >
+              {/* <InfoIcon sx={{ marginRight: "5px" }} />  */}
+              <span>View Detail</span>
+            </button>
+            <button
+              onClick={recoveryClick}
+              className="text-white bg-green-400 font-bold px-4 rounded h-[46px] inline-flex items-center"
+            >
+              {/* <GroupsOutlinedIcon sx={{ marginRight: "10px" }} /> */}
+              <span>Recovery</span>
+            </button>
+          </div>
         }
       </div>
     </div>

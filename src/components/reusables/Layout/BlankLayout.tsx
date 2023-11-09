@@ -1,8 +1,10 @@
 import { Outlet } from "react-router-dom";
 
 const BlankLayout = () => (
-  <div className={`max-w-[1440px] mx-auto bg-gradient-to-tl from-[#ffcd56] to-[#07638d] min-h-screen text-white`}>
-    <Outlet />
+  <div className="bg-gradient-to-tl from-[#ffcd56] to-[#07638d] p-[50px] h-[100vh] flex items-center justify-center">
+    <div className="border bg-white rounded w-full lg:max-w-[1440px]">
+      <Outlet />
+    </div>
   </div>
 );
 

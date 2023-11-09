@@ -95,17 +95,19 @@ function EditProjectModal({
                         </div>
                         <div className="mb-3">
                             <TextAreaField
+                                labelWeight={""}
                                 label={"Synopsis"}
                                 value={synopsis}
-                                textColor={"black"}
+                                labelColor={""}
                                 onChange={(e) => setSynopsis(e.target.value)}
                             />
                         </div>
                         <div className="mb-3">
                             <TextAreaField
+                                labelWeight={""}
                                 label={"Description"}
                                 value={description}
-                                textColor={"black"}
+                                labelColor={""}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>

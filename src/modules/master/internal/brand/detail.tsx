@@ -64,7 +64,7 @@ function BrandDetail() {
         </div>
         <div className="my-3">
           <div className="flex justify-center">
-            <p className="text-center font-bold mr-2">{brand?.name}</p>
+            <p className="text-center font-bold mr-2 text-white">{brand?.name}</p>
             <BiEdit
               color="green"
               size={15}
@@ -82,12 +82,12 @@ function BrandDetail() {
           </div>
         </div>
         <div>
-          <p className="font-[300] text-sm">{brand?.description}</p>
+          <p className="font-[300] text-sm text-white">{brand?.description}</p>
         </div>
         <div className="my-3">
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-sm font-bold">Sponsor Activity</p>
+              <p className="text-sm font-bold text-white">Sponsor Activity</p>
             </div>
             <div>
               <p className="text-xs font-bold text-[blue]">Show All</p>

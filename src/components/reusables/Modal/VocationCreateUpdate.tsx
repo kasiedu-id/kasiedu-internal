@@ -112,7 +112,7 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
 
     async function fetchCity({ provinceId }) {
         try {
-            let res = await getCityByProvince({provinceCode: provinceId});
+            let res = await getCityByProvince({ provinceCode: provinceId });
 
             setCities(res);
         } catch (error) {
@@ -200,9 +200,10 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                         </div>
                         <div className="mb-3">
                             <TextAreaField
+                                labelWeight={""}
                                 label={"Description"}
                                 value={description}
-                                textColor={"black"}
+                                labelColor={""}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
@@ -248,9 +249,10 @@ function VocationCreateUpdateModal({ open, onClick, id, section }) {
                         </div> */}
                         <div className="mb-3">
                             <TextAreaField
+                                labelWeight={""}
                                 label={"Complete Address"}
                                 value={completeAddress}
-                                textColor={"black"}
+                                labelColor={""}
                                 onChange={(e) => setCompleteAddress(e.target.value)}
                             />
                         </div>

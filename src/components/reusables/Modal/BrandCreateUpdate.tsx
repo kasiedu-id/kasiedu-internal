@@ -128,9 +128,10 @@ function BrandCreateUpdateModal({ open, onClick, id, section }) {
             </div>
             <div className="mb-2">
               <TextAreaField
+                labelWeight={""}
                 label={"Description"}
                 value={description}
-                textColor={"black"}
+                labelColor={""}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>

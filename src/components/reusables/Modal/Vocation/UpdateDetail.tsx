@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import TextButton from "../../Button/TextButton";
 import BaseModal from "../BaseModal";
 import Button from "../../Button/Button";
+import { IconField } from "../../Field/IconField";
 
 function UpdateDetail({ onModified, vocationId, popup, moveTab, tab }) {
     // Detail
@@ -102,11 +103,11 @@ function UpdateDetail({ onModified, vocationId, popup, moveTab, tab }) {
     return (
         <div className={`py-5 max-h-[85vh] overflow-auto ${tab === "detail" ? "block" : "hidden"}`}>
             <div className="mb-3">
-                <InputSingleField
+                <IconField
                     required={false}
                     placeholder={"Top One"}
                     type={"text"}
-                    textColor={"black"}
+                    labelColor={""}
                     label={"Name"}
                     value={name}
                     onChange={(e) => {
@@ -117,9 +118,10 @@ function UpdateDetail({ onModified, vocationId, popup, moveTab, tab }) {
             </div>
             <div className="mb-3">
                 <TextAreaField
+                    labelWeight={""}
                     label={"Description"}
                     value={description}
-                    textColor={"black"}
+                    labelColor={""}
                     onChange={(e) => {
                         onModified(true);
                         setDescription(e.target.value)
@@ -128,9 +130,10 @@ function UpdateDetail({ onModified, vocationId, popup, moveTab, tab }) {
             </div>
             <div className="mb-3">
                 <TextAreaField
+                    labelWeight={""}
                     label={"Complete Address"}
                     value={completeAddress}
-                    textColor={"black"}
+                    labelColor={""}
                     onChange={(e) => {
                         onModified(true);
                         setCompleteAddress(e.target.value)
@@ -170,10 +173,10 @@ function UpdateDetail({ onModified, vocationId, popup, moveTab, tab }) {
                 </div>
             </div>
             <div className="mb-3">
-                <InputSingleField
+                <IconField
                     label={"Name PIC"}
                     value={cpName}
-                    textColor={"black"}
+                    labelColor={""}
                     onChange={(e) => {
                         setCpName(e.target.value)
                         onModified(true);
@@ -181,10 +184,10 @@ function UpdateDetail({ onModified, vocationId, popup, moveTab, tab }) {
                 />
             </div>
             <div className="mb-3">
-                <InputSingleField
+                <IconField
                     label={"Email PIC"}
                     value={cpEmail}
-                    textColor={"black"}
+                    labelColor={"black"}
                     onChange={(e) => {
                         onModified(true);
                         setCpEmail(e.target.value)
@@ -193,10 +196,10 @@ function UpdateDetail({ onModified, vocationId, popup, moveTab, tab }) {
                 <p className="text-gray-400 text-xs">*Email PIC ini tidak berhubungan dengan email account</p>
             </div>
             <div className="mb-5">
-                <InputSingleField
+                <IconField
                     label={"Phone PIC"}
                     value={cpPhone}
-                    textColor={"black"}
+                    labelColor={"black"}
                     onChange={(e) => {
                         onModified(true);
                         setCpPhone(e.target.value)

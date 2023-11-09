@@ -1,30 +1,32 @@
 import { lazy } from "react";
 import { Loadable } from "../components/reusables/Loading";
-import { Navigate } from "react-router-dom";
 
 // Layout
 const BlankLayout = Loadable(lazy(() => import('../components/reusables/Layout/BlankLayout')));
-const MainLayout = Loadable(lazy(() => import('../components/reusables/Layout/MainLayout')));
+const MainLayout = Loadable(lazy(() => import('../components/layout/MainLayout')));
 
 // Auths
 const Login = Loadable(lazy(() => import('../modules/auths/signin')));
 
 // Vocation
-const VocationHomeDashboard = Loadable(lazy(() => import('../modules/master/vocation/home')));
 const VocationList = Loadable(lazy(() => import('../modules/master/vocation')));
 const DetailVocation = Loadable(lazy(() => import('../modules/master/vocation/detail')));
 const VocationClassList = Loadable(lazy(() => import('../modules/master/vocation/class')));
 const VocationEventGallery = Loadable(lazy(() => import('../modules/master/vocation/event')));
+const VocationArchive = Loadable(lazy(() => import('../modules/master/vocation/archive')));
 
 // Master
 const InternalDashboard = Loadable(lazy(() => import('../modules/master/internal')));
 const BrandList = Loadable(lazy(() => import('../modules/master/internal/brand')));
+const SponsorList = Loadable(lazy(() => import('../modules/master/sponsor')));
 const BrandDetail = Loadable(lazy(() => import('../modules/master/internal/brand/detail')));
 const CategoryList = Loadable(lazy(() => import('../modules/master/internal/category')));
 
 // Class
 const ClassList = Loadable(lazy(() => import('../modules/master/class')));
-const ProjectList = Loadable(lazy(() => import('../modules/master/class/project')));
+const ClassArchive = Loadable(lazy(() => import('../modules/master/class/archive')));
+const ProjectList = Loadable(lazy(() => import('../modules/master/project')));
+const ProjectArchive = Loadable(lazy(() => import('../modules/master/project/archive')));
 
 
 // Account
@@ -50,8 +52,8 @@ const appRoutes = [
         path: 'accounts',
         element: <MainLayout />,
         children: [
-            { path: 'customer', element: <CustomerAccountPage /> },
-            { path: 'internal', element: <InternalAccountPage /> },
+            { path: 'user', element: <CustomerAccountPage /> },
+            { path: 'admin', element: <InternalAccountPage /> },
             { path: 'vocation', element: <VocationAccountPage /> },
         ],
     },
@@ -61,15 +63,15 @@ const appRoutes = [
         children: [
             {
                 path: '',
-                element: <VocationHomeDashboard />
+                element: <VocationList />
+            },
+            {
+                path: 'archive',
+                element: <VocationArchive />
             },
             {
                 path: 'event/:id',
                 element: <VocationEventGallery />
-            },
-            {
-                path: 'list',
-                element: <VocationList />
             },
             {
                 path: ':id',
@@ -91,16 +93,50 @@ const appRoutes = [
                 ]
             },
             {
-                path: 'list', 
+                path: '', 
                 element: <ClassList />
             },
-            // {
-            //     path: '', 
-            //     element: <VocationList />
-            // },
             {
-                path: 'project', 
+                path: 'archive', 
+                element: <ClassArchive />
+            },
+        ]
+    },
+    {
+        path: 'sponsors',
+        element: <MainLayout />,
+        children: [
+            {
+                path: '', 
+                element: <SponsorList />
+            },
+        ]
+    },
+    {
+        path: 'projects',
+        element: <MainLayout />,
+        children: [
+            {
+                path: '', 
                 element: <ProjectList />
+            },
+            {
+                path: 'archive', 
+                element: <ProjectArchive />
+            },
+        ]
+    },
+    {
+        path: 'brands',
+        element: <MainLayout />,
+        children: [
+            {
+                path: '', 
+                element: <BrandList />
+            },
+            {
+                path: ':id', 
+                element: <BrandDetail />
             },
         ]
     },
@@ -112,13 +148,7 @@ const appRoutes = [
                 path: '', element: <InternalDashboard />
             },
             {
-                path: 'brands', element: <BrandList />,
-            },
-            {
-                path: 'brands/:id', element: <BrandDetail />,
-            },
-            {
-                path: 'categories', element: <CategoryList />
+                path: 'category', element: <CategoryList />
             },
         ]
     },

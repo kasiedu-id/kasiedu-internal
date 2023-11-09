@@ -8,6 +8,7 @@ import Select from "react-select";
 import TextButton from "../Button/TextButton";
 import moment from "moment";
 import LoadingModal from "../Loading/Loading";
+import { getClassDetail } from "../../../config/api/services/classes";
 
 function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
     const [page, setPage] = useState(0);
@@ -47,7 +48,7 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
         try {
             setLoading(true);
             if (!id) {
-                if(!vocation) throw({
+                if (!vocation) throw ({
                     message: 'Choose Vocation'
                 });
 
@@ -78,6 +79,7 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                 await HttpPut(
                     `internal/classes/${id}`,
                     {
+                        vocationId: vocation.value,
                         name,
                         description,
                         certificate,
@@ -110,7 +112,9 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
 
     async function fetchDetail() {
         try {
-            let res = await HttpGet(`classes/${id}`, null);
+            let res = await getClassDetail({
+                id
+            });
 
             console.log(res);
 
@@ -130,9 +134,13 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
             setProvince(res?.location?.codeProvince);
             setCity(res?.location?.id);
             setDescription(res.description);
-            if(res.location){
+            if (res.location) {
                 fetchCity({ provinceId: res?.location?.codeProvince })
             }
+            setVocation({
+                value: res.vocation.id,
+                label: res.vocation.name
+            });
             setPageLimit(1);
             setPage(0);
         } catch (error) {
@@ -237,15 +245,13 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
     }
 
     useEffect(() => {
-        if(open){
+        if (open) {
+            if (vocations.length < 1) fetchVocation()
+            if (provinces.length < 1) fetchProvince();
+            if (categories.length < 1) fetchCategory();
+
             if (!id) reset();
             else if (id) fetchDetail();
-    
-            if(!vocationId && !id)
-            fetchVocation()
-    
-            fetchProvince();
-            fetchCategory();
         }
     }, [open]);
 
@@ -278,7 +284,7 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                         {
                             page === 0 ? <div>
                                 {
-                                    id || vocationId  ? null : <div className="mb-3">
+                                    vocationId ? null : <div className="mb-3">
                                         <p
                                             className={`block tracking-wide text-black text-sm font-bold mb-2`}
                                         >
@@ -291,7 +297,7 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                             onChange={handleSelectVocation}
                                             isSearchable={true}
                                             isMulti={false}
-                                            className="outline-none"
+                                            className="outline-none z-1"
                                         />
                                     </div>
                                 }
@@ -309,8 +315,9 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                 <div className="mb-3">
                                     <TextAreaField
                                         label={"Description"}
+                                        labelWeight={""}
                                         value={description}
-                                        textColor={"black"}
+                                        labelColor={""}
                                         onChange={(e) => setDescription(e.target.value)}
                                     />
                                 </div>
@@ -435,9 +442,10 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                             location === 'different' ? <div>
                                                 <div className="mb-3">
                                                     <TextAreaField
+                                                        labelWeight={""}
                                                         label={"Complete Address"}
                                                         value={completeAddress}
-                                                        textColor={"black"}
+                                                        labelColor={""}
                                                         onChange={(e) => setCompleteAddress(e.target.value)}
                                                     />
                                                 </div>
@@ -555,6 +563,9 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                                             }, {
                                                 name: "Day",
                                                 value: "day",
+                                            }, {
+                                                name: "Session",
+                                                value: "session",
                                             }]}
                                             keyField={"name"}
                                             valueField={"value"}
@@ -823,24 +834,16 @@ function ClassCreateUpdateModal({ open, onClick, id, vocationId }) {
                             </div> : null
                         }
                     </div>
-                    <div
-                        className="items-center mt-3 pt-3 text-center"
+                    <TextButton
+                        title={
+                            loading ? "Loading..." : page === pageLimit ? 'Submit' : 'Next'
+                        }
                         onClick={loading ? null : () => {
                             page === pageLimit ?
                                 submit() : changePage({ page: page + 1 })
                         }}
-                    >
-                        <div
-                            id="ok-btn"
-                            className={`cursor-pointer px-4 py-2 bg-[#07638d] text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-[#07638d] focus:outline-none focus:ring-2 focus:ring-[#07638d]`}
-                        >
-                            <p>
-                                {
-                                    loading ? "Loading..." : page === pageLimit ? 'Submit' : 'Next'
-                                }
-                            </p>
-                        </div>
-                    </div>
+                        disable={loading}
+                    />
                     <div
                         className="items-center py-3 text-center"
                         onClick={() => {
