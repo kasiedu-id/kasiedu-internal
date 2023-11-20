@@ -8,7 +8,6 @@ import ProjectCreateUpdateModal from "../../reusables/Modal/Project/ProjectCreat
 import AddParticipantModal from "../../reusables/Modal/Project/AddParticipant";
 import ExtendProjectModal from "../../reusables/Modal/Project/ExtendProject";
 import ActivationProjectModal from "../../reusables/Modal/Project/ActivateOrDeactivate";
-import EditProjectModal from "../../reusables/Modal/Project/EditProject";
 import DeleteProjectModal from "../../reusables/Modal/Project/DeleteProject";
 import ProjectGalleryEdit from "../../reusables/Modal/Project/EditGallery";
 import ProjectPaymentEdit from "../../reusables/Modal/Project/EditPayment";
@@ -33,11 +32,9 @@ function ProjectMainComponent() {
         method: 'detail'
     });
 
-    const [modalCreateUpdateOpen, setModalCreateUpdateOpen] = useState(false);
     const [modalAddParticipantOpen, setModalAddParticipantOpen] = useState(false);
     const [modalExtendOpen, setModalExtendOpen] = useState(false);
     const [modalActivationOpen, setModalActivationOpen] = useState(false);
-    const [modalEditeOpen, setModalEditeOpen] = useState(false);
     const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
     const [modalEditGalleryOpen, setModalEditGalleryOpen] = useState(false);
     const [modalPaymentOpen, setModalPaymentOpen] = useState(false);
@@ -55,21 +52,7 @@ function ProjectMainComponent() {
                 classId: '',
             });
 
-            const result = res.rows.map((data) => {
-                let gatheredMoney = 0;
-
-                for (let payment of data.payments) {
-                    if (payment.status === 'paid')
-                        gatheredMoney += Number(payment.amount)
-                }
-
-                return {
-                    ...data,
-                    gatheredMoney
-                }
-            });
-
-            setProjects(result);
+            setProjects(res.rows);
             setTotalCount(res.count);
             setPage(query?.get('page') || 1);
             setLimit(query?.get('limit') || 10)
@@ -270,7 +253,7 @@ function ProjectMainComponent() {
                                         <div className="mt-4 flex justify-between items-center">
                                             <div>
                                                 <p className="font-bold text-white">Pengumpulan Dana</p>
-                                                <p className="text-white">Rp. {thousandSeparator(String(data.gatheredMoney))} / Rp.{thousandSeparator(String(data.totalAmount))}</p>
+                                                <p className="text-white">Rp. {thousandSeparator(String(data.supportAmount))} / Rp.{thousandSeparator(String(data.totalAmount))}</p>
                                             </div>
                                         </div>
                                     </div>
