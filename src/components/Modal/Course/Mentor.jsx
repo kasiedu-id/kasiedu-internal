@@ -72,7 +72,7 @@ function MentorModal({ open, onClose, id }) {
                 </div>
             </div>
             <div className="mt-3">
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-5 max-h-[400px] overflow-auto">
                     {
                         data?.map((data) => {
                             return (
@@ -86,7 +86,15 @@ function MentorModal({ open, onClose, id }) {
                                         />
                                         <div className="w-[75%]">
                                             <p className="font-semibold">{data?.mentor?.name}</p>
-                                            <p className="flex gap-2">{data?.mentor?.email} / {data?.mentor?.phone}</p>
+                                            {
+                                                data?.mentor?.email && data?.mentor?.phone ? <p className="flex gap-2">{data?.mentor?.email} / {data?.mentor?.phone}</p> : null
+                                            }
+                                            {
+                                                data?.mentor?.email && !data?.mentor?.phone ? <p className="flex gap-2">{data?.mentor?.email}</p> : null
+                                            }
+                                            {
+                                                !data?.mentor?.email && data?.mentor?.phone ? <p className="flex gap-2">{data?.mentor?.phone}</p> : null
+                                            }
                                             <p>{data?.mentor?.title}</p>
                                         </div>
                                     </div>

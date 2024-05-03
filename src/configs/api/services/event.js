@@ -87,7 +87,8 @@ export async function createEvents({
     orderSeries,
     completeAddress,
     locationId,
-    locationLink
+    locationLink,
+    classType
 }) {
     try {
         let res = await HttpPost(`${constant.EVENT_URL}/`, {
@@ -106,7 +107,8 @@ export async function createEvents({
             orderSeries,
             completeAddress,
             locationId,
-            locationLink
+            locationLink,
+            classType
         }, null);
 
         return res;
@@ -130,10 +132,11 @@ export async function updateEvent({
     completeAddress,
     locationId,
     locationLink,
+    classType,
     id,
 }) {
     try {
-        let res = await HttpPut(`${constant.COURSE_URL}/${id}`, {
+        let res = await HttpPut(`${constant.EVENT_URL}/${id}`, {
             name,
             description,
             objective,
@@ -147,7 +150,8 @@ export async function updateEvent({
             orderSeries,
             completeAddress,
             locationId,
-            locationLink
+            locationLink,
+            classType
         }, null);
 
         return res;

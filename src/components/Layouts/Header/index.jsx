@@ -10,7 +10,7 @@ const Header = ({
   return (
     <header className="sticky top-0 z-[10] flex w-full bg-white shadow-md">
       <div className="flex flex-grow items-center justify-between px-4 lg:py-4 shadow-2 md:px-6 2xl:px-11">
-        <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
+        <div className="flex flex-1 items-center gap-2 sm:gap-4 lg:hidden py-4">
           {/* <!-- Hamburger Toggle BTN --> */}
           <button
             aria-controls="sidebar"
@@ -54,11 +54,11 @@ const Header = ({
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
 
-          <a className="block flex-shrink-0 lg:hidden" href="/">
+          <a className="block w-full flex-shrink-0 lg:hidden" href="/">
             <img
               src={FeederLogo}
               alt="Logo"
-              className="h-[80px]"
+              className="h-[40px] mx-auto "
             />
           </a>
         </div>

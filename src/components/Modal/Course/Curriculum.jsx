@@ -66,7 +66,7 @@ function CurriculumModal({ open, onClose, id }) {
                 </div>
             </div>
             <div className="mt-3">
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-5 max-h-[400px] overflow-auto">
                     {
                         data?.map((data) => {
                             return (

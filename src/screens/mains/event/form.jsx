@@ -141,7 +141,7 @@ function EventFormPage() {
                     courses: course,
                     youtubeId,
                     series,
-                    orderSeries,
+                    orderSeries: Number(orderSeries),
                     completeAddress: addressWork,
                     locationId: city?.id,
                     locationLink,
@@ -160,7 +160,7 @@ function EventFormPage() {
                     classType: eventSocialType?.value,
                     youtubeId,
                     series,
-                    orderSeries,
+                    orderSeries: Number(orderSeries),
                     completeAddress: addressWork,
                     locationId: city?.id,
                     locationLink,
@@ -238,6 +238,8 @@ function EventFormPage() {
                         getCities({ codeProvince: res.location.codeProvince })
                     }
 
+                    console.log(res);
+
                     setAddressWork(res.completeAddress);
                     setCity(res.location);
                     setDescription(res.description);
@@ -256,6 +258,7 @@ function EventFormPage() {
                     setYoutubeId(res.youtubeId);
                     setSeries(res.series);
                     setOrderSeries(res.orderSeries);
+                    setLocationLink(res.locationLink);
                 }
             }
         } catch (error) {
