@@ -161,6 +161,8 @@ export async function createCourses({
     completeAddress,
     locationId,
     bannerPath,
+    courseType,
+    certificate,
 }) {
     try {
         let res = await HttpPost(`${constant.COURSE_URL}/`, {
@@ -182,6 +184,8 @@ export async function createCourses({
             completeAddress,
             locationId,
             bannerPath,
+            courseType,
+            certificate,
         }, null);
 
         return res;
@@ -206,6 +210,8 @@ export async function updateCourse({
     completeAddress,
     locationId,
     bannerPath,
+    courseType,
+    certificate,
     id,
 }) {
     try {
@@ -225,6 +231,8 @@ export async function updateCourse({
             completeAddress,
             locationId,
             bannerPath,
+            courseType,
+            certificate,
         }, null);
 
         return res;

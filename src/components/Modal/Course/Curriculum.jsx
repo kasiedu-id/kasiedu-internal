@@ -3,7 +3,6 @@ import BaseModal from "../BaseModal";
 import { HiOutlineTrash } from "react-icons/hi";
 import { toast } from "react-toastify";
 import { addCurriculumCourse, getCurriculumCourse, removeCurriculumCourse } from "../../../configs/api/services/course";
-import { DropdownMultiField } from "../../Fields/DropdownMulti";
 import GeneralButton from "../../Buttons/GeneralButton";
 import { InputSingleField } from "../../Fields/InputField";
 import { TextAreaField } from "../../Fields/TextAreaField";
@@ -17,8 +16,6 @@ function CurriculumModal({ open, onClose, id }) {
     async function getList() {
         try {
             const res = await getCurriculumCourse({ id: id });
-
-            console.log(res);
 
             setData(res);
         } catch (error) {
