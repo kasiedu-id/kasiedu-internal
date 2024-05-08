@@ -276,21 +276,21 @@ function CourseFormPage() {
             if (searchParams.get("id")) {
                 const res = await getDetailCourse({ id: searchParams.get("id") });
 
-                const selectedProvince = provinces.findIndex((data) => data.codeProvince === res.location.codeProvince);
+                const selectedProvince = provinces.findIndex((data) => data?.codeProvince === res.location?.codeProvince);
 
                 const selectedType = courseTypes.findIndex((data) => data.value === res.category);
 
-                getCities({ codeProvince: res.location.codeProvince })
+                if(res.location) getCities({ codeProvince: res.location.codeProvince })
 
                 setAddressWork(res.completeAddress);
-                setCourseType(courseTypes[selectedType]);
+                setCourseType(res.category ? courseTypes[selectedType] : null);
                 setCertificate(res.certificate ? { label: 'Yes', value: true } : { label: 'no', value: false })
                 setCity(res.location);
                 setDescription(res.description);
                 setName(res.name);
                 setDetail(res);
                 setDuration(res.duration);
-                setProvince(provinces[selectedProvince]);
+                setProvince(res.location ? provinces[selectedProvince] : null);
                 setMaxParticipant(res.participantSeat);
                 setDurationType({ label: res.durationType, value: res.durationType });
                 setStudyType({ value: res.type, label: res.type });
