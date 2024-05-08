@@ -20,6 +20,7 @@ export const initiate = () => {
                     provinces,
                     categories: categories.data,
                     user: JSON.parse(userData),
+                    initLoading: false,
                 }
             })
         } catch (error) {

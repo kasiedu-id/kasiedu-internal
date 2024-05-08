@@ -113,12 +113,12 @@ function EventFormPage() {
             let res = null;
 
             if (type === 'create') {
-                payload.append("profile", banner);
+                payload.append("banner", banner);
 
                 res = await uploadFile(payload);
             } else if (type !== 'create') {
-                if (detail) {
-                    payload.append("profile", banner);
+                if (banner) {
+                    payload.append("banner", banner);
 
                     res = await uploadFile(payload);
                 } else {

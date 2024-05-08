@@ -13,6 +13,7 @@ const MentorFormPage = Loadable(lazy(() => import('../../screens/mains/setting/m
 
 // Institute
 const InstituteFormPage = Loadable(lazy(() => import('../../screens/mains/institute/form')));
+const InstitutePage = Loadable(lazy(() => import('../../screens/mains/institute')));
 
 // Course
 const CourseFormPage = Loadable(lazy(() => import('../../screens/mains/course/form')));
@@ -21,6 +22,11 @@ const CoursePage = Loadable(lazy(() => import('../../screens/mains/course')));
 // Event
 const EventFormPage = Loadable(lazy(() => import('../../screens/mains/event/form')));
 const EventPage = Loadable(lazy(() => import('../../screens/mains/event/')));
+
+
+// User
+const UserFormPage = Loadable(lazy(() => import('../../screens/mains/user/form')));
+const UserPage = Loadable(lazy(() => import('../../screens/mains/user/')));
 
 
 const appRoutes = [
@@ -36,6 +42,15 @@ const appRoutes = [
         element: <MainLayout />,
         children: [
             { path: 'form', element: <InstituteFormPage /> },
+            { path: 'list', element: <InstitutePage /> },
+        ],
+    },
+    {
+        path: '/users',
+        element: <MainLayout />,
+        children: [
+            { path: 'form', element: <UserFormPage /> },
+            { path: 'list', element: <UserPage /> },
         ],
     },
     {
