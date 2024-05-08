@@ -51,7 +51,7 @@ export const DropdownMultiField = ({
                 {label}{required ? '*' : ''}
             </p>
             <div className="relative mt-2">
-                <button disabled={disabled} onClick={() => setOpen(!open)} type="button" className={`${multi && value.length > 0 ? 'flex gap-4' : ''} relative w-full cursor-default rounded-md ${disabled ? "bg-gray-200" : "bg-white"} h-[38px] py-2 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ${error ? "ring-red-500" : "ring-gray-300"} focus:outline-none focus:ring-2 ${error ? "focus:ring-red-500" : "focus:ring-indigo-500" } focus:outline-none focus:ring-2 sm:text-sm sm:leading-6`}>
+                <button disabled={disabled} onClick={() => setOpen(!open)} type="button" className={`${multi && value.length > 0 ? 'flex gap-4' : ''} relative w-full cursor-default rounded-md ${disabled ? "bg-gray-200" : "bg-white"} min-h-[38px] py-2 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ${error ? "ring-red-500" : "ring-gray-300"} focus:outline-none focus:ring-2 ${error ? "focus:ring-red-500" : "focus:ring-indigo-500" } focus:outline-none focus:ring-2 sm:text-sm sm:leading-6`}>
                     {
                         multi ? value.length > 0 ? value.map((data, index) => {
                             if(value.length > 1 && index === limitShow) {

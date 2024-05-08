@@ -8,12 +8,14 @@ import { MdModeEditOutline, MdOutlineSearch } from "react-icons/md";
 import GeneralButton from "../../../components/Buttons/GeneralButton";
 import MentorModal from "../../../components/Modal/Course/Mentor";
 import CurriculumModal from "../../../components/Modal/Course/Curriculum";
+import PaymentModal from "../../../components/Modal/Course/Payment";
 
 function CoursePage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [openMentor, setOpenMentor] = useState(false);
     const [openCurr, setOpenCurr] = useState(false);
+    const [openPayment, setOpenPayment] = useState(false);
     const [searchParams] = useSearchParams();
 
     const [page, setPage] = useState(1);
@@ -78,6 +80,7 @@ function CoursePage() {
                             <th className="w-[150px] p-2 border-black border-[1px] text-white">Mentor</th>
                             <th className="w-[150px] p-2 border-black border-[1px] text-white">Participant</th>
                             <th className="w-[150px] p-2 border-black border-[1px] text-white">Curriculum</th>
+                            <th className="w-[150px] p-2 border-black border-[1px] text-white">Payment</th>
                             <th className="w-[100px] p-2 border-black border-[1px] text-white">Action</th>
                         </tr>
                     </thead>
@@ -88,7 +91,7 @@ function CoursePage() {
                                     <td className="text-center py-2 font-semibold border-gray-400 border-[1px]">{index + 1}</td>
                                     <td className="px-3 py-2 border-gray-400 border-[1px] capitalize">{data?.name}</td>
                                     <td className="px-3 py-2 border-gray-400 border-[1px]">{`${thousandSeparator(data?.participantJoin)} / ${thousandSeparator(data?.participantSeat)}` || 'N/A'}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">{`Rp. ${thousandSeparator(data?.donation)} / ${thousandSeparator(data?.price)}` || 'N/A'}</td>
+                                    <td className="px-3 py-2 border-gray-400 border-[1px]">{`Rp. ${thousandSeparator(data?.totalPayment)} / ${thousandSeparator(data?.price)}` || 'N/A'}</td>
                                     <td className="px-3 py-2 border-gray-400 border-[1px]">Rp. {thousandSeparator(data?.minimumWorkshop) || 'N/A'}</td>
                                     <td className="px-3 py-2 border-gray-400 border-[1px]">Rp. {thousandSeparator(data?.minimumPrice) || 'N/A'}</td>
                                     <td className="px-3 py-2 border-gray-400 border-[1px]">
@@ -99,6 +102,9 @@ function CoursePage() {
                                     </td>
                                     <td className="px-3 py-2 border-gray-400 border-[1px]">
                                         <GeneralButton title={"View"} onClick={() => {setOpenCurr(true); setSelectedId(data.id)}} />
+                                    </td>
+                                    <td className="px-3 py-2 border-gray-400 border-[1px]">
+                                        <GeneralButton title={"View"} onClick={() => {setOpenPayment(true); setSelectedId(data.id)}} />
                                     </td>
                                     <td className="px-3py-2 border-gray-400 border-[1px] min-h-10">
                                         <div className="flex gap-5 justify-center items-center">
@@ -114,6 +120,7 @@ function CoursePage() {
             <LoadingModal open={loading} />
             { openMentor && <MentorModal open={openMentor} onClose={() => setOpenMentor(false)} id={selectedId} />}
             { openCurr && <CurriculumModal open={openCurr} onClose={() => setOpenCurr(false)} id={selectedId} />}
+            { openPayment && <PaymentModal open={openPayment} onClose={() => setOpenPayment(false)} id={selectedId} />}
         </div>
     );
 }

@@ -69,7 +69,7 @@ function CollaborationEventModal({ open, onClose, id, type }) {
     }, [])
 
     return (
-        <BaseModal open={open} title={"List of Mentors"} onClose={onClose}>
+        <BaseModal open={open} title={"List"} onClose={onClose}>
             <div className="mt-3 flex items-center gap-5">
                 <div className="w-full mt-2">
                     <DropdownMultiField list={list} value={selectedData} onDropdownItemClick={(e) => setselectedData(e)} placeholder={"Choose"} keyValue={"id"} keyLabel={"name"} />

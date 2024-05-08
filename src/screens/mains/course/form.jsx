@@ -30,6 +30,8 @@ function CourseFormPage() {
     const [duration, setDuration] = useState('');
     const [durationType, setDurationType] = useState({ name: 'Week', value: 'week' });
     const [studyType, setStudyType] = useState(null);
+    const [courseType, setCourseType] = useState(null);
+    const [certificate, setCertificate] = useState(null);
     const [category, setCategory] = useState([]);
     const [mentor, setMentor] = useState([]);
     const [curriculum, setCurriculum] = useState([]);
@@ -66,6 +68,29 @@ function CourseFormPage() {
             value: 'ON_SITE',
         },
     ];
+
+    const courseTypes = [
+        {
+            label: 'Workshop',
+            value: 'WORKSHOP',
+        },
+        {
+            label: 'Course',
+            value: 'COURSE',
+        },
+    ];
+
+    const certificates = [
+        {
+            label: 'Yes',
+            value: true,
+        },
+        {
+            label: 'No',
+            value: false,
+        },
+    ];
+
 
     const durationTypes = [
         {
@@ -166,6 +191,8 @@ function CourseFormPage() {
                     mentors: mentor,
                     classType: studyType.value,
                     completeAddress: addressWork,
+                    courseType: courseType.value,
+                    certificate: certificate.value,
                     locationId: city?.id,
                     bannerPath: res[0]?.URL
                 })
@@ -184,6 +211,8 @@ function CourseFormPage() {
                     duration,
                     durationType: durationType.value,
                     classType: studyType.value,
+                    courseType: courseType.value,
+                    certificate: certificate.value,
                     completeAddress: addressWork,
                     locationId: city?.id,
                     bannerPath: res[0]?.URL
@@ -247,23 +276,27 @@ function CourseFormPage() {
             if (searchParams.get("id")) {
                 const res = await getDetailCourse({ id: searchParams.get("id") });
 
-                const selectedProvince = provinces.findIndex((data) => data.codeProvince === res.location.codeProvince);
+                const selectedProvince = provinces.findIndex((data) => data?.codeProvince === res.location?.codeProvince);
 
-                getCities({ codeProvince: res.location.codeProvince })
+                const selectedType = courseTypes.findIndex((data) => data.value === res.category);
+
+                if(res.location) getCities({ codeProvince: res.location.codeProvince })
 
                 setAddressWork(res.completeAddress);
+                setCourseType(res.category ? courseTypes[selectedType] : null);
+                setCertificate(res.certificate ? { label: 'Yes', value: true } : { label: 'no', value: false })
                 setCity(res.location);
                 setDescription(res.description);
                 setName(res.name);
                 setDetail(res);
                 setDuration(res.duration);
-                setProvince(provinces[selectedProvince]);
+                setProvince(res.location ? provinces[selectedProvince] : null);
                 setMaxParticipant(res.participantSeat);
                 setDurationType({ label: res.durationType, value: res.durationType });
                 setStudyType({ value: res.type, label: res.type });
                 setCloseRegis(moment.unix(res.closeRegis).format("YYYY-MM-DD"));
                 setOpenRegis(moment.unix(res.openRegis).format("YYYY-MM-DD"));
-                setStartClass(moment.unix(res.courseStart).format("YYYY-MM-DD"));
+                setStartClass(moment.unix(res.courseStart).format("YYYY-MM-DDTHH:mm"));
                 setCoursePrice(res.price);
                 setWorkshopPrice(res.minimumWorkshop);
                 setMinimumPrice(res.minimumPrice);
@@ -385,6 +418,10 @@ function CourseFormPage() {
                         <InputSingleField error={error.maxParticipant} label={"Max Participant"} labelWeight={600} required value={maxParticipant} onChange={(e) => setMaxParticipant(e.target.value)} />
                         <DropdownMultiField error={error.studyType} label={"Study Type"} required keyValue={"value"} keyLabel={"label"} list={studyTypes} labelWeight={600} value={studyType} onDropdownItemClick={(e) => setStudyType(e)} />
                     </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
+                        <DropdownMultiField error={error.studyType} label={"Course Type"} required keyValue={"value"} keyLabel={"label"} list={courseTypes} labelWeight={600} value={courseType} onDropdownItemClick={(e) => setCourseType(e)} />
+                        <DropdownMultiField error={error.studyType} label={"Certificate"} required keyValue={"value"} keyLabel={"label"} list={certificates} labelWeight={600} value={certificate} onDropdownItemClick={(e) => setCertificate(e)} />
+                    </div>
                     {
                         type === "create" ? <div className="grid grid-cols-1">
                             <DropdownMultiField multi error={false} label={"Category"} keyValue={"value"} keyLabel={"nameEn"} list={categories} labelWeight={600} value={category} onDropdownItemClick={(e) => setCategory([...category, e])} onRemoveValue={(e) => removeMultiCat(e)} />
@@ -410,7 +447,7 @@ function CourseFormPage() {
                         <InputSingleField type={"date"} error={error.closeRegis} label={"Close Regis"} labelWeight={600} value={closeRegis} onChange={(e) => setCloseRegis(e.target.value)} />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
-                        <InputSingleField type={"date"} error={error.startClass} label={"Class Start"} labelWeight={600} value={startClass} onChange={(e) => setStartClass(e.target.value)} />
+                        <InputSingleField type={"datetime-local"} error={error.startClass} label={"Class Start"} labelWeight={600} value={startClass} onChange={(e) => setStartClass(e.target.value)} />
                     </div>
                 </>
                 <>
