@@ -3,7 +3,7 @@ import SidebarLinkGroup from "./SidebarLinkGroup";
 import Logo from '../../../assets/logo/logo.png';
 import { useLocation } from "react-router-dom";
 import { MdOutlineSettings, MdBusinessCenter, MdOutlineManageAccounts, MdOutlineEmojiEvents } from "react-icons/md";
-import { HiOutlineAcademicCap } from "react-icons/hi2";
+import { HiOutlineAcademicCap, HiOutlineUsers } from "react-icons/hi2";
 
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -18,7 +18,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
 
-  const query = 'page=1&limit=25'
+  const query = 'page=1&limit=20'
 
   // close on click outside
   useEffect(() => {
@@ -367,6 +367,81 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 }}
               </SidebarLinkGroup>
               {/* <!-- Menu Item Institute --> */}
+
+              {/* <!-- Menu Item User --> */}
+              <SidebarLinkGroup
+                activeCondition={
+                  pathname === "/users" || pathname.includes("users")
+                }
+              >
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <div
+                        className={`group relative flex items-center gap-2 rounded-sm py-2 px-4 font-medium text-white duration-300 ease-in-out hover:bg-gray-500 ${(pathname === "/users" ||
+                          pathname.includes("users")) &&
+                          "bg-gray-500"
+                          }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+                        <HiOutlineUsers color={"white"} size={18} />
+                        User
+                        <svg
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"
+                            }`}
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                            fill=""
+                          />
+                        </svg>
+                      </div>
+                      {/* <!-- Dropdown Menu Start --> */}
+                      <div
+                        className={`translate transform overflow-hidden ${!open && "hidden"
+                          }`}
+                      >
+                        <ul className="mt-3 mb-5 flex flex-col gap-2 pl-6">
+                        <li>
+                            <a
+                              href={`/users/form?section=create`}
+                              className={`first-letter:group relative flex items-center gap-2 py-2 rounded-md px-4 font-medium text-white duration-300 ease-in-out hover:bg-gray-500 hover:text-white ${pathname === "/users/form" &&
+                                "text-white bg-gray-500"
+                                }`}
+                            >
+                              Form
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href={`/users/list?${query}`}
+                              className={`first-letter:group relative flex items-center gap-2 py-2 rounded-md px-4 font-medium text-white duration-300 ease-in-out hover:bg-gray-500 hover:text-white ${pathname === "/users/list" &&
+                                "text-white bg-gray-500"
+                                }`}
+                            >
+                              List
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <!-- Dropdown Menu End --> */}
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
+              {/* <!-- Menu Item User --> */}
             </ul>
           </div>
 

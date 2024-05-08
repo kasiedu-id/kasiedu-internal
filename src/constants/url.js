@@ -7,6 +7,8 @@ const MENTOR_URL = "internal/mentors";
 const COURSE_URL = "internal/courses";
 const EVENT_URL = "internal/events";
 const PAYMENT_URL = "internal/payments";
+const INSTITUTE_URL = "internal/institutes";
+const USER_URL = "internal/users";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { 
@@ -18,5 +20,7 @@ export default {
     COURSE_URL,
     UPLOAD_URL,
     EVENT_URL,
-    PAYMENT_URL
+    PAYMENT_URL,
+    INSTITUTE_URL,
+    USER_URL
 };

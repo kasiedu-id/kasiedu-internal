@@ -8,8 +8,8 @@ import GeneralButton from "../../../components/Buttons/GeneralButton";
 import { MdOutlineCheckCircleOutline } from "react-icons/md";
 import { TextAreaField } from "../../../components/Fields/TextAreaField";
 import { AiOutlineFileImage } from 'react-icons/ai';
-import { useSelector } from "react-redux";
-import { getAddress } from "../../../configs/api/services/public";
+import { getAddress, uploadFile } from "../../../configs/api/services/public";
+import { createInstitute, getInsituteDetail, updateInstitute } from "../../../configs/api/services/institute";
 
 function InstituteFormPage() {
     const navigate = useNavigate();
@@ -17,7 +17,6 @@ function InstituteFormPage() {
     const [type, setType] = useState("create");
     const [searchParams] = useSearchParams();
     const [detail, setDetail] = useState(null);
-    const { provinces } = useSelector((res) => res.global);
 
     const [instituteName, setInstituteName] = useState('');
     const [instituteDescription, setInstituteDescription] = useState('');
@@ -30,7 +29,8 @@ function InstituteFormPage() {
     const [province, setProvince] = useState(null);
     const [city, setCity] = useState(null);
 
-    const [cities, setCities] = useState([null]);
+    const [provinces, setProvinces] = useState([]);
+    const [cities, setCities] = useState([]);
 
     const [error, setError] = useState({
         instituteName: false,
@@ -57,7 +57,49 @@ function InstituteFormPage() {
                 city: false,
             });
 
-            toast("Success add new institute");
+            const payload = new FormData();
+            let res = null;
+
+            if (type === 'create') {
+                payload.append("logo", logo);
+
+                res = await uploadFile(payload);
+            } else if (type !== 'create') {
+                if (logo) {
+                    payload.append("logo", logo);
+
+                    res = await uploadFile(payload);
+                } else {
+                    res = [{ URL: detail?.logo }]
+                }
+            }
+
+            if (type === "create") {
+                await createInstitute({
+                    name: instituteName,
+                    description: instituteDescription,
+                    logo: res[0]?.URL,
+                    picEmail,
+                    picPhone,
+                    picName,
+                    completeAdress: addressWork,
+                    locationId: city?.id,
+                })
+            } else {
+                await updateInstitute({
+                    id: searchParams.get('id'),
+                    name: instituteName,
+                    description: instituteDescription,
+                    logo: res[0]?.URL,
+                    picEmail,
+                    picPhone,
+                    picName,
+                    completeAddress: addressWork,
+                    locationId: city?.id,
+                })
+            }
+
+            toast(`Success ${type} institute`);
             navigate('/institutes/list');
 
         } catch (error) {
@@ -97,13 +139,33 @@ function InstituteFormPage() {
     }
 
     async function initial() {
+        const resProv = await getAddress({ code: '' });
+
         if (searchParams.get("section")) {
             setType(searchParams.get("section"));
+
+
+            setProvinces(resProv);
         }
 
         if (searchParams.get("section") !== 'create') {
             if (searchParams.get("id")) {
+                const res = await getInsituteDetail({ id: searchParams.get("id") });
 
+                const selectedProvince = res.location ? resProv.findIndex((data) => data?.codeProvince === res.location?.codeProvince) : null;
+
+                const resCities = res.location ? await getAddress({ code: res.location.codeProvince }) : []
+
+                setPicName(res?.information?.picName);
+                setPicEmail(res?.information?.picEmail);
+                setPicPhone(res?.information?.picPhone);
+                setCities(resCities);
+                setCity(res.location);
+                setProvince(res.location ? resProv[selectedProvince] : null);
+                setAddressWork(res.address);
+                setInstituteDescription(res.description);
+                setInstituteName(res.name);
+                setDetail(res);
             }
         }
     }
@@ -151,6 +213,15 @@ function InstituteFormPage() {
                             style={{ width: "100%", height: "100%" }}
                             alt=""
                         />
+                    </label> : logo ? <label
+                        className="flex justify-center items-center h-[100%]"
+                        htmlFor={`file-photo`}
+                    >
+                        <img
+                            src={URL.createObjectURL(logo)}
+                            style={{ width: "100%", height: "100%" }}
+                            alt=""
+                        />
                     </label> : (
                         <label
                             className="flex justify-center items-center h-[100%]"
@@ -164,17 +235,17 @@ function InstituteFormPage() {
                         type="file"
                         accept=".png,.jpg,.pdf"
                         hidden
-                        id={`file-event-photo`}
+                        id={`file-photo`}
                         onChange={(e) => setLogo(e.target.files[0])}
                     />
                 </div>
                 <>
                     <div className="border-b-[1px] border-b-gray-400 mb-3">
-                        <h1 className="text-lg font-semibold mt-6 mb-3">Identitas Institute</h1>
+                        <h1 className="text-lg font-semibold mt-6 mb-3">Identitas Institusi</h1>
                     </div>
                     <div className="grid grid-cols-1">
                         <InputSingleField error={error.name} label={"Nama Institusi"} labelWeight={600} required value={instituteName} onChange={(e) => setInstituteName(e.target.value)} />
-                        <TextAreaField required label={"Alamat Lengkap"} labelWeight={600} value={instituteDescription} onChange={(e) => setInstituteDescription(e.target.value)} />
+                        <TextAreaField required label={"Deskripsi"} labelWeight={600} value={instituteDescription} onChange={(e) => setInstituteDescription(e.target.value)} />
                     </div>
                 </>
                 <>
@@ -186,16 +257,16 @@ function InstituteFormPage() {
                         <InputSingleField error={error.name} label={"Email"} labelWeight={600} required value={picEmail} onChange={(e) => setPicEmail(e.target.value)} />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
-                        <InputSingleField error={error.name} label={"Phone"} labelWeight={600} required value={picPhone} onChange={(e) => setPicPhone(e.target.value)} />
+                        <InputSingleField error={error.name} label={"Telepon"} labelWeight={600} required value={picPhone} onChange={(e) => setPicPhone(e.target.value)} />
                     </div>
                 </>
                 <>
                     <div className="border-b-[1px] border-b-gray-400 mb-3">
-                        <h1 className="text-lg font-semibold mt-6 mb-3">Alamat Institute</h1>
+                        <h1 className="text-lg font-semibold mt-6 mb-3">Alamat Institusi</h1>
                     </div>
                     <TextAreaField required label={"Alamat Lengkap"} labelWeight={600} value={addressWork} onChange={(e) => setAddressWork(e.target.value)} />
                     <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
-                        <DropdownMultiField error={error.type} label={"Provinsi"} required keyValue={"id"} keyLabel={"provinceName"} list={provinces} labelWeight={600} value={province} onDropdownItemClick={(e) => { getCities({ codeProvince: e.codeProvince}); setProvince(e) }} />
+                        <DropdownMultiField error={error.type} label={"Provinsi"} required keyValue={"id"} keyLabel={"provinceName"} list={provinces} labelWeight={600} value={province} onDropdownItemClick={(e) => { getCities({ codeProvince: e.codeProvince }); setProvince(e) }} />
                         <DropdownMultiField error={error.type} label={"Kota"} required keyValue={"id"} keyLabel={"cityName"} list={cities} labelWeight={600} value={city} onDropdownItemClick={(e) => setCity(e)} />
                     </div>
                 </>

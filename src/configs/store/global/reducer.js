@@ -5,6 +5,7 @@ import {
 const initiate = {
     provinces: [],
     categories: [],
+    initLoading: true,
 }
 
 const GlobalReducer = (state = initiate, action) => {
