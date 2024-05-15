@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import EmptyStateButton from "../../../components/Buttons/EmptyButton";
 import { getUsers } from "../../../configs/api/services/user";
 import UserCard from "../../../components/Cards/UserCard";
+import DeleteUserModal from "../../../components/Modal/General/DeleteUser";
 
 
 function UserPage() {
@@ -16,20 +17,20 @@ function UserPage() {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [count, setCount] = useState(0);
+    const [showDelete, setShowDelete] = useState(false);
+    const [selectedId, setSelectedId] = useState("");
 
     const [email, setEmail] = useState('');
 
-    async function initiate(){
+    async function initiate() {
         try {
             setLoading(true);
 
-            const res = await getUsers({ 
-                page: searchParams.get('page') || 1, 
-                limit: searchParams.get('limit') || 20, 
+            const res = await getUsers({
+                page: searchParams.get('page') || 1,
+                limit: searchParams.get('limit') || 20,
                 email: searchParams.get('email') || ''
             });
-
-            console.log(res);
 
             setData(res?.list);
             setCount(res?.count);
@@ -40,9 +41,22 @@ function UserPage() {
         }
     }
 
+    async function reset() {
+        const res = await getUsers({
+            page: 1,
+            limit: 20,
+            email: ''
+        });
+
+        setData(res?.list);
+        setCount(res?.count);
+
+        navigate('/users/list?page=1&limit=20')
+    }
+
     useEffect(() => {
         initiate();
-    }, [])
+    }, [searchParams])
 
     return (
         <>
@@ -59,12 +73,13 @@ function UserPage() {
                     </div>
                 </div>
             </div>
-            <div className={`min-h-[50vh] max-h-[80vh] w-full flex flex-col gap-5 ${data.length > 0 ? '' : 'justify-center items-center'}`}>
+            <div className={`max-h-[80vh] w-full flex flex-col md:grid md:grid-cols-2 gap-5 md:gap-2 ${data.length > 0 ? '' : 'justify-center items-center'}`}>
                 {
-                    data.length > 0 ? data.map((data) => <UserCard email={data.email} phone={data.phone} id={data.id} name={data.information.name} profile={data.information.profile} /> ) : <EmptyStateButton label={"Data User Kosong"} onClick={() => navigate('/users/form?section=create')} />
+                    data.length > 0 ? data.map((data) => <UserCard remove={() => { setShowDelete(true); setSelectedId(data.id) }} email={data.email} phone={data.phone} id={data.id} name={data.information.name} profile={data.information.profile} />) : <EmptyStateButton label={"Data User Kosong"} onClick={() => navigate('/users/form?section=create')} />
                 }
             </div>
             {loading && <LoadingModal open={loading} />}
+            {showDelete && <DeleteUserModal open={showDelete} id={selectedId} onClose={() => setShowDelete(false)} onSuccess={() => { setShowDelete(false); reset(); }} />}
         </>
     );
 }

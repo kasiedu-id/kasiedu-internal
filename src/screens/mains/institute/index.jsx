@@ -57,7 +57,7 @@ function InstitutePage() {
                     </div>
                 </div>
             </div>
-            <div className={`min-h-[50vh] max-h-[80vh] w-full flex flex-col gap-5 ${data.length > 0 ? '' : 'justify-center items-center'}`}>
+            <div className={`min-h-[50vh] max-h-[80vh] w-full flex flex-col md:grid md:grid-cols-2 gap-5 md:gap-2 ${data.length > 0 ? '' : 'justify-center items-center'}`}>
                 {
                     data.length > 0 ? data.map((data) => <InstituteCard id={data.id} logo={data?.logo} name={data?.name} picName={data?.information?.picName} picPhone={data?.information?.picPhone}/>) : <EmptyStateButton label={"Data Institusi Kosong"} onClick={() => navigate('/institutes/form?section=create')} />
                 }
