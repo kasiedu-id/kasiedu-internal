@@ -1,4 +1,5 @@
 import {
+    HttpDelete,
     HttpGet,
     HttpPost,
     HttpPut
@@ -81,6 +82,18 @@ export async function updateUser({
             occupation,
             occupationName,
         }, null);
+
+        return res;
+    } catch (error) {
+        throw (error);
+    }
+}
+
+export async function removeHardUser({
+    id
+}) {
+    try {
+        let res = await HttpDelete(`${constant.USER_URL}/${id}`, null);
 
         return res;
     } catch (error) {
