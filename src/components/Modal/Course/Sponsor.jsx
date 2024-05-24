@@ -2,22 +2,30 @@ import { useEffect, useState } from "react";
 import BaseModal from "../BaseModal";
 import { HiOutlineTrash } from "react-icons/hi";
 import { toast } from "react-toastify";
-import { getCourses } from "../../../configs/api/services/course";
-import { getMentors } from "../../../configs/api/services/mentor";
 import { DropdownMultiField } from "../../Fields/DropdownMulti";
 import GeneralButton from "../../Buttons/GeneralButton";
-import { addEventCollaboration, getCollaborationEvents, removeEventCollab } from "../../../configs/api/services/event";
-import { getInsitutes } from "../../../configs/api/services/institute";
+import { InputSingleField } from "../../Fields/InputField";
+import { getSponsor, getSponsorCourse } from "../../../configs/api/services/sponsor";
+import { addCourseSponsor, removeSponsorCourse } from "../../../configs/api/services/course";
 
 
-function CollaborationEventModal({ open, onClose, id, type }) {
+function SponsorCourseModal({ open, onClose, id }) {
     const [data, setData] = useState([]);
     const [list, setList] = useState([]);
-    const [selectedData, setselectedData] = useState(null);
+    const [selectedData, setSelectedData] = useState(null);
+    const [selectedTier, setSelectedTier] = useState(null);
+    const [order, setOrder] = useState('');
+
+    const tiers = [
+        { name: 'Top', value: 'TOP'},
+        { name: 'Top Second', value: 'TOP_SECOND'},
+        { name: 'Middle', value: 'MIDDLE'},
+        { name: 'Lower', value: 'LOWER'}
+    ];
 
     async function getCollaboration() {
         try {
-            const res = await getCollaborationEvents({ id, type });
+            const res = await getSponsorCourse({ id });
 
             setData(res);
         } catch (error) {
@@ -28,16 +36,10 @@ function CollaborationEventModal({ open, onClose, id, type }) {
     async function getList() {
         try {
             let res = [];
+            
+            res = await getSponsor();
 
-            if (type === 'COURSE') {
-                res = await getCourses({ page: 1, limit: 200 })
-            } else if (type === 'MENTOR') {
-                res = await getMentors({ page: 1, limit: 200 });
-            } else {
-                res = await getInsitutes({ page: 1, limit: 200, name: '' });
-            }
-
-            setList(res.list);
+            setList(res);
         } catch (error) {
             toast(error?.message);
         }
@@ -45,9 +47,11 @@ function CollaborationEventModal({ open, onClose, id, type }) {
 
     async function addCollab() {
         try {
-            await addEventCollaboration({ id, ownerId: selectedData?.id, collborationType: type });
+            await addCourseSponsor({ id, ownerId: selectedData?.id, tier: selectedTier?.value, orderTier: Number(order) });
 
-            setselectedData(null);
+            setSelectedData(null);
+            setSelectedTier(null);
+            setOrder('');
             getCollaboration();
         } catch (error) {
             toast(error?.message);
@@ -56,11 +60,11 @@ function CollaborationEventModal({ open, onClose, id, type }) {
 
     async function removeData(id) {
         try {
-            await removeEventCollab(id);
+            await removeSponsorCourse(id);
 
             getCollaboration();
 
-            toast(`Success remove ${type}`);
+            toast(`Success remove sponsor`);
         } catch (error) {
             toast(error?.message);
         }
@@ -75,7 +79,9 @@ function CollaborationEventModal({ open, onClose, id, type }) {
         <BaseModal open={open} title={"List"} onClose={onClose}>
             <div className="mt-3 flex items-center gap-5">
                 <div className="w-full mt-2">
-                    <DropdownMultiField list={list} value={selectedData} onDropdownItemClick={(e) => setselectedData(e)} placeholder={"Choose"} keyValue={"id"} keyLabel={"name"} />
+                    <DropdownMultiField list={list} value={selectedData} onDropdownItemClick={(e) => setSelectedData(e)} placeholder={"Choose Sponsor"} keyValue={"id"} keyLabel={"name"} />
+                    <DropdownMultiField list={tiers} value={selectedTier} onDropdownItemClick={(e) => setSelectedTier(e)} placeholder={"Choose Tier Sponsor"} keyValue={"value"} keyLabel={"name"} />
+                    <InputSingleField value={order} onChange={(e) => setOrder(e.target.value)} placeholder={"Order"} />
                 </div>
                 <div>
                     <GeneralButton title={"Add"} onClick={() => addCollab()} />
@@ -89,11 +95,12 @@ function CollaborationEventModal({ open, onClose, id, type }) {
                                 <div key={data?.mentor?.id} className="p-4 border border-gray-400 rounded-lg flex">
                                     <div className="w-full flex items-center gap-2">
                                         <div className="w-[20%]">
-                                            <img src={data?.photo} alt={data?.name} />
+                                            <img src={data?.sponsor?.owner?.logo} alt={data?.sponsor?.name} />
                                         </div>
                                         <div className="w-[75%]">
-                                            <p className="font-semibold">{data?.name}</p>
-                                            <p>{data?.title}</p>
+                                            <p className="font-semibold">{data?.sponsor?.name}</p>
+                                            <p>Level Tier: {data?.tier}</p>
+                                            <p>Order Tier: {data?.orderTier}</p>
                                         </div>
                                     </div>
                                     <div className="flex justify-end items-center min-w-[50px]">
@@ -109,4 +116,4 @@ function CollaborationEventModal({ open, onClose, id, type }) {
     );
 }
 
-export default CollaborationEventModal;
+export default SponsorCourseModal;

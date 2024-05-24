@@ -4,11 +4,16 @@ import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getCourses } from "../../../configs/api/services/course";
 import { thousandSeparator } from "../../../utils/PriceFormatter";
-import { MdModeEditOutline, MdOutlineSearch } from "react-icons/md";
+import { MdModeEditOutline, MdOutlineSupervisorAccount, MdOutlineAttachMoney, MdOutlineCalendarMonth, MdCoPresent } from "react-icons/md";
+import { IoBook } from "react-icons/io5";
+import { RiPresentationFill, RiGroup2Fill, RiMoneyCnyCircleFill } from "react-icons/ri";
 import GeneralButton from "../../../components/Buttons/GeneralButton";
 import MentorModal from "../../../components/Modal/Course/Mentor";
 import CurriculumModal from "../../../components/Modal/Course/Curriculum";
 import PaymentModal from "../../../components/Modal/Course/Payment";
+import moment from "moment";
+import ParticipantModal from "../../../components/Modal/Course/Participant";
+import SponsorCourseModal from "../../../components/Modal/Course/Sponsor";
 
 function CoursePage() {
     const navigate = useNavigate();
@@ -16,6 +21,8 @@ function CoursePage() {
     const [openMentor, setOpenMentor] = useState(false);
     const [openCurr, setOpenCurr] = useState(false);
     const [openPayment, setOpenPayment] = useState(false);
+    const [openParti, setOpenParti] = useState(false);
+    const [openSponsor, setOpenSponsor] = useState(false);
     const [searchParams] = useSearchParams();
 
     const [page, setPage] = useState(1);
@@ -50,77 +57,68 @@ function CoursePage() {
 
     return (
         <div>
-            {/* 
-            <div className="border bg-white rounded p-4 w-full mb-6">
-                <div className="md:flex gap-5 items-center justify-between">
-                    <div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 md:gap-x-4">
-                            <InputSingleField placeholder={"Nama"} labelWeight={600} value={name} onChange={(e) => setName(e.target.value)} />
-                            <InputSingleField placeholder={"Email"} labelWeight={600} value={email} onChange={(e) => setEmail(e.target.value)} />
-                            <InputSingleField placeholder={"Phone"} labelWeight={600} value={phone} onChange={(e) => setPhone(e.target.value)} />
-                        </div>
-                    </div>
-                    <div className="flex gap-2">
-                        <GeneralButton title={"Reset"} onClick={() => navigate(`/mentors/list?page=${1}&limit=${25}&name=&email=&phone=`)} disable={loading} icon={null} />
-                        <GeneralButton title={"Search"} onClick={() => navigate(`/mentors/list?page=${searchParams.get('page')}&limit=${searchParams.get('limit')}&name=${name || ''}&email=${email || ''}&phone=${phone || ''}`)} disable={loading} icon={<MdOutlineSearch color={"white"} size={20} />} />
-                    </div>
-                </div>
-            </div> 
-            */}
-            <div className="overflow-auto">
-                <table className="overflow-x-auto min-w-full max-w-[1440px]">
-                    <thead className="bg-gray-600">
-                        <tr>
-                            <th className="w-[25px] p-2 border-black border-[1px] text-white">No.</th>
-                            <th className="w-[200px] p-2 border-black border-[1px] text-white">Name</th>
-                            <th className="w-[150px] p-2 border-black border-[1px] text-white">Quota</th>
-                            <th className="w-[250px] p-2 border-black border-[1px] text-white">Total Price</th>
-                            <th className="w-[250px] p-2 border-black border-[1px] text-white">Price Workshop</th>
-                            <th className="w-[250px] p-2 border-black border-[1px] text-white">Minimum Price </th>
-                            <th className="w-[150px] p-2 border-black border-[1px] text-white">Mentor</th>
-                            <th className="w-[150px] p-2 border-black border-[1px] text-white">Participant</th>
-                            <th className="w-[150px] p-2 border-black border-[1px] text-white">Curriculum</th>
-                            <th className="w-[150px] p-2 border-black border-[1px] text-white">Payment</th>
-                            <th className="w-[100px] p-2 border-black border-[1px] text-white">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            data.length > 0 ? data.map((data, index) => {
-                                return (<tr key={data.id}>
-                                    <td className="text-center py-2 font-semibold border-gray-400 border-[1px]">{index + 1}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px] capitalize">{data?.name}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">{`${thousandSeparator(data?.participantJoin)} / ${thousandSeparator(data?.participantSeat)}` || 'N/A'}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">{`Rp. ${thousandSeparator(data?.totalPayment)} / ${thousandSeparator(data?.price)}` || 'N/A'}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">Rp. {thousandSeparator(data?.minimumWorkshop) || 'N/A'}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">Rp. {thousandSeparator(data?.minimumPrice) || 'N/A'}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">
-                                        <GeneralButton title={"View"} onClick={() => {setOpenMentor(true); setSelectedId(data.id)}} />
-                                    </td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">
-                                        <GeneralButton title={"View"} onClick={() => null} />
-                                    </td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">
-                                        <GeneralButton title={"View"} onClick={() => {setOpenCurr(true); setSelectedId(data.id)}} />
-                                    </td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">
-                                        <GeneralButton title={"View"} onClick={() => {setOpenPayment(true); setSelectedId(data.id)}} />
-                                    </td>
-                                    <td className="px-3py-2 border-gray-400 border-[1px] min-h-10">
-                                        <div className="flex gap-5 justify-center items-center">
-                                            <MdModeEditOutline color={"green"} size={20} onClick={() => navigate(`/courses/form?section=update&id=${data?.id}`)} />
+            <div className="flex flex-col gap-4">
+                {
+                    data.length > 0 ? data.map((data, index) => {
+                        return (
+                            <div key={data.id} className="border rounded border-gray-400 py-2 overflow-hidden">
+                                <div className="grid grid-cols-2 md:grid-cols-3 px-2">
+                                    <div className="flex items-center">
+                                        <img className="w-full" src={data.banner} alt="banner" />
+                                    </div>
+                                    <div className="p-2 flex flex-col gap-1">
+                                        <p className="text-xs md:text-sm lg:text-[16px] font-semibold">{data.name}</p>
+                                        <div className="flex gap-1 items-center">
+                                            <MdOutlineSupervisorAccount color={"black"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />
+                                            <p className="text-xs md:text-sm lg:text-base">{`${thousandSeparator(data?.participantJoin)} / ${thousandSeparator(data?.participantSeat)}` || 'N/A'}</p>
                                         </div>
-                                    </td>
-                                </tr>)
-                            }) : null
-                        }
-                    </tbody>
-                </table>
+                                        <div className="flex gap-1 items-center">
+                                            <MdOutlineAttachMoney color={"black"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />
+                                            <p className="text-xs md:text-sm lg:text-base">{`${data?.price ? `Rp. ${thousandSeparator(data?.totalPayment)} / ${thousandSeparator(data?.price)}` : "Free"}` || 'N/A'}</p>
+                                        </div>
+                                        <div className="flex gap-1 items-center">
+                                            <MdOutlineAttachMoney color={"black"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />
+                                            <p className="text-xs md:text-sm lg:text-base">{`${data?.minimumPrice ? `Rp. ${thousandSeparator(data?.minimumPrice)}` : "Free"}` || 'N/A'}</p>
+                                        </div>
+                                        <div className="flex flex-col gap-1">
+                                            <div className="flex gap-1 items-center">
+                                                <MdOutlineCalendarMonth color={"black"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />
+                                                <p className="text-xs md:text-sm lg:text-base">{moment.unix(data?.courseStart).format("DD-MM-YYYY") || 'N/A'} (Start)</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-1 items-center">
+                                            <MdCoPresent color={"black"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />
+                                            <p className="text-xs md:text-sm lg:text-base capitalize">{`${data.category.toLowerCase()} - ${data.type?.replace(/_/g, ' ').toLowerCase()}` || 'N/A'}</p>
+                                        </div>
+                                    </div>
+                                    <div className="hidden mt-2 px-2 overflow-auto md:grid md:grid-cols-2 lg:grid-cols-2 gap-1" style={{ scrollbarWidth: "none", }}>
+                                        <GeneralButton loading={false} bgColor={"bg-green-500"} icon={<MdModeEditOutline color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} title={"Edit"} onClick={() => navigate(`/courses/form?section=update&id=${data?.id}`)} />
+                                        <GeneralButton title={"Mentor"} icon={<RiPresentationFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenMentor(true); setSelectedId(data.id); }} />
+                                        <GeneralButton title={"Syllabus"} icon={<IoBook color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCurr(true); setSelectedId(data.id); }} />
+                                        <GeneralButton title={"Particip"} icon={<RiGroup2Fill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenParti(true); setSelectedId(data.id); }} />
+                                        <GeneralButton title={"Payment"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenPayment(true); setSelectedId(data.id); }} />
+                                        <GeneralButton title={"Sponsor"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenSponsor(true); setSelectedId(data.id); }} />
+                                    </div>
+                                </div>
+                                <div className="flex gap-1 mt-2 px-2 overflow-auto md:hidden" style={{ scrollbarWidth: "none", }}>
+                                    <GeneralButton loading={false} bgColor={"bg-green-500"} icon={<MdModeEditOutline color={"white"} size={12} />} title={"Edit"} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" onClick={() => navigate(`/courses/form?section=update&id=${data?.id}`)} />
+                                    <GeneralButton title={"Mentor"} icon={<RiPresentationFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenMentor(true); setSelectedId(data.id); }} />
+                                    <GeneralButton title={"Syllabus"} icon={<IoBook color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCurr(true); setSelectedId(data.id); }} />
+                                    <GeneralButton title={"Particip"} icon={<RiGroup2Fill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenParti(true); setSelectedId(data.id); }} />
+                                    <GeneralButton title={"Payment"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenPayment(true); setSelectedId(data.id); }} />
+                                    <GeneralButton title={"Sponsor"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenSponsor(true); setSelectedId(data.id); }} />
+                                </div>
+                            </div>
+                        )
+                    }) : null
+                }
             </div>
             <LoadingModal open={loading} />
-            { openMentor && <MentorModal open={openMentor} onClose={() => setOpenMentor(false)} id={selectedId} />}
-            { openCurr && <CurriculumModal open={openCurr} onClose={() => setOpenCurr(false)} id={selectedId} />}
-            { openPayment && <PaymentModal open={openPayment} onClose={() => setOpenPayment(false)} id={selectedId} />}
+            {openMentor && <MentorModal open={openMentor} onClose={() => setOpenMentor(false)} id={selectedId} />}
+            {openCurr && <CurriculumModal open={openCurr} onClose={() => setOpenCurr(false)} id={selectedId} />}
+            {openPayment && <PaymentModal open={openPayment} onClose={() => setOpenPayment(false)} id={selectedId} />}
+            {openParti && <ParticipantModal open={openParti} onClose={() => setOpenParti(false)} id={selectedId} />}
+            {openSponsor && <SponsorCourseModal open={openSponsor} onClose={() => setOpenSponsor(false)} id={selectedId} />}
         </div>
     );
 }

@@ -7,10 +7,11 @@ import {
 import constant from '../../../constants/url';
 
 export async function getPayments({
-    id
+    id,
+    type,
 }) {
     try {
-        let res = await HttpGet(`${constant.PAYMENT_URL}/course/${id}`, null);
+        let res = await HttpGet(`${constant.PAYMENT_URL}/course/${id}?type=${type || ''}`, null);
 
         return res;
     } catch (error) {

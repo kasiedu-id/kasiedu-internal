@@ -28,6 +28,10 @@ const EventPage = Loadable(lazy(() => import('../../screens/mains/event/')));
 const UserFormPage = Loadable(lazy(() => import('../../screens/mains/user/form')));
 const UserPage = Loadable(lazy(() => import('../../screens/mains/user/')));
 
+// Sponsor
+const SponsorFormPage = Loadable(lazy(() => import('../../screens/mains/sponsor/form')));
+const SponsorPage = Loadable(lazy(() => import('../../screens/mains/sponsor')));
+
 
 const appRoutes = [
     {
@@ -75,6 +79,14 @@ const appRoutes = [
         children: [
             { path: 'list', element: <EventPage /> },
             { path: 'form', element: <EventFormPage /> },
+        ],
+    },
+    {
+        path: '/sponsors',
+        element: <MainLayout />,
+        children: [
+            { path: 'list', element: <SponsorPage /> },
+            { path: 'form', element: <SponsorFormPage /> },
         ],
     },
     {
