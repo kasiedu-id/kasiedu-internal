@@ -181,7 +181,7 @@ function CourseFormPage() {
                     closeRegis: moment(closeRegis).valueOf() / 1000,
                     startCourse: moment(startClass).valueOf() / 1000,
                     price: removeStripNumber(coursePrice),
-                    workshopPrice: removeStripNumber(workshopPrice),
+                    workshopPrice: 0,
                     minimumPrice: removeStripNumber(minimumPrice),
                     maxParticipant,
                     duration,
@@ -205,7 +205,7 @@ function CourseFormPage() {
                     closeRegis: moment(closeRegis).valueOf() / 1000,
                     startCourse: moment(startClass).valueOf() / 1000,
                     price: removeStripNumber(coursePrice),
-                    workshopPrice: removeStripNumber(workshopPrice),
+                    workshopPrice: 0,
                     minimumPrice: removeStripNumber(minimumPrice),
                     maxParticipant,
                     duration,
@@ -280,7 +280,7 @@ function CourseFormPage() {
 
                 const selectedType = courseTypes.findIndex((data) => data.value === res.category);
 
-                if(res.location) getCities({ codeProvince: res.location.codeProvince })
+                if (res.location) getCities({ codeProvince: res.location.codeProvince })
 
                 setAddressWork(res.completeAddress);
                 setCourseType(res.category ? courseTypes[selectedType] : null);
@@ -293,7 +293,7 @@ function CourseFormPage() {
                 setProvince(res.location ? provinces[selectedProvince] : null);
                 setMaxParticipant(res.participantSeat);
                 setDurationType({ label: res.durationType, value: res.durationType });
-                setStudyType({ value: res.type, label: res.type });
+                setStudyType({ value: res.type, label: res.type.replace(/_/g, '-') });
                 setCloseRegis(moment.unix(res.closeRegis).format("YYYY-MM-DD"));
                 setOpenRegis(moment.unix(res.openRegis).format("YYYY-MM-DD"));
                 setStartClass(moment.unix(res.courseStart).format("YYYY-MM-DDTHH:mm"));
@@ -456,11 +456,11 @@ function CourseFormPage() {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
                         <InputSingleField error={error.coursePrice} label={"Total Price"} labelWeight={600} required value={thousandSeparator(coursePrice)} onChange={(e) => setCoursePrice(e.target.value)} />
-                        <InputSingleField error={error.workshopPrice} label={"Workshop Participant Price"} labelWeight={600} required value={thousandSeparator(workshopPrice)} onChange={(e) => setWorkshopPrice(e.target.value)} />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
                         <InputSingleField error={error.minimumPrice} label={"Minimum Price"} labelWeight={600} required value={thousandSeparator(minimumPrice)} onChange={(e) => setMinimumPrice(e.target.value)} />
                     </div>
+                    {/* <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
+                        <InputSingleField error={error.workshopPrice} label={"Workshop Participant Price"} labelWeight={600} required value={thousandSeparator(workshopPrice)} onChange={(e) => setWorkshopPrice(e.target.value)} />
+                    </div> */}
                 </>
                 <>
                     <div className="border-b-[1px] border-b-gray-400 mb-3">
