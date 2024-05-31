@@ -3,24 +3,23 @@ import LoadingModal from "../../../components/Loadings";
 import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { thousandSeparator } from "../../../utils/PriceFormatter";
-import { MdModeEditOutline, } from "react-icons/md";
+import { MdModeEditOutline, MdOutlineSupervisorAccount, MdOutlineAttachMoney, MdOutlineCalendarMonth } from "react-icons/md";
+import { IoBook } from "react-icons/io5";
+import { RiPresentationFill, RiGroup2Fill, RiMoneyCnyCircleFill } from "react-icons/ri";
+import { GiBackup } from "react-icons/gi";
 import GeneralButton from "../../../components/Buttons/GeneralButton";
-import MentorModal from "../../../components/Modal/Course/Mentor";
-import CurriculumModal from "../../../components/Modal/Course/Curriculum";
 import { getEvents } from "../../../configs/api/services/event";
 import moment from "moment";
 import CollaborationEventModal from "../../../components/Modal/Event/Collaboration";
+import SponsorEventModal from "../../../components/Modal/Event/Sponsor";
 
 function EventPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [openCollab, setOpenCollab] = useState(false);
+    const [openSponsor, setOpenSponsor] = useState(false);
     const [selectedType, setSelectedType] = useState("");
     const [searchParams] = useSearchParams();
-
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(25);
-
     const [data, setData] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
 
@@ -32,11 +31,6 @@ function EventPage() {
                 page: searchParams.get('page'),
                 limit: searchParams.get('limit'),
             });
-
-            console.log(res);
-
-            setPage(searchParams.get('page'));
-            setLimit(searchParams.get('limit'));
 
             setData(res.list);
         } catch (error) {
@@ -51,68 +45,62 @@ function EventPage() {
     }, [searchParams]);
 
     return (
-        <div>
-            {/* 
-            <div className="border bg-white rounded p-4 w-full mb-6">
-                <div className="md:flex gap-5 items-center justify-between">
-                    <div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 md:gap-x-4">
-                            <InputSingleField placeholder={"Nama"} labelWeight={600} value={name} onChange={(e) => setName(e.target.value)} />
-                            <InputSingleField placeholder={"Email"} labelWeight={600} value={email} onChange={(e) => setEmail(e.target.value)} />
-                            <InputSingleField placeholder={"Phone"} labelWeight={600} value={phone} onChange={(e) => setPhone(e.target.value)} />
-                        </div>
-                    </div>
-                    <div className="flex gap-2">
-                        <GeneralButton title={"Reset"} onClick={() => navigate(`/mentors/list?page=${1}&limit=${25}&name=&email=&phone=`)} disable={loading} icon={null} />
-                        <GeneralButton title={"Search"} onClick={() => navigate(`/mentors/list?page=${searchParams.get('page')}&limit=${searchParams.get('limit')}&name=${name || ''}&email=${email || ''}&phone=${phone || ''}`)} disable={loading} icon={<MdOutlineSearch color={"white"} size={20} />} />
-                    </div>
-                </div>
-            </div> 
-            */}
-            <div className="overflow-auto">
-                <table className="overflow-x-auto min-w-full max-w-[1440px]">
-                    <thead className="bg-gray-600">
-                        <tr>
-                            <th className="w-[25px] p-2 border-black border-[1px] text-white">No.</th>
-                            <th className="w-[200px] p-2 border-black border-[1px] text-white">Name</th>
-                            <th className="w-[150px] p-2 border-black border-[1px] text-white">Quota</th>
-                            <th className="w-[250px] p-2 border-black border-[1px] text-white">Price</th>
-                            <th className="w-[250px] p-2 border-black border-[1px] text-white">Start Date</th>
-                            <th className="w-[250px] p-2 border-black border-[1px] text-white">End Date</th>
-                            <th className="w-[150px] p-2 border-black border-[1px] text-white">Mentor</th>
-                            <th className="w-[150px] p-2 border-black border-[1px] text-white">Course</th>
-                            <th className="w-[100px] p-2 border-black border-[1px] text-white">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            data.length > 0 ? data.map((data, index) => {
-                                return (<tr key={data.id}>
-                                    <td className="text-center py-2 font-semibold border-gray-400 border-[1px]">{index + 1}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px] capitalize">{data?.name}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">{`${thousandSeparator(data?.participants?.length)} / ${thousandSeparator(data?.quota)}` || 'N/A'}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">{`${data?.price ? `Rp. ${thousandSeparator(data?.price)}` : "Free" }` || 'N/A'}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">{moment.unix(data?.startDate).format("DD-MM-YYYY HH:mm") || 'N/A'}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">{moment.unix(data?.endDate).format("DD-MM-YYYY HH:mm") || 'N/A'}</td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">
-                                        <GeneralButton title={"View"} onClick={() => {setOpenCollab(true); setSelectedId(data.id); setSelectedType("MENTOR") }} />
-                                    </td>
-                                    <td className="px-3 py-2 border-gray-400 border-[1px]">
-                                        <GeneralButton title={"View"} onClick={() => {setOpenCollab(true); setSelectedId(data.id); setSelectedType("COURSE")}} />
-                                    </td>
-                                    <td className="px-3py-2 border-gray-400 border-[1px] min-h-10">
-                                        <div className="flex gap-5 justify-center items-center">
-                                            <MdModeEditOutline color={"green"} size={20} onClick={() => navigate(`/events/form?section=update&id=${data?.id}`)} />
+        <div className="flex flex-col gap-4">
+            {
+                data.length > 0 ? data.map((data, index) => {
+                    return (
+                        <div key={data.id} className="border rounded border-gray-400 py-2 overflow-hidden">
+                            <div className="grid grid-cols-2 md:grid-cols-3 px-2">
+                                <div className="flex items-center">
+                                    <img className="w-full" src={data.bannerMobile} alt="banner" />
+                                </div>
+                                <div className="p-2 flex flex-col gap-1">
+                                    <p className="text-xs md:text-sm lg:text-[16px] font-semibold">{data.name}</p>
+                                    <div className="flex gap-1 items-center">
+                                        <MdOutlineSupervisorAccount color={"black"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />
+                                        <p className="text-xs md:text-sm lg:text-base">{`${thousandSeparator(data?.participants?.length)} / ${thousandSeparator(data?.quota)}` || 'N/A'}</p>
+                                    </div>
+                                    <div className="flex gap-1 items-center">
+                                        <MdOutlineAttachMoney color={"black"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />
+                                        <p className="text-xs md:text-sm lg:text-base">{`${data?.price ? `Rp. ${thousandSeparator(data?.price)}` : "Free"}` || 'N/A'}</p>
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex gap-1 items-center">
+                                            <MdOutlineCalendarMonth color={"black"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />
+                                            <p className="text-xs md:text-sm lg:text-base">{moment.unix(data?.startDate).format("DD-MM-YYYY HH:mm") || 'N/A'} (Start)</p>
                                         </div>
-                                    </td>
-                                </tr>)
-                            }) : null
-                        }
-                    </tbody>
-                </table>
-            </div>
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex gap-1 items-center">
+                                            <MdOutlineCalendarMonth color={"black"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />
+                                            <p className="text-xs md:text-sm lg:text-base">{moment.unix(data?.endDate).format("DD-MM-YYYY HH:mm") || 'N/A'} (End)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="hidden mt-2 px-2 overflow-auto md:grid md:grid-cols-2 lg:grid-cols-2 gap-1" style={{ scrollbarWidth: "none", }}>
+                                    <GeneralButton loading={false} bgColor={"bg-green-500"} icon={<MdModeEditOutline color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} title={"Edit"} onClick={() => navigate(`/events/form?section=update&id=${data?.id}`)} />
+                                    <GeneralButton title={"Speaker"} icon={<RiPresentationFill color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCollab(true); setSelectedId(data.id); setSelectedType("MENTOR") }} />
+                                    <GeneralButton title={"Course"} icon={<IoBook color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCollab(true); setSelectedId(data.id); setSelectedType("COURSE") }} />
+                                    <GeneralButton title={"Support"} icon={<GiBackup color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCollab(true); setSelectedId(data.id); setSelectedType("SUPPORTER") }} />
+                                    <GeneralButton title={"Collaborator"} icon={<RiGroup2Fill color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCollab(true); setSelectedId(data.id); setSelectedType("COLLABORATOR") }} />
+                                    <GeneralButton title={"Sponsor"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenSponsor(true); setSelectedId(data.id); setSelectedType("SPONSOR") }} />
+                                </div>
+                            </div>
+                            <div className="flex gap-1 mt-2 px-2 overflow-auto md:hidden" style={{ scrollbarWidth: "none", }}>
+                                <GeneralButton loading={false} bgColor={"bg-green-500"} icon={<MdModeEditOutline color={"white"} size={12} />} title={"Edit"} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" onClick={() => navigate(`/events/form?section=update&id=${data?.id}`)} />
+                                <GeneralButton title={"Speaker"} icon={<RiPresentationFill color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCollab(true); setSelectedId(data.id); setSelectedType("MENTOR") }} />
+                                <GeneralButton title={"Course"} icon={<IoBook color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCollab(true); setSelectedId(data.id); setSelectedType("COURSE") }} />
+                                <GeneralButton title={"Support"} icon={<GiBackup color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCollab(true); setSelectedId(data.id); setSelectedType("SUPPORTER") }} />
+                                <GeneralButton title={"Collaborator"} icon={<RiGroup2Fill color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCollab(true); setSelectedId(data.id); setSelectedType("COLLABORATOR") }} />
+                                <GeneralButton title={"Sponsor"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[12px] w-[12px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenSponsor(true); setSelectedId(data.id); setSelectedType("SPONSOR") }} />
+                            </div>
+                        </div>
+                    )
+                }) : null
+            }
             <LoadingModal open={loading} />
-            { openCollab && <CollaborationEventModal open={openCollab} onClose={() => setOpenCollab(false)} id={selectedId} type={selectedType} />}
+            {openCollab && <CollaborationEventModal open={openCollab} onClose={() => setOpenCollab(false)} id={selectedId} type={selectedType} />}
+            {openSponsor && <SponsorEventModal open={openSponsor} onClose={() => setOpenSponsor(false)} id={selectedId} type={selectedType} />}
         </div>
     );
 }

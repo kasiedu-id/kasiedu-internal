@@ -5,14 +5,14 @@ function GeneralButton({ title, onClick, disable = false, bgColor, textColor, ic
     return (
         <button
             onClick={disable ? null : onClick}
-            className={`flex items-center justify-center min-w-[100px] w-full gap-3 text-center cursor-pointer rounded-lg border ${disable ? "bg-[#07638dab] cursor-not-allowed" : bgColor ?? "border-[#07638d] bg-[#07638d]"} shadow-sm py-2 transition hover:bg-opacity-90`}
+            className={`flex items-center justify-center min-w-[90px] max-w-full gap-1 text-center cursor-pointer rounded-lg border ${disable ? "bg-[#07638dab] cursor-not-allowed" : bgColor ?? "border-[#07638d] bg-[#07638d]"} shadow-sm py-2 transition hover:bg-opacity-90`}
         >
             {
                 loading ? <Circular /> : <>
                     {
                         icon ? <div>{icon}</div> : null
                     }
-                    <p className={`text-[14px] ${textColor ?? "text-white"}`}>{title}</p>
+                    <p className={`text-[14px] xl:text-base ${textColor ?? "text-white"}`}>{title}</p>
                 </>
             }
         </button>

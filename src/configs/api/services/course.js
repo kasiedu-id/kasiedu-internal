@@ -121,9 +121,38 @@ export async function addCurriculumCourse({
     }
 }
 
+export async function addCourseSponsor({
+    id,
+    ownerId,
+    tier,
+    orderTier,
+}) {
+    try {
+        let res = await HttpPut(`${constant.COURSE_URL}/sponsor/${id}`, {
+            id: ownerId,
+            tier: tier,
+            orderTier
+        }, null);
+
+        return res;
+    } catch (error) {
+        throw (error);
+    }
+}
+
 export async function removeCurriculumCourse(id) {
     try {
         let res = await HttpDelete(`${constant.COURSE_URL}/curriculum/${id}`, null);
+
+        return res;
+    } catch (error) {
+        throw (error);
+    }
+}
+
+export async function removeSponsorCourse(id) {
+    try {
+        let res = await HttpDelete(`${constant.COURSE_URL}/sponsor/${id}`, null);
 
         return res;
     } catch (error) {

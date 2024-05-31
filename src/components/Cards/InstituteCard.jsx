@@ -11,8 +11,8 @@ function InstituteCard({ name, logo, picName, picPhone, id }) {
         >
             <img
                 src={logo}
-                style={{ width: "25%", height: "25%", mixBlendMode: 'hard-light', }}
-                className='rounded-full'
+                style={{ mixBlendMode: 'hard-light', objectFit: 'scale-down' }}
+                className='rounded h-[60px] w-[60px]'
                 alt={name}
             />
             <div>

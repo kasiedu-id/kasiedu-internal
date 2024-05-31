@@ -149,8 +149,6 @@ function UserFormPage() {
 
                 const genderIdx = res.information?.gender ? resGender?.data.findIndex((data) => data?.value === res.information?.gender) : null;
 
-                console.log(res);
-
                 setName(res.information.name);
                 setGender(res.information?.gender ? resGender?.data[genderIdx] : null)
                 setEmail(res.email);

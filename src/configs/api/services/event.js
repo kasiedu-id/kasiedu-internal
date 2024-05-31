@@ -48,9 +48,38 @@ export async function addEventCollaboration({
     }
 }
 
+export async function addEventSponsor({
+    id,
+    ownerId,
+    tier,
+    orderTier,
+}) {
+    try {
+        let res = await HttpPut(`${constant.EVENT_URL}/sponsor/${id}`, {
+            id: ownerId,
+            tier: tier,
+            orderTier
+        }, null);
+
+        return res;
+    } catch (error) {
+        throw (error);
+    }
+}
+
 export async function removeEventCollab(id) {
     try {
         let res = await HttpDelete(`${constant.EVENT_URL}/collaboration/${id}`, null);
+
+        return res;
+    } catch (error) {
+        throw (error);
+    }
+}
+
+export async function removeEventSponsor(id) {
+    try {
+        let res = await HttpDelete(`${constant.EVENT_URL}/sponsor/${id}`, null);
 
         return res;
     } catch (error) {
@@ -64,6 +93,18 @@ export async function getCollaborationEvents({
 }) {
     try {
         let res = await HttpGet(`${constant.EVENT_URL}/collaboration/${id}?type=${type || 'COURSE'}`, null);
+
+        return res;
+    } catch (error) {
+        throw (error);
+    }
+}
+
+export async function getSponsorEvents({
+    id,
+}) {
+    try {
+        let res = await HttpGet(`${constant.EVENT_URL}/sponsor/${id}`, null);
 
         return res;
     } catch (error) {

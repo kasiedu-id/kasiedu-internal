@@ -10,7 +10,7 @@ import { DropdownMultiField } from "../../Fields/DropdownMulti";
 import LoadingModal from "../../Loadings";
 
 
-function PaymentModal({ open, onClose, id }) {
+function ParticipantModal({ open, onClose, id }) {
     const [data, setData] = useState([]);
     const [selectedId, setSelectedId] = useState('');
     const [name, setName] = useState("");
@@ -18,8 +18,6 @@ function PaymentModal({ open, onClose, id }) {
     const [phone, setPhone] = useState("");
     const [amount, setAmount] = useState("");
     const [status, setStatus] = useState(null);
-    const [isAnonymous, setIsAnonymous] = useState(null);
-    const [paymentType, setPaymentType] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const paymentStatus = [
@@ -53,31 +51,9 @@ function PaymentModal({ open, onClose, id }) {
         },
     ];
 
-    const anonymousType = [
-        {
-            name: 'Secret',
-            value: true,
-        },
-        {
-            name: 'Public',
-            value: false,
-        },
-    ];
-
-    const paymentTypes = [
-        {
-            name: 'Donation',
-            value: "DONATION",
-        },
-        {
-            name: 'Course',
-            value: "COURSE",
-        },
-    ]
-
     async function getList() {
         try {
-            const res = await getPayments({ id, type: 'donation' });
+            const res = await getPayments({ id, type: 'course' });
 
             setData(res);
         } catch (error) {
@@ -92,8 +68,8 @@ function PaymentModal({ open, onClose, id }) {
             if(selectedId){
                 await updatePayment({
                     id: selectedId,
-                    anonymous: isAnonymous.value,
-                    type: paymentType.value,
+                    anonymous: false,
+                    type: 'COURSE',
                     status: status.value,
                 })
             } else {
@@ -103,8 +79,8 @@ function PaymentModal({ open, onClose, id }) {
                     phone,
                     amount,
                     courseId: id,
-                    anonymous: isAnonymous.value,
-                    type: paymentType.value,
+                    anonymous: false,
+                    type: 'COURSE',
                     status: status.value,
                 });
             }
@@ -115,8 +91,6 @@ function PaymentModal({ open, onClose, id }) {
             setEmail("");
             setPhone("");
             setAmount("");
-            setIsAnonymous(null);
-            setPaymentType(null);
             setStatus(null);
             getList();
         } catch (error) {
@@ -144,7 +118,7 @@ function PaymentModal({ open, onClose, id }) {
 
     return (
         <>
-            <BaseModal open={open} title={"List of Payment"} onClose={onClose}>
+            <BaseModal open={open} title={"List of Participant"} onClose={onClose}>
                 <div className="mt-3 flex gap-5">
                     <div className="w-full mt-2">
                         <InputSingleField label={"Name"} disable={selectedId ? true : false} value={name} onChange={(e) => setName(e.target.value)} />
@@ -152,8 +126,6 @@ function PaymentModal({ open, onClose, id }) {
                         <InputSingleField label={"Phone"} disable={selectedId ? true : false} value={phone} onChange={(e) => setPhone(e.target.value)} />
                         <InputSingleField label={"Amount"} disable={selectedId ? true : false} value={thousandSeparator(amount)} onChange={(e) => setAmount(removeStripNumber(e.target.value))} />
                         <DropdownMultiField label={"Payment Status"} list={paymentStatus} value={status} onDropdownItemClick={(e) => setStatus(e)} placeholder={"Choose Status"} keyValue={"value"} keyLabel={"name"} />
-                        <DropdownMultiField label={"Is Anonymous"} list={anonymousType} value={isAnonymous} onDropdownItemClick={(e) => setIsAnonymous(e)} placeholder={"Choose Publicity"} keyValue={"value"} keyLabel={"name"} />
-                        <DropdownMultiField label={"Payment Type"} list={paymentTypes} value={paymentType} onDropdownItemClick={(e) => setPaymentType(e)} placeholder={"Choose Type"} keyValue={"value"} keyLabel={"name"} />
                     </div>
                     <div className="mt-9">
                         <GeneralButton title={"Add"} onClick={() => submit()} />
@@ -172,7 +144,7 @@ function PaymentModal({ open, onClose, id }) {
                                                 <p className="italic font-semibold">{data?.code}</p>
                                                 <p className="text-sm">{data?.name}</p>
                                                 <p className="text-sm">{data?.email} / {data?.phone}</p>
-                                                <p className="text-sm">Rp. {thousandSeparator(data?.amount)} - {data?.relationType}</p>
+                                                <p className="text-sm">Rp. {thousandSeparator(data?.amount)}</p>
                                                 <p className="text-sm italic">{data?.status}</p>
                                                 {
                                                     url ? <p onClick={() => {navigator.clipboard.writeText(url.redirect_url); toast('Success Copy Url Link!')}} className="mt-4 cursor-pointer text-blue-500">Copy Url</p> : null
@@ -180,7 +152,7 @@ function PaymentModal({ open, onClose, id }) {
                                             </div>
                                         </div>
                                         <div className="flex justify-end items-center min-w-[50px]">
-                                            <HiOutlinePencilAlt size={20} color="green" onClick={() => {setPaymentType({ name: data.relationType, value: data.relationType }) ;setStatus({ name: data.status.replace(/_/g, ' '), value: data.status }); setAmount(data.amount); setPhone(data.phone); setEmail(data.email); setName(data.name); setSelectedId(data?.id)}} />
+                                            <HiOutlinePencilAlt size={20} color="green" onClick={() => { setStatus({ name: data.status.replace(/_/g, ' '), value: data.status }); setAmount(data.amount); setPhone(data.phone); setEmail(data.email); setName(data.name); setSelectedId(data?.id)}} />
                                             <HiOutlineTrash size={20} color="red" onClick={() => removeData(data?.id)} />
                                         </div>
                                     </div>
@@ -189,10 +161,10 @@ function PaymentModal({ open, onClose, id }) {
                         }
                     </div>
                 </div>
+                <LoadingModal open={loading} />
             </BaseModal>
-            <LoadingModal open={loading} />
         </>
     );
 }
 
-export default PaymentModal;
+export default ParticipantModal;
