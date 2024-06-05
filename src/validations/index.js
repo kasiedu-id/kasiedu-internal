@@ -32,13 +32,16 @@ const createMentor = Yup.object({
         .required("Name cannot be empty"),
     email: Yup.string()
         .optional()
+        .nullable()
         .email('Must be in correct email format'),
     phone: Yup.string()
-        .optional(),
+        .optional()
+        .nullable(),
     title: Yup.string()
         .required("Title cannot be empty"),
     profile: Yup.string()
-        .required("Profile cannot be empty"),
+        .optional()
+        .nullable(),
 });
 
 export default {
