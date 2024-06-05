@@ -68,7 +68,7 @@ function MentorFormPage() {
             const payload = new FormData();
             let res = null;
 
-            if (type === 'create') {
+            if (type === 'create' && profile) {
                 payload.append("profile", profile);
 
                 res = await uploadFile(payload);
@@ -88,7 +88,7 @@ function MentorFormPage() {
                 email,
                 phone,
                 title,
-                profile: res[0].URL,
+                profile: res ? res[0].URL : null,
             },
                 { abortEarly: false }
             );
@@ -99,7 +99,7 @@ function MentorFormPage() {
                     email,
                     phone,
                     title,
-                    profile: res[0].URL,
+                    profile: res ? res[0].URL : null,
                 });
             } else {
                 await updateMentors({
