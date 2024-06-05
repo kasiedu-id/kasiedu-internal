@@ -96,7 +96,7 @@ function CoursePage() {
                                         <GeneralButton title={"Mentor"} icon={<RiPresentationFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenMentor(true); setSelectedId(data.id); }} />
                                         <GeneralButton title={"Syllabus"} icon={<IoBook color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCurr(true); setSelectedId(data.id); }} />
                                         <GeneralButton title={"Particip"} icon={<RiGroup2Fill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenParti(true); setSelectedId(data.id); }} />
-                                        <GeneralButton title={"Payment"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenPayment(true); setSelectedId(data.id); }} />
+                                        <GeneralButton title={"Donation"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenPayment(true); setSelectedId(data.id); }} />
                                         <GeneralButton title={"Sponsor"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenSponsor(true); setSelectedId(data.id); }} />
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@ function CoursePage() {
                                     <GeneralButton title={"Mentor"} icon={<RiPresentationFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenMentor(true); setSelectedId(data.id); }} />
                                     <GeneralButton title={"Syllabus"} icon={<IoBook color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenCurr(true); setSelectedId(data.id); }} />
                                     <GeneralButton title={"Particip"} icon={<RiGroup2Fill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenParti(true); setSelectedId(data.id); }} />
-                                    <GeneralButton title={"Payment"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenPayment(true); setSelectedId(data.id); }} />
+                                    <GeneralButton title={"Donation"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenPayment(true); setSelectedId(data.id); }} />
                                     <GeneralButton title={"Sponsor"} icon={<RiMoneyCnyCircleFill color={"white"} size={12} className="h-[16px] w-[16px] md:h-[16px] md:w-[16px]  lg:h-[20px] lg:w-[20px]" />} onClick={() => { setOpenSponsor(true); setSelectedId(data.id); }} />
                                 </div>
                             </div>
