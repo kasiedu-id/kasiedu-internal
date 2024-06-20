@@ -27,6 +27,7 @@ function CourseFormPage() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [maxParticipant, setMaxParticipant] = useState('');
+    const [urlLink, setUrlLink] = useState('');
     const [duration, setDuration] = useState('');
     const [durationType, setDurationType] = useState({ name: 'Week', value: 'week' });
     const [studyType, setStudyType] = useState(null);
@@ -194,7 +195,8 @@ function CourseFormPage() {
                     courseType: courseType.value,
                     certificate: certificate.value,
                     locationId: city?.id,
-                    bannerPath: res[0]?.URL
+                    bannerPath: res[0]?.URL,
+                    urlLink,
                 })
             } else {
                 await updateCourse({
@@ -215,7 +217,8 @@ function CourseFormPage() {
                     certificate: certificate.value,
                     completeAddress: addressWork,
                     locationId: city?.id,
-                    bannerPath: res[0]?.URL
+                    bannerPath: res[0]?.URL,
+                    urlLink,
                 })
             }
 
@@ -294,12 +297,13 @@ function CourseFormPage() {
                 setMaxParticipant(res.participantSeat);
                 setDurationType({ label: res.durationType, value: res.durationType });
                 setStudyType({ value: res.type, label: res.type.replace(/_/g, '-') });
-                setCloseRegis(moment.unix(res.closeRegis).format("YYYY-MM-DD"));
-                setOpenRegis(moment.unix(res.openRegis).format("YYYY-MM-DD"));
-                setStartClass(moment.unix(res.courseStart).format("YYYY-MM-DDTHH:mm"));
+                setCloseRegis(res.closeRegis ? moment.unix(res.closeRegis).format("YYYY-MM-DD") : '');
+                setOpenRegis(res.openRegis ? moment.unix(res.openRegis).format("YYYY-MM-DD"): '');
+                setStartClass(res.courseStart ? moment.unix(res.courseStart).format("YYYY-MM-DDTHH:mm") : '');
                 setCoursePrice(res.price);
                 setWorkshopPrice(res.minimumWorkshop);
                 setMinimumPrice(res.minimumPrice);
+                setUrlLink(res.urlLink);
             }
         }
     }
@@ -456,7 +460,7 @@ function CourseFormPage() {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
                         <InputSingleField error={error.coursePrice} label={"Total Price"} labelWeight={600} required value={thousandSeparator(coursePrice)} onChange={(e) => setCoursePrice(e.target.value)} />
-                        <InputSingleField error={error.minimumPrice} label={"Minimum Price"} labelWeight={600} required value={thousandSeparator(minimumPrice)} onChange={(e) => setMinimumPrice(e.target.value)} />
+                        <InputSingleField disable={courseType?.value === 'WORKSHOP'} error={error.minimumPrice} label={"Minimum Price"} labelWeight={600} required value={thousandSeparator(minimumPrice)} onChange={(e) => setMinimumPrice(e.target.value)} />
                     </div>
                     {/* <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
                         <InputSingleField error={error.workshopPrice} label={"Workshop Participant Price"} labelWeight={600} required value={thousandSeparator(workshopPrice)} onChange={(e) => setWorkshopPrice(e.target.value)} />
@@ -471,6 +475,7 @@ function CourseFormPage() {
                         <DropdownMultiField error={error.type} label={"Province"} required keyValue={"id"} keyLabel={"provinceName"} list={provinces} labelWeight={600} value={province} onDropdownItemClick={(e) => { getCities({ codeProvince: e.codeProvince }); setProvince(e) }} />
                         <DropdownMultiField error={error.type} label={"City"} required keyValue={"id"} keyLabel={"cityName"} list={cities} labelWeight={600} value={city} onDropdownItemClick={(e) => setCity(e)} />
                     </div>
+                    <InputSingleField error={false} label={"Url Link"} labelWeight={600} value={urlLink} onChange={(e) => setUrlLink(e.target.value)} />
                 </>
                 {
                     type === "create" ? <>

@@ -10,6 +10,7 @@ const PAYMENT_URL = "internal/payments";
 const INSTITUTE_URL = "internal/institutes";
 const USER_URL = "internal/users";
 const SPONSOR_URL = "internal/sponsors";
+const SUPPORT_URL = "internal/supports";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { 
@@ -24,5 +25,6 @@ export default {
     PAYMENT_URL,
     INSTITUTE_URL,
     USER_URL,
-    SPONSOR_URL
+    SPONSOR_URL,
+    SUPPORT_URL
 };

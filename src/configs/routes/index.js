@@ -32,6 +32,10 @@ const UserPage = Loadable(lazy(() => import('../../screens/mains/user/')));
 const SponsorFormPage = Loadable(lazy(() => import('../../screens/mains/sponsor/form')));
 const SponsorPage = Loadable(lazy(() => import('../../screens/mains/sponsor')));
 
+// Support
+
+const SupportPage = Loadable(lazy(() => import('../../screens/mains/setting/supports')));
+
 
 const appRoutes = [
     {
@@ -71,6 +75,13 @@ const appRoutes = [
         children: [
             { path: 'list', element: <MentorPage /> },
             { path: 'form', element: <MentorFormPage /> },
+        ],
+    },
+    {
+        path: '/supports',
+        element: <MainLayout />,
+        children: [
+            { path: 'list', element: <SupportPage /> },
         ],
     },
     {

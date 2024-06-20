@@ -238,8 +238,6 @@ function EventFormPage() {
                         getCities({ codeProvince: res.location.codeProvince })
                     }
 
-                    console.log(res);
-
                     setAddressWork(res.completeAddress);
                     setCity(res.location);
                     setDescription(res.description);
@@ -250,10 +248,10 @@ function EventFormPage() {
                     setProvince(res.location ? provinces[selectedProvince] : null);
                     setMaxParticipant(res.quota);
                     setEventSocialType({ value: res.category, label: res.category });
-                    setStartDate(moment.unix(res.startDate).format("YYYY-MM-DD"));
-                    setStartHour(moment.unix(res.startDate).format("HH:mm"));
-                    setEndDate(moment.unix(res.endDate).format("YYYY-MM-DD"));
-                    setEndHour(moment.unix(res.endDate).format("HH:mm"));
+                    setStartDate(res.startDate ? moment.unix(res.startDate).format("YYYY-MM-DD") : '');
+                    setStartHour(res.startDate ?  moment.unix(res.startDate).format("HH:mm") : '');
+                    setEndDate(res.endDate ?  moment.unix(res.endDate).format("YYYY-MM-DD") : '');
+                    setEndHour(res.endDate ?  moment.unix(res.endDate).format("HH:mm") : '');
                     setEventPrice(res.price);
                     setYoutubeId(res.youtubeId);
                     setSeries(res.series);
